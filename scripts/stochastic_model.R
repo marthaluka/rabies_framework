@@ -4,7 +4,7 @@
 #' date: '`r format(Sys.Date(), '%Y-%m-%d')`'
 #' output: html_document
 #' ---
-#' ### Function to generate stochastic values using a Stochastic Model
+#' ### Function to generate stochastic values 
 
 stochatic_decision_tree <- function(N, pop, 
                              HDR_min, HDR_max, 
@@ -95,13 +95,12 @@ stochatic_decision_tree <- function(N, pop,
     } else if (method_administered == "intradermal"){
         vials_per_patient <- runif(n=N, min = 0.1, max = 1)  #vials_per_patient per dose
         total_PEP <- vials_per_patient * people_get_PEP
-        } else {                      # else assume intramuscular (the deafult in many countries)
-        total_PEP <- 1 * people_get_PEP
-        }
+    } else {                      # else assume intramuscular (the deafult in many countries)
+      total_PEP <- 1 * people_get_PEP
+    }
 
-
-  # Costs per death averted/ lives saved
-    cost_per_life_saved <- total_PEP / lives_saved
+# Costs per death averted/ lives saved
+  cost_per_life_saved <- total_PEP / lives_saved
 
 
 # Output results

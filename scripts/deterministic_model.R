@@ -1,5 +1,5 @@
 #' ---
-#' title: "Stochastic Model Function"
+#' title: "Deterministic Model Function"
 #' author: "Martha Luka, adopted from Catherine S."
 #' date: '`r format(Sys.Date(), '%Y-%m-%d')`'
 #' output: html_document

@@ -85,15 +85,15 @@ m1_decision_tree <- function(N, pop,
 
   #Estimate economic costs incurred
     # If intramuscular injection is used, cost is 1 vial per patient
-    # If intradermal injection is used, cost is 0.1 - 1 vial per patient. 
+    # If intradermal injection is used, cost is 0.1 - 1 vials per patient. 
     # 0.1 ml is recommended for intradermal admin, 1 ml is the vial volume (doi.org/10.1016/j.vaccine.2018.08.034)
     # However, this has to be discarded 8 hours after reconstitution. Assuming no one else turns up for PEP, it'll be discarded
 
   if (method_administered == "intramuscular"){
     total_PEP <- 1 * people_get_PEP
     } else if (method_administered == "intradermal"){
-        patients_per_vial <- runif(n=N, min = 0.1, max = 1) 
-        total_PEP <- patients_per_vial * people_get_PEP
+        vials_per_patient <- runif(n=N, min = 0.1, max = 1)  #vials_per_patient per dose
+        total_PEP <- vials_per_patient * people_get_PEP
         } else {                      # else assume intramuscular (the deafult in many countries)
         total_PEP <- 1 * people_get_PEP
         }
@@ -128,7 +128,8 @@ m1_decision_tree <- function(N, pop,
 }
 
 
-
+#To do:
+    # incorporate incomplete and complete PEP regimens
 
 
 

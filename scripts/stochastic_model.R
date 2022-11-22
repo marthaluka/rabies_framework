@@ -19,28 +19,28 @@ stochatic_decision_tree <- function(N, pop,
 {
   
   # Model 1 Decision tree function uses the arguments:
-  # N - number of iterations  
-  # pop - human population 
-  # HDR_min (lower limit) and HDR_max (upper limit) - human:dog ratio 
-  # vax_cov_min (lower limit) and vax_cov_max (upper limit) - dog vaccination coverage 
-  # inc_min (lower limit) and inc_max (upper limit) - annual rabies incidence in dog population
-  # P_bite_rabid - probability a rabid dog will bite 
-  # P_bite_healthy - probability a healthy dog will bite
-  # P_get_PEP_rabid_bite - probability that a rabies exposure will receive PEP 
-  # P_get_PEP_healthy_bite - probability that a healthy bite will receive PEP
-  # P_death - probability of infection/death if bitten (in the absence of PEP)
-  # P_prevent - probability that PEP will prevent rabies infection 
-  # method_administered - the method used to administer PEP (either 'intradermal' or 'intramuscular')
+    # N - number of iterations  
+    # pop - human population 
+    # HDR_min (lower limit) and HDR_max (upper limit) - human:dog ratio 
+    # vax_cov_min (lower limit) and vax_cov_max (upper limit) - dog vaccination coverage 
+    # inc_min (lower limit) and inc_max (upper limit) - annual rabies incidence in dog population
+    # P_bite_rabid - probability a rabid dog will bite 
+    # P_bite_healthy - probability a healthy dog will bite
+    # P_get_PEP_rabid_bite - probability that a rabies exposure will receive PEP 
+    # P_get_PEP_healthy_bite - probability that a healthy bite will receive PEP
+    # P_death - probability of infection/death if bitten (in the absence of PEP)
+    # P_prevent - probability that PEP will prevent rabies infection 
+    # method_administered - the method used to administer PEP (either 'intradermal' or 'intramuscular')
   
   # Model 1 outputs are annual estimates for: 
-  # dog population 
-  # rabid dogs (over 1 year)
-  # rabid_bites (total exposures over 1 year)
-  # rabid_bites_per_capita (per 100,000)
-  # rabid_bites that do not seek PEP 
-  # estimated human deaths 
-  # annual exposure incidence (per 100,000 persons)
-  # rabies incidence in dog populaton 
+    # dog population 
+    # rabid dogs (over 1 year)
+    # rabid_bites (total exposures over 1 year)
+    # rabid_bites_per_capita (per 100,000)
+    # rabid_bites that do not seek PEP 
+    # estimated human deaths 
+    # annual exposure incidence (per 100,000 persons)
+    # rabies incidence in dog populaton 
   
 
   # Explore uncertainty in HDR - uniform distribution w/ upper & lower limits 
@@ -54,15 +54,15 @@ stochatic_decision_tree <- function(N, pop,
   
   # Generate variation in rabies incidence - uniform distribution w/ upper & lower limits 
   incidence <- runif(n=N, min = inc_min, max = inc_max) # Calculate incidence of rabies in dog population
-  rabid_dogs <- sus_dogs * incidence # Calculate number of rabid dogs based on incidence
+  rabid_dogs <- round(sus_dogs * incidence,0) # Calculate number of rabid dogs based on incidence
   
   # Project rabid_bites/exposures from rabid dogs and exposure incidence
   rabid_bites <- rbinom(n = N, size = round((rabid_dogs),0), prob = P_bite_rabid) # People bitten by rabid dogs
-  rabid_bites_inc <- rabid_bites * 100000 / pop # Rabid bite incidence per 100,000 people 
+  rabid_bites_inc <- round(rabid_bites * 100000 / pop,0) # Rabid bite incidence per 100,000 people 
   
   # Project non-exposures ie from bites from healthy dogs
   healthy_bites <- rbinom(n = N, size = round((dog_pop-rabid_dogs),0), prob = P_bite_healthy) # People bitten by healthy (non-infected/vaccinated) dogs
-  healthy_bites_inc <- healthy_bites * 100000 / pop # healthy_bites bite incidence per 100,000 people
+  healthy_bites_inc <- round(healthy_bites * 100000 / pop,0) # healthy_bites bite incidence per 100,000 people
 
   # Project rabid_bites who did and did NOT receive PEP 
   rabid_bites_no_PEP <- rbinom(n = N, size = rabid_bites, prob = (1 - P_get_PEP_rabid_bite)) # rabid_bites who did NOT receive PEP 
@@ -90,17 +90,15 @@ stochatic_decision_tree <- function(N, pop,
     # 0.1 ml is recommended for intradermal admin, 1 ml is the vial volume (doi.org/10.1016/j.vaccine.2018.08.034)
     # However, this has to be discarded 8 hours after reconstitution. Assuming no one else turns up for PEP, it'll be discarded
 
-  if (method_administered == "intramuscular"){
-    total_PEP <- 1 * people_get_PEP
-    } else if (method_administered == "intradermal"){
+  if (method_administered == "intradermal"){
         vials_per_patient <- runif(n=N, min = 0.1, max = 1)  #vials_per_patient per dose
-        total_PEP <- vials_per_patient * people_get_PEP
-    } else {                      # else assume intramuscular (the deafult in many countries)
-      total_PEP <- 1 * people_get_PEP
+        total_PEP <- ceiling(vials_per_patient * people_get_PEP)
+    } else {                      # else assume intramuscular (the default in many countries)
+      total_PEP <- ceiling(1 * people_get_PEP)
     }
 
 # Costs per death averted/ lives saved
-  cost_per_life_saved <- total_PEP / lives_saved
+  cost_per_life_saved <- ceiling(total_PEP / lives_saved)
 
 
 # Output results
@@ -133,3 +131,14 @@ stochatic_decision_tree <- function(N, pop,
 
 
 
+# check if works
+stochatic_decision_tree(N=10, pop=150000, 
+      HDR_min=10, HDR_max=40, 
+      vax_cov_min=0, vax_cov_max=0.3,
+      inc_min=0.05, inc_max=0.1, 
+      P_bite_rabid=0.1, 
+      P_bite_healthy=0.3,
+      P_get_PEP_rabid_bite=0.6, 
+      P_get_PEP_healthy_bite=0.1,
+      P_death=0.9, P_prevent=0.98,
+      method_administered="intradermal")

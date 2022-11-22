@@ -14,8 +14,7 @@ stochatic_decision_tree <- function(N, pop,
                              P_bite_healthy,
                              P_get_PEP_rabid_bite, 
                              P_get_PEP_healthy_bite,
-                             P_death, P_prevent,
-                             method_administered)
+                             P_death, P_prevent)
 {
   
   # Model 1 Decision tree function uses the arguments:
@@ -90,16 +89,13 @@ stochatic_decision_tree <- function(N, pop,
     # 0.1 ml is recommended for intradermal admin, 1 ml is the vial volume (doi.org/10.1016/j.vaccine.2018.08.034)
     # However, this has to be discarded 8 hours after reconstitution. Assuming no one else turns up for PEP, it'll be discarded
 
-  if (method_administered == "intradermal"){
-        vials_per_patient <- runif(n=N, min = 0.1, max = 1)  #vials_per_patient per dose
-        total_PEP <- ceiling(vials_per_patient * people_get_PEP)
-    } else {                      # else assume intramuscular (the default in many countries)
-      total_PEP <- ceiling(1 * people_get_PEP)
-    }
+  vials_per_patient <- runif(n=N, min = 0.1, max = 1)  #vials_per_patient per dose
+  total_PEP_intradermal <- ceiling(vials_per_patient * people_get_PEP)
+  total_PEP_intramuscular <- ceiling(1 * people_get_PEP)
 
 # Costs per death averted/ lives saved
-  cost_per_life_saved <- ceiling(total_PEP / lives_saved)
-
+  cost_per_life_saved_intradermal <- ceiling(total_PEP_intradermal / lives_saved)
+  cost_per_life_saved_intramuscular <- ceiling(total_PEP_intramuscular / lives_saved)
 
 # Output results
   return( 
@@ -120,8 +116,10 @@ stochatic_decision_tree <- function(N, pop,
                deaths_PEP = deaths_PEP,
                rabies_deaths = all_deaths,
                lives_saved = lives_saved,
-               total_PEP_administered = total_PEP,
-               cost_per_death_averted = cost_per_life_saved)
+               total_PEP_intradermal = total_PEP_intradermal,
+               total_PEP_intramuscular = total_PEP_intramuscular,
+               cost_per_life_saved_intradermal = cost_per_life_saved_intradermal,
+               cost_per_life_saved_intramuscular = cost_per_life_saved_intramuscular)
     )
 }
 

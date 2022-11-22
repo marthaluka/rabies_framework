@@ -12,8 +12,7 @@ deterministic_decision_tree <- function(pop, HDR,
                              P_bite_healthy,
                              P_get_PEP_rabid_bite, 
                              P_get_PEP_healthy_bite,
-                             P_death, P_prevent,
-                             method_administered)
+                             P_death, P_prevent)
 {
   
   # Model 1 Decision tree function uses the arguments:
@@ -43,7 +42,7 @@ deterministic_decision_tree <- function(pop, HDR,
   dog_pop <- round(pop/HDR) # Calculate dog population 
   
   # # Estimate vaccinated and susceptible dogs in population 
-  vax_dogs <- round(dog_pop * vax_coverage,0) 
+  vax_dogs <- round(dog_pop * vax_cov,0) 
   sus_dogs <- round(dog_pop - vax_dogs,0)
   
   # Calculate number of rabid dogs based on incidence
@@ -83,16 +82,14 @@ deterministic_decision_tree <- function(pop, HDR,
   # 0.1 ml is recommended for intradermal admin, 1 ml is the vial volume (doi.org/10.1016/j.vaccine.2018.08.034)
   # However, this has to be discarded 8 hours after reconstitution. Assuming no one else turns up for PEP, it'll be discarded
   
-  if (method_administered == "intradermal"){
-    vials_per_patient <- 0.2 #vials_per_patient per dose # assume 0.2 vials per patient for simplicity
-    total_PEP <- ceiling(vials_per_patient * people_get_PEP)
-  } else {                      # else assume intramuscular (the default in many countries)
-    total_PEP <- ceiling(1 * people_get_PEP)
-  }
-  
+
+  vials_per_patient <- 0.2 #vials_per_patient per dose # assume 0.2 vials per patient for simplicity
+  total_PEP_intradermal <- ceiling(vials_per_patient * people_get_PEP)
+  total_PEP_intramuscular <- ceiling(1 * people_get_PEP)
   
   # Costs per death averted/ lives saved
-  cost_per_life_saved <- ceiling(total_PEP / lives_saved)
+  cost_per_life_saved_intradermal <- ceiling(total_PEP_intradermal / lives_saved)
+  cost_per_life_saved_intramuscular <- ceiling(total_PEP_intramuscular / lives_saved)
   
   
   # Output results
@@ -114,8 +111,10 @@ deterministic_decision_tree <- function(pop, HDR,
                deaths_PEP = deaths_PEP,
                rabies_deaths = all_deaths,
                lives_saved = lives_saved,
-               total_PEP_administered = total_PEP,
-               cost_per_death_averted = cost_per_life_saved)
+               total_PEP_intradermal = total_PEP_intradermal,
+               total_PEP_intramuscular = total_PEP_intramuscular,
+               cost_per_life_saved_intradermal = cost_per_life_saved_intradermal,
+               cost_per_life_saved_intramuscular = cost_per_life_saved_intramuscular)
   )
 }
 

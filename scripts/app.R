@@ -10,7 +10,8 @@ pacman::p_load(tidyverse, # cleaning, wrangling
                shinycssloaders, # loading symbol for app
                RColorBrewer, # color palettes
                htmltools, # HTML generation and tools
-               r2d3maps, # D3 maps
+               scales, # format numbers for aesthetics
+               patchwork, # multiple plots
                here)
 
 
@@ -22,6 +23,7 @@ east_africa_shp <- st_read(dsn="./shapefiles/",
 east_africa_shp$Population <- as.numeric(east_africa_shp$Population)
 
 str(east_africa_shp)
+
 
 source("./scripts/deterministic_model.R")
 
@@ -39,43 +41,81 @@ df1 <- deterministic_decision_tree(pop = east_africa_shp$Population,
 
 east_africa_shp2 <- cbind(east_africa_shp, df1)
 
-# color palette 
-pal <- 
+# color palette
+pal <-
   colorBin(
     palette = "YlOrRd",
       domain = east_africa_shp2$Population)
 
+# countries in shapefile
+countries <- sort(unique(east_africa_shp$Country))
+
+# variables for selection. Can add or reduce
+variables <- c("Population", "dog_population", "rabid_dogs", "total_rabid_bites", "total_healthy_bites", 
+               "total_people_PEP", "rabies_deaths")
+
+
 # pop up message
 labels <- 
   sprintf(
-    "<strong>%s</strong><br/>%g",
-    east_africa_shp2$County, east_africa_shp2$Population) %>% 
+    "<strong>%s</strong><br/>%s",
+    east_africa_shp2$County, scales::comma(east_africa_shp2$Population)) %>% 
   lapply(htmltools::HTML)
 
 
-shinyApp(
-  ui <- navbarPage("Rabies in East Africa", id="nav", 
-                   
-                   tabPanel(
-                     "Interactive map",
-                     withSpinner(leafletOutput(
-                       outputId = "mymap", 
-                       width = "900px", 
-                       height = "500px"))),
-                   
-                   tabPanel("Explore the data",
-                            DT::dataTableOutput("table"))
-  ),
+# ui #####
+
+ui <- fluidPage(
   
-  server <- function(input, output) {
+  titlePanel("Rabies in East Africa"),
+  
+  sidebarLayout(
     
+    sidebarPanel(
+      selectInput(inputId="Country", label="Select a country:", choices = countries),
+      sliderInput(inputId="vax_cov", label= "Dog vaccination coverage:", min=0, max=1, value=0, step = 0.1),
+      selectInput(inputId="variable", label="Select a variable:", choices = variables),
+      selectInput(inputId="PEP", label="Policy choices for PEP:", choices = c("Offered under status quo", "Offered free of charge")),
+      selectInput(inputId="PEP", label="Method of PEP administration:", choices = c("Intramuscular", "Intradermal")),
+    ),
+    
+    mainPanel(
+      tabsetPanel(
+        tabPanel(
+          "Interactive map",
+          withSpinner(leafletOutput(
+            outputId = "mymap", 
+            width = "900px", 
+            height = "500px"))),
+        
+        tabPanel("Visualize",
+                 plotOutput("plot")), 
+        
+        tabPanel("Explore the data",
+                 DT::dataTableOutput("table")),
+        
+      
+        tabPanel("About", verbatimTextOutput("summary")), 
+        
+      )
+    )
+  )
+)
+  
+
+
+# server #####
+
+server <- function(input, output) {
+  
+
     # map panel 
     output$mymap <- renderLeaflet({
       
       # passing the shp df to leaflet
-      leaflet(east_africa_shp2) %>%
-        # zooming in on Kenya 
-        setView(37.9062, 0.0236, 5) %>%
+      leaflet(east_africa_shp2 %>%
+                dplyr::filter(Country == input$Country)) %>%
+        
         # adding tiles, without labels to minimize clutter
         #addProviderTiles("CartoDB.PositronNoLabels") %>%
         
@@ -104,10 +144,31 @@ shinyApp(
                   opacity = 0.8,
                   na.label = "No data")
     })
+    
+    # visualize data 
+    
+    output$plot <- renderPlot({
+      east_africa_shp2 %>% dplyr::filter(Country == input$Country) %>%
+        ggplot(., aes(x=County, y=rabies_deaths))+
+        geom_bar(stat="identity", fill="steelblue")+
+        coord_flip() +
+        theme_bw()+
+        ggtitle("Total rabies deaths by county/district") 
+      
+
+      
+    })
+    
+    
+    
 
     # data panel
     output$table <- DT::renderDataTable({
-      DT::datatable(east_africa_shp2 %>% st_drop_geometry(), rownames = F,  filter = 'top',
+      DT::datatable(east_africa_shp2 %>% st_drop_geometry() %>%
+                    dplyr::filter(Country == input$Country) %>% 
+                    dplyr::select(c("Country","County", "Population", "dog_population", "rabid_dogs", "total_rabid_bites", "total_healthy_bites", 
+                                    "total_people_PEP", "rabies_deaths")), 
+                    rownames = F,  filter = 'top',
                     extensions = c('Buttons', 'FixedHeader', 'Scroller'),
                     options = list(pageLength = 15, lengthChange = F,
                                    fixedHeader = TRUE,
@@ -122,13 +183,10 @@ shinyApp(
     
   }
   
-  ,
   
-  options = list(height = 700)
-)
 
 
-
+shinyApp(ui, server, options = list(height = 700))
 
 
 

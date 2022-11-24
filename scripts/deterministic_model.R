@@ -46,7 +46,7 @@ deterministic_decision_tree <- function(pop, HDR,
   sus_dogs <- round(dog_pop - vax_dogs,0)
   
   # Calculate number of rabid dogs based on incidence
-  rabid_dogs <- sus_dogs * incidence 
+  rabid_dogs <- round(sus_dogs * incidence, 0) 
   
   # Project rabid_bites/exposures from rabid dogs and exposure incidence
   rabid_bites <- round(rabid_dogs * P_bite_rabid, 0) # People bitten by rabid dogs

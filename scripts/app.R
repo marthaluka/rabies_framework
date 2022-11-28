@@ -41,11 +41,7 @@ df1 <- deterministic_decision_tree(pop = east_africa_shp$Population,
 
 east_africa_shp2 <- cbind(east_africa_shp, df1)
 
-# color palette
-pal <-
-  colorBin(
-    palette = "YlOrRd",
-      domain = east_africa_shp2$Population)
+
 
 # countries in shapefile
 countries <- sort(unique(east_africa_shp$Country))
@@ -55,12 +51,6 @@ variables <- c("Population", "dog_population", "rabid_dogs", "total_rabid_bites"
                "total_people_PEP", "rabies_deaths")
 
 
-# pop up message
-labels <- 
-  sprintf(
-    "<strong>%s</strong><br/>%s",
-    east_africa_shp2$County, scales::comma(east_africa_shp2$Population)) %>% 
-  lapply(htmltools::HTML)
 
 
 # ui #####
@@ -107,21 +97,36 @@ ui <- fluidPage(
 # server #####
 
 server <- function(input, output) {
-  
 
     # map panel 
     output$mymap <- renderLeaflet({
       
+      # filter out selected country
+      selected_country<- east_africa_shp2 %>%
+        dplyr::filter(Country == input$Country)
+      
+      # color palette
+      pal <-
+        colorBin(
+          palette = "YlOrRd",
+          domain = selected_country[[input$variable]])
+      
+      # pop up message
+      labels <- 
+        sprintf(
+          "<strong>%s</strong><br/>%s",
+          selected_country$County, scales::comma(selected_country[[input$variable]])) %>% 
+        lapply(htmltools::HTML)
+      
       # passing the shp df to leaflet
-      leaflet(east_africa_shp2 %>%
-                dplyr::filter(Country == input$Country)) %>%
+      leaflet(selected_country) %>%
         
         # adding tiles, without labels to minimize clutter
         #addProviderTiles("CartoDB.PositronNoLabels") %>%
         
         # parameters for the polygons
         addPolygons(
-          fillColor = ~pal(Population), 
+          fillColor = ~pal(eval(as.symbol(input$variable))), 
           weight = 1,
           opacity = 1,
           color = "white",
@@ -129,7 +134,7 @@ server <- function(input, output) {
           highlight = highlightOptions(
             weight = 2,
             color = "#666",
-            fillOpacity = 0.7,
+            fillOpacity = 0.8,
             bringToFront = TRUE),
           label = labels,
           labelOptions = labelOptions(
@@ -138,25 +143,32 @@ server <- function(input, output) {
             direction = "auto")) %>%
         # legend
         addLegend(pal = pal,
-                  values = east_africa_shp2$Population,
+                  values = selected_country[[input$variable]],
                   position = "bottomright",
-                  title = "Population",
+                  title = input$variable,
                   opacity = 0.8,
                   na.label = "No data")
     })
     
+    
     # visualize data 
     
     output$plot <- renderPlot({
-      east_africa_shp2 %>% dplyr::filter(Country == input$Country) %>%
-        ggplot(., aes(x=County, y=rabies_deaths))+
+      
+      #transform the character name into a symbol
+      col1<- sym("County")
+      col2<- sym(input$variable)
+      east_africa_shp2 %>% 
+        dplyr::filter(Country == input$Country) %>%
+        #dplyr::arrange(!! col2)%>%
+        # use symbol unquoting with double exclamation mark !!
+        ggplot(., aes(x=reorder(County, !! col2), y= !! col2))+
         geom_bar(stat="identity", fill="steelblue")+
         coord_flip() +
-        theme_bw()+
-        ggtitle("Total rabies deaths by county/district") 
+        theme_bw() +
+        ggtitle(paste0("Total ", input$variable, " by county/district"))
       
 
-      
     })
     
     
@@ -190,6 +202,6 @@ shinyApp(ui, server, options = list(height = 700))
 
 
 
-
+# Bug - labels get mismatched after filtering countries ---resolved
 
 

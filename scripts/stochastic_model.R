@@ -48,7 +48,7 @@ stochatic_decision_tree <- function(N, pop,
   
   # Explore uncertainty in dog vaccination coverage - uniform distribution w/ upper & lower limits
   vax_coverage <- runif(n = N, min = vax_cov_min, max = vax_cov_max) 
-  vax_dogs <- dog_pop * vax_coverage # Estimate vaccinated dogs in population 
+  vax_dogs <- dog_pop * vax_coverage #** Estimate vaccinated dogs in population - is there a risk of non-integer dogs?**
   sus_dogs <- dog_pop - vax_dogs # Estimate susceptible dogs in population 
   
   # Generate variation in rabies incidence - uniform distribution w/ upper & lower limits 
@@ -81,7 +81,7 @@ stochatic_decision_tree <- function(N, pop,
   PEP_fail <- rbinom(n = N, size = rabid_bites_PEP, prob = 1 - P_prevent) # Probability that PEP fails # This is unclear to me - to follow up
   deaths_PEP <- rbinom(n = N, size = PEP_fail, prob = P_death) # Deaths because PEP failed 
   all_deaths <- deaths_no_PEP + deaths_PEP # Total human rabies deaths 
-  lives_saved <- deaths_no_PEP - deaths_PEP # Lives saved by PEP
+  lives_saved <- deaths_no_PEP - deaths_PEP #** Check this - it is conceptually incorrect (see comments in deterministic code) **
 
   #Estimate economic costs incurred
     # If intramuscular injection is used, cost is 1 vial per patient
@@ -140,3 +140,5 @@ stochatic_decision_tree(N=10, pop=150000,
       P_get_PEP_healthy_bite=0.1,
       P_death=0.9, P_prevent=0.98,
       method_administered="intradermal")
+
+# Somewhere write out your parameters and run the model to report results!

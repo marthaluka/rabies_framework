@@ -43,21 +43,22 @@ deterministic_decision_tree <- function(pop, HDR,
   
   # # Estimate vaccinated and susceptible dogs in population 
   vax_dogs <- round(dog_pop * vax_cov,0) 
-  sus_dogs <- round(dog_pop - vax_dogs,0)
+  sus_dogs <- round(dog_pop - vax_dogs,0) #** For each iteration, sus_dogs = dog_pop - vax_dogs (be careful - avoid excess rounding/ introducing rounding errors *
   
   # Calculate number of rabid dogs based on incidence
-  rabid_dogs <- round(sus_dogs * incidence, 0) 
+  rabid_dogs <- round(sus_dogs * incidence, 0) #** why not round here? **# 
   
   # Project rabid_bites/exposures from rabid dogs and exposure incidence
   rabid_bites <- round(rabid_dogs * P_bite_rabid, 0) # People bitten by rabid dogs
   rabid_bites_inc <- round(rabid_bites * 100000 / pop,0) # Rabid bite incidence per 100,000 people 
   
-  # Project non-exposures ie from bites from healthy dogs
+  # Project non-exposures ie from bites from healthy dogs 
   healthy_bites <- round((dog_pop-rabid_dogs) * P_bite_healthy, 0) # People bitten by healthy (non-infected/vaccinated) dogs
   healthy_bites_inc <- round(healthy_bites * 100000 / pop,0) # healthy_bites bite incidence per 100,000 people
   
-  # Project rabid_bites who did and did NOT receive PEP 
-  rabid_bites_no_PEP <- round(rabid_bites * (1 - P_get_PEP_rabid_bite),0)  # rabid_bites who did NOT receive PEP 
+  # Project rabid_bites who did and did NOT receive PEP  
+  #** I would break this down to those who seek, start and complete PEP - In E Africa there are factors that affect this a lot! **# 
+  rabid_bites_no_PEP <- round(rabid_bites * (1 - P_get_PEP_rabid_bite), 0)  # rabid_bites who did NOT receive PEP 
   rabid_bites_PEP <- round(rabid_bites * P_get_PEP_rabid_bite, 0)     # rabid_bites who received PEP
   #rabid_bites_PEP <- rabid_bites - rabid_bites_no_PEP    # rabid_bites who received PEP 
   
@@ -74,7 +75,7 @@ deterministic_decision_tree <- function(pop, HDR,
   PEP_fail <- rabid_bites_PEP * (1 - P_prevent) # Probability that PEP fails 
   deaths_PEP <- round(PEP_fail * P_death,0) # Deaths because PEP failed 
   all_deaths <- deaths_no_PEP + deaths_PEP # Total human rabies deaths 
-  lives_saved <- deaths_no_PEP - deaths_PEP # Lives saved by PEP
+  lives_saved <- deaths_no_PEP - deaths_PEP #** CHECK! Rabies exposures who got PEP x Prob(developing rabies|No PEP!) **
   
   #Estimate economic costs incurred
   # If intramuscular injection is used, cost is 1 vial per patient
@@ -83,9 +84,9 @@ deterministic_decision_tree <- function(pop, HDR,
   # However, this has to be discarded 8 hours after reconstitution. Assuming no one else turns up for PEP, it'll be discarded
   
 
-  vials_per_patient <- 0.2 #vials_per_patient per dose # assume 0.2 vials per patient for simplicity
+  vials_per_patient <- 0.2 # vials_per_patient per dose # assume 0.2 vials per patient for simplicity
   total_PEP_intradermal <- ceiling(vials_per_patient * people_get_PEP) 
-  total_PEP_intramuscular <- ceiling(1 * people_get_PEP)
+  total_PEP_intramuscular <- ceiling(1 * people_get_PEP) #** why ceiling? is there a risk of half vials for IM? Maybe simplify! ** 
   
   # Costs per death averted/ lives saved
   cost_per_life_saved_intradermal <- ceiling(total_PEP_intradermal / lives_saved) * 15 # 15 USD per vial

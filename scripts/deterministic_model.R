@@ -84,12 +84,12 @@ deterministic_decision_tree <- function(pop, HDR,
   
 
   vials_per_patient <- 0.2 #vials_per_patient per dose # assume 0.2 vials per patient for simplicity
-  total_PEP_intradermal <- ceiling(vials_per_patient * people_get_PEP)
+  total_PEP_intradermal <- ceiling(vials_per_patient * people_get_PEP) 
   total_PEP_intramuscular <- ceiling(1 * people_get_PEP)
   
   # Costs per death averted/ lives saved
-  cost_per_life_saved_intradermal <- ceiling(total_PEP_intradermal / lives_saved)
-  cost_per_life_saved_intramuscular <- ceiling(total_PEP_intramuscular / lives_saved)
+  cost_per_life_saved_intradermal <- ceiling(total_PEP_intradermal / lives_saved) * 15 # 15 USD per vial
+  cost_per_life_saved_intramuscular <- ceiling(total_PEP_intramuscular / lives_saved) * 15 # 15 USD per vial
   
   
   # Output results

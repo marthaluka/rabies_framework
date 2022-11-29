@@ -94,8 +94,8 @@ stochatic_decision_tree <- function(N, pop,
   total_PEP_intramuscular <- ceiling(1 * people_get_PEP)
 
 # Costs per death averted/ lives saved
-  cost_per_life_saved_intradermal <- ceiling(total_PEP_intradermal / lives_saved)
-  cost_per_life_saved_intramuscular <- ceiling(total_PEP_intramuscular / lives_saved)
+  cost_per_life_saved_intradermal <- ceiling(total_PEP_intradermal / lives_saved) * 15 # 15 USD per vial
+  cost_per_life_saved_intramuscular <- ceiling(total_PEP_intramuscular / lives_saved) * 15 # 15 USD per vial
 
 # Output results
   return( 

@@ -16,8 +16,7 @@ pacman::p_load(tidyverse, # cleaning, wrangling
 
 
 
-setwd(here::here())
-east_africa_shp <- st_read(dsn="./shapefiles/", 
+east_africa_shp <- st_read(dsn="../shapefiles/", 
                            layer="ea_shapefile")
 
 east_africa_shp$Population <- as.numeric(east_africa_shp$Population)
@@ -25,10 +24,10 @@ east_africa_shp$Population <- as.numeric(east_africa_shp$Population)
 str(east_africa_shp)
 
 
-source("./scripts/deterministic_model.R")
+source("../scripts/deterministic_model.R")
 
 # model output with zero vaccination coverage
-vax_coverages <- deterministic_decision_tree(pop = east_africa_shp2$Population, 
+vax_coverages <- deterministic_decision_tree(pop = east_africa_shp$Population, 
                                              HDR=30,   # varies from 4 - in Tz - Changalucha et al 2019
                                              vax_cov=0,
                                              incidence=0.01,    # incidence with no interventions in place
@@ -51,7 +50,7 @@ allowed_vax_covs <- c(0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1)
 
 # loop through different vax coverages
 for (vax_cov in allowed_vax_covs){
-  model_output<- deterministic_decision_tree(pop = east_africa_shp2$Population, 
+  model_output<- deterministic_decision_tree(pop = east_africa_shp$Population, 
                                              HDR=30,
                                              vax_cov=vax_cov,
                                              incidence=0.01,
@@ -126,43 +125,49 @@ ui <- fluidPage(
 
 server <- function(input, output) {
 
+  # filter out selected country
+  selected_country<- reactive({
+    
+    selected_country <- east_africa_shp2 %>%
+    dplyr::filter(Country == input$Country,
+                  vax_cov == input$vax_cov)
+    
+    #PEP admin route (impacts costs - and possibly no. of people who receive PEP-as fewer shortages- though latter not yet incorporated)
+    if (input$PEP_admin == "Intradermal"){
+      selected_country <- selected_country %>%
+        dplyr::select(-c(total_PEP_intramuscular, cost_per_life_saved_intramuscular)) %>%
+        dplyr::rename("Total PEP" = total_PEP_intradermal,
+                      "cost_per_life_saved" = cost_per_life_saved_intradermal)
+    } else { #default intramuscular
+      selected_country <- selected_country %>%
+        dplyr::select(-c(cost_per_life_saved_intradermal, cost_per_life_saved_intradermal)) %>%
+        dplyr::rename("Total PEP" = total_PEP_intramuscular,
+                      "cost_per_life_saved" = cost_per_life_saved_intramuscular)
+    }
+    return(selected_country)
+  })
+  
+
+  
+  
     # map panel 
     output$mymap <- renderLeaflet({
-      
-      # filter out selected country
-      selected_country<- east_africa_shp2 %>%
-        dplyr::filter(Country == input$Country,
-                      vax_cov == input$vax_cov)
-      
-      #PEP admin route (impacts costs - and possibly no. of people who receive PEP-as fewer shortages- though latter not yet incorporated)
-      if (input$PEP_admin == "Intradermal"){
-        selected_country <- selected_country %>%
-          dplyr::select(-c(total_PEP_intramuscular, cost_per_life_saved_intramuscular)) %>%
-          dplyr::rename("Total PEP" = total_PEP_intradermal,
-                        "cost_per_life_saved" = cost_per_life_saved_intradermal)
-      } else { #default intramuscular
-        selected_country <- selected_country %>%
-          dplyr::select(-c(cost_per_life_saved_intradermal, cost_per_life_saved_intradermal)) %>%
-          dplyr::rename("Total PEP" = total_PEP_intramuscular,
-                        "cost_per_life_saved" = cost_per_life_saved_intramuscular)
-      }
-      
       
       # color palette
       pal <-
         colorBin(
           palette = "YlOrRd",
-          domain = selected_country[[input$variable]])
+          domain = selected_country()[[input$variable]])
       
       # pop up message
       labels <- 
         sprintf(
           "<strong>%s</strong><br/>%s",
-          selected_country$County, scales::comma(selected_country[[input$variable]])) %>% 
+          selected_country()$County, scales::comma(selected_country()[[input$variable]])) %>% 
         lapply(htmltools::HTML)
       
       # passing the shp df to leaflet
-      leaflet(selected_country) %>%
+      leaflet(selected_country()) %>%
         
         # adding tiles, without labels to minimize clutter
         #addProviderTiles("CartoDB.PositronNoLabels") %>%
@@ -186,7 +191,7 @@ server <- function(input, output) {
             direction = "auto")) %>%
         # legend
         addLegend(pal = pal,
-                  values = selected_country[[input$variable]],
+                  values = selected_country()[[input$variable]],
                   position = "bottomright",
                   title = input$variable,
                   opacity = 0.8,
@@ -201,26 +206,8 @@ server <- function(input, output) {
       #transform the character name into a symbol
       select_col<- sym(input$variable)
       
-      # filter out selected country
-      selected_country<- east_africa_shp2 %>%
-        dplyr::filter(Country == input$Country,
-                      vax_cov == input$vax_cov)
       
-      #PEP admin route (impacts costs - and possibly no. of people who receive PEP-as fewer shortages- though latter not yet incorporated)
-      if (input$PEP_admin == "Intradermal"){
-        selected_country <- selected_country %>%
-          dplyr::select(-c(total_PEP_intramuscular, cost_per_life_saved_intramuscular)) %>%
-          dplyr::rename("Total PEP" = total_PEP_intradermal,
-                        "cost_per_life_saved" = cost_per_life_saved_intradermal)
-      } else { #default intramuscular
-        selected_country <- selected_country %>%
-          dplyr::select(-c(cost_per_life_saved_intradermal, cost_per_life_saved_intradermal)) %>%
-          dplyr::rename("Total PEP" = total_PEP_intramuscular,
-                        "cost_per_life_saved" = cost_per_life_saved_intramuscular)
-      }
-      
-      
-      selected_country %>%
+      selected_country() %>%
         #dplyr::arrange(!! select_col)%>%
         # use symbol unquoting with double exclamation mark !!
         ggplot(., aes(x=reorder(County, !! select_col), y= !! select_col))+
@@ -238,27 +225,9 @@ server <- function(input, output) {
     # data panel
     output$table <- DT::renderDataTable({
       
-      # filter out selected country
-      selected_country<- east_africa_shp2 %>%
-        dplyr::filter(Country == input$Country,
-                      vax_cov == input$vax_cov)
-      
-      #PEP admin route (impacts costs - and possibly no. of people who receive PEP-as fewer shortages- though latter not yet incorporated)
-      if (input$PEP_admin == "Intradermal"){
-        selected_country <- selected_country %>%
-          dplyr::select(-c(total_PEP_intramuscular, cost_per_life_saved_intramuscular)) %>%
-          dplyr::rename("Total PEP" = total_PEP_intradermal,
-                        "cost_per_life_saved" = cost_per_life_saved_intradermal)
-      } else { #default intramuscular
-        selected_country <- selected_country %>%
-          dplyr::select(-c(cost_per_life_saved_intradermal, cost_per_life_saved_intradermal)) %>%
-          dplyr::rename("Total PEP" = total_PEP_intramuscular,
-                        "cost_per_life_saved" = cost_per_life_saved_intramuscular)
-      }
       
       
-      
-      DT::datatable(selected_country %>% st_drop_geometry() %>%
+      DT::datatable(selected_country() %>% st_drop_geometry() %>%
                     dplyr::filter(Country == input$Country,
                                   vax_cov == input$vax_cov) %>% 
                     dplyr::select(c("Country","County", "Population", "dog_population", "rabid_dogs", "total_rabid_bites", "total_healthy_bites", 

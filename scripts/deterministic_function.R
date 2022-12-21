@@ -81,10 +81,10 @@ deterministic_decision_tree <- function(pop, HDR,
   rabid_bites_seek_PEP <- rabid_bites * P_seek_PEP_rabid_bite
   rabid_bites_do_not_seek_PEP <- rabid_bites - rabid_bites_seek_PEP 
     # initiate
-  rabid_bites_initiate_PEP <- rabid_bites_seek_PEP * P_initiate_PEP_rabid_bite # rabid_bites who received complete or incomplete PEP
+  rabid_bites_initiate_PEP <- rabid_bites * P_initiate_PEP_rabid_bite # rabid_bites who received complete or incomplete PEP
   rabid_bites_do_not_initiate_PEP <- rabid_bites - rabid_bites_initiate_PEP # rabid_bites_do_not_seek_PEP + seek but do not initiate
     # complete  
-  rabid_bites_complete_PEP <- rabid_bites_initiate_PEP * P_complete_PEP_rabid_bite
+  rabid_bites_complete_PEP <- rabid_bites_seek_PEP * P_complete_PEP_rabid_bite
   rabid_bites_incomplete_PEP <- rabid_bites_initiate_PEP - rabid_bites_complete_PEP
   
   # Project healthy_bites who did (and did NOT) seek, initiate and complete PEP  
@@ -92,10 +92,10 @@ deterministic_decision_tree <- function(pop, HDR,
   healthy_bites_seek_PEP <- healthy_bites * P_seek_PEP_healthy_bite
   healthy_bites_do_not_seek_PEP <- healthy_bites - healthy_bites_seek_PEP 
     # initiate
-  healthy_bites_initiate_PEP <- rabid_bites_seek_PEP * P_initiate_PEP_healthy_bite # healthy_bites who received complete or incomplete PEP
+  healthy_bites_initiate_PEP <- healthy_bites * P_initiate_PEP_healthy_bite # healthy_bites who received complete or incomplete PEP
   healthy_bites_do_not_initiate_PEP <- healthy_bites - healthy_bites_initiate_PEP # healthy_bites_do_not_seek_PEP + seek but do not initiate
     # complete  
-  healthy_bites_complete_PEP <- healthy_bites_initiate_PEP * P_complete_PEP_healthy_bite
+  healthy_bites_complete_PEP <- healthy_bites * P_complete_PEP_healthy_bite
   healthy_bites_incomplete_PEP <- healthy_bites_initiate_PEP - healthy_bites_complete_PEP
   
   # Total people get PEP (healthy+rabid_bites)

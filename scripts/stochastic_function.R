@@ -8,7 +8,7 @@
 
 stochatic_decision_tree <- function(N, pop, 
                              HDR_min, HDR_max, 
-                             vax_cov_min,
+                             vax_cov,
                              inc_min, inc_max, 
                              P_bite_rabid, 
                              # P_bite_healthy, # Now using `rgamma(1, shape=6.675, rate=2889.090)*dog_pop` to get healthy_bites
@@ -28,8 +28,7 @@ stochatic_decision_tree <- function(N, pop,
   # pop - human population 
   # HDR_min - minimum human:dog ratio
   # HDR_max - maximum human:dog ratio
-  # vax_cov_min - minimum dog vaccination coverage 
-  # vax_cov_max - maximum dog vaccination coverage 
+  # vax_cov - average dog vaccination coverage 
   # inc_min - minimum annual rabies incidence in dog population
   # inc_max - maximum annual rabies incidence in dog population
   # P_bite_rabid - probability a rabid dog will bite 
@@ -70,12 +69,14 @@ stochatic_decision_tree <- function(N, pop,
   dog_pop <- round(pop/HDR) # Calculate dog population 
   
   # Explore uncertainty in dog vaccination coverage - uniform distribution w/ upper & lower limits
-  # find vax cov max 
-  vax_cov_max <- if (vax_cov_min < 1){
-    vax_cov_max = vax_cov_min + 0.1
-  }else{
-    vax_cov_max = 1
-  }
+
+  if (vax_cov > 0 & vax_cov < 1){
+    vax_cov_max = vax_cov + 0.05
+    vax_cov_min = vax_cov - 0.05
+    }else{
+    vax_cov_max = vax_cov
+    vax_cov_min = vax_cov
+    }
   
   vax_coverage <- runif(n = N, min = vax_cov_min, max = vax_cov_max) 
   vax_dogs <- dog_pop * vax_coverage 
@@ -99,10 +100,10 @@ stochatic_decision_tree <- function(N, pop,
   rabid_bites_seek_PEP <- rbinom(n = N,  size = rabid_bites, prob = P_seek_PEP_rabid_bite)
   rabid_bites_do_not_seek_PEP <- rabid_bites - rabid_bites_seek_PEP 
     # initiate
-  rabid_bites_initiate_PEP <- rbinom(n = N,  size = rabid_bites_seek_PEP, prob = P_initiate_PEP_rabid_bite) # rabid_bites who received complete or incomplete PEP
+  rabid_bites_initiate_PEP <- rbinom(n = N,  size = rabid_bites, prob = P_initiate_PEP_rabid_bite) # rabid_bites who received complete or incomplete PEP
   rabid_bites_do_not_initiate_PEP <- rabid_bites - rabid_bites_initiate_PEP # rabid_bites_do_not_seek_PEP + seek but do not initiate
     # complete  
-  rabid_bites_complete_PEP <- rbinom(n = N,  size = rabid_bites_initiate_PEP, prob = P_complete_PEP_rabid_bite)
+  rabid_bites_complete_PEP <- rbinom(n = N,  size = rabid_bites_seek_PEP, prob = P_complete_PEP_rabid_bite)
   rabid_bites_incomplete_PEP <- rabid_bites_initiate_PEP - rabid_bites_complete_PEP
   
   # Project healthy_bites who did (and did NOT) seek, initiate and complete PEP  
@@ -110,10 +111,10 @@ stochatic_decision_tree <- function(N, pop,
   healthy_bites_seek_PEP <- rbinom(n = N,  size = healthy_bites, prob =  P_seek_PEP_healthy_bite)
   healthy_bites_do_not_seek_PEP <- healthy_bites - healthy_bites_seek_PEP 
     # initiate
-  healthy_bites_initiate_PEP <- rbinom(n = N,  size = healthy_bites_seek_PEP, prob =  P_initiate_PEP_healthy_bite) # healthy_bites who received complete or incomplete PEP
+  healthy_bites_initiate_PEP <- rbinom(n = N,  size = healthy_bites, prob =  P_initiate_PEP_healthy_bite) # healthy_bites who received complete or incomplete PEP
   healthy_bites_do_not_initiate_PEP <- healthy_bites - healthy_bites_initiate_PEP # healthy_bites_do_not_seek_PEP + seek but do not initiate
     # complete  
-  healthy_bites_complete_PEP <- rbinom(n = N,  size = healthy_bites_initiate_PEP, prob =  P_complete_PEP_healthy_bite)
+  healthy_bites_complete_PEP <- rbinom(n = N,  size = healthy_bites, prob =  P_complete_PEP_healthy_bite)
   healthy_bites_incomplete_PEP <- healthy_bites_initiate_PEP - healthy_bites_complete_PEP
   
   # Total people get PEP (healthy+rabid_bites)

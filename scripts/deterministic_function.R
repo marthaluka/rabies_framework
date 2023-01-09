@@ -133,7 +133,7 @@ deterministic_decision_tree <- function(pop, HDR,
     # However, this has to be discarded 8 hours after reconstitution. Assuming no one else turns up for PEP, it'll be discarded
   
   vials_per_dose <- 0.2 # assume 0.2 vials per dose for simplicity
-  total_PEP_intradermal <- ceiling(vials_per_dose * Total_PEP_doses) 
+  total_PEP_intradermal <- vials_per_dose * Total_PEP_doses
   total_PEP_intramuscular <- Total_PEP_doses
   
   # Costs per death averted/ lives saved

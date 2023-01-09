@@ -6,7 +6,7 @@
 #' ---
 #' ### Function to generate stochastic values 
 
-stochatic_decision_tree <- function(N, pop, 
+stochastic_decision_tree <- function(N, pop, 
                              HDR_min, HDR_max, 
                              vax_cov,
                              inc_min, inc_max, 
@@ -91,7 +91,7 @@ stochatic_decision_tree <- function(N, pop,
   rabid_bites_inc <- round(rabid_bites * 100000 / pop,0) # Rabid bite incidence per 100,000 people 
   
   # Project non-exposures ie from bites from healthy dogs
-  healthy_bites <- ceiling(rgamma(N, shape=6.675, rate=2889.090)* dog_pop) 
+  healthy_bites <- round(rgamma(N, shape=6.675, rate=2889.090)* dog_pop) 
   #healthy_bites <- rbinom(n = N, size = (dog_pop-rabid_dogs), prob = P_bite_healthy) # People bitten by healthy (non-infected/vaccinated) dogs
   healthy_bites_inc <- round(healthy_bites * 100000 / pop,0) # healthy_bites bite incidence per 100,000 people
 
@@ -108,7 +108,7 @@ stochatic_decision_tree <- function(N, pop,
   
   # Project healthy_bites who did (and did NOT) seek, initiate and complete PEP  
     # seek 
-  healthy_bites_seek_PEP <- rbinom(n = N,  size = healthy_bites, prob =  P_seek_PEP_healthy_bite)
+  healthy_bites_seek_PEP <- rbinom(n = N,  size = round(healthy_bites), prob =  P_seek_PEP_healthy_bite) # R expects the second argument of rbinom, size, to be an integer
   healthy_bites_do_not_seek_PEP <- healthy_bites - healthy_bites_seek_PEP 
     # initiate
   healthy_bites_initiate_PEP <- rbinom(n = N,  size = healthy_bites, prob =  P_initiate_PEP_healthy_bite) # healthy_bites who received complete or incomplete PEP
@@ -177,8 +177,10 @@ stochatic_decision_tree <- function(N, pop,
       # 0.1 ml is recommended for intradermal admin, 1 ml is the vial volume (doi.org/10.1016/j.vaccine.2018.08.034)
       # However, this has to be discarded 8 hours after reconstitution. Assuming no one else turns up for PEP, it'll be discarded
       
-  vials_per_dose <- runif(n=N, min = 0.1, max = 1)  #vials per dose
-  total_PEP_intradermal <- ceiling(vials_per_dose * Total_PEP_doses)
+  #vials_per_dose <- runif(n=N, min = 0.1, max = 1)  #vials per dose
+
+  vials_per_dose <- 1/rbinom(n = N, size = 10, prob = 0.5)
+  total_PEP_intradermal <- vials_per_dose * Total_PEP_doses
   total_PEP_intramuscular <- Total_PEP_doses
   
   # Costs per death averted/ lives saved

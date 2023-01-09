@@ -4,6 +4,7 @@
 
 #source("./scripts/run_models.R")
 
+# source("./scripts/visualizations.R")
 
 # countries in shapefile
 countries <- sort(unique(east_africa_shp$Country))
@@ -19,15 +20,16 @@ east_africa_shp2<- output_det_model
 
 ui <- fluidPage(
   
-  titlePanel("Rabies in East Africa"),
-  
+  titlePanel(title=div(img(src="./rabies_virus.png", height = 70), "A framework to inform rabies policy in East Africa"),
+            windowTitle = "A framework to inform rabies policy in East Africa"),
+
   sidebarLayout(
     
     sidebarPanel(
       selectInput(inputId="Country", label="Select a country:", choices = countries),
       sliderInput(inputId="vax_cov", label= "Dog vaccination coverage:", min=0, max=1, value=0, step = 0.1),
       selectInput(inputId="variable", label="Select a variable:", choices = variables),
-      selectInput(inputId="PEP_policy", label="Policy choices for PEP:", choices = c("Offered under status quo", "Offered free of charge")),
+      selectInput(inputId="PEP_policy", label="Policy choice for PEP:", choices = c("Offered under status quo", "Offered free of charge")),
       selectInput(inputId="PEP_admin", label="Method of PEP administration:", choices = c("Intramuscular", "Intradermal")),
     ),
     
@@ -46,8 +48,9 @@ ui <- fluidPage(
         tabPanel("Explore the data",
                  DT::dataTableOutput("table")),
         
+        #tabPanel("About", verbatimTextOutput("summary")), 
         
-        tabPanel("About", verbatimTextOutput("summary")), 
+        tabPanel("About", includeHTML("about.html"))
         
       )
     )
@@ -140,17 +143,25 @@ server <- function(input, output) {
   output$plot <- renderPlot({
     
     #transform the character name into a symbol
-    select_col<- sym(input$variable)
+    select_country <- sym(input$Country)
     
+    if(input$Country == "Kenya"){
+      KE_plot
+    } else if (input$Country == "Uganda"){
+      UG_plot
+    }else{
+      TZ_plot
+    }
     
-    selected_country() %>%
-      #dplyr::arrange(!! select_col)%>%
-      # use symbol unquoting with double exclamation mark !!
-      ggplot(., aes(x=reorder(County, !! select_col), y= !! select_col))+
-      geom_bar(stat="identity", fill="steelblue")+
-      coord_flip() +
-      theme_bw() +
-      ggtitle(paste0("Total ", input$variable, " by county/district"))
+
+    # selected_country() %>%
+    #   #dplyr::arrange(!! select_col)%>%
+    #   # use symbol unquoting with double exclamation mark !!
+    #   ggplot(., aes(x=reorder(County, !! select_col), y= !! select_col))+
+    #   geom_bar(stat="identity", fill="steelblue")+
+    #   coord_flip() +
+    #   theme_bw() +
+    #   ggtitle(paste0("Total ", input$variable, " by county/district"))
     
     
   })
@@ -181,7 +192,35 @@ server <- function(input, output) {
                   ))
   })
   
+  
+#   # Generate text explaining the app
+#   output$summary <- renderText({
+#   
+#   HTML("<div style='font-size: 18px'> 
+#   <br><b>About this tool:</b><br><br>
+#   
+#   Understanding of the key determinants underlying the burden of rabies has improved considerably in recent years.
+#   We sought to parametrize, map and predictively examine the potential impacts of dog vaccination and post-exposure prophylaxis (PEP) on the health and economic burden of rabies in three East African countries (Kenya, Uganda and Tanzania). 
+#   This tool incorporates decision tree modelling approaches into a visualization platform to be shared with stakeholders to improve decision-making.<br><br> 
+# 
+# <div style='font-size: 14px'>
+# <i>References:</i><br><br>
+# 
+# 1. WHO rabies modelling consortium (2018). The potential effect of improved provision of rabies postexposure prophylaxis in Gavi-eligible countries: a modelling study Lancet Infectious Diseases doi: 10.1016/S1473-3099(18)30512-7 <br>
+# 
+# 2. Hampson, K et al. (2015). Estimating the Global Burden of Canine Rabies. PLoS Neglected Tropical Diseases 9(4): e0003709. doi:10.1371/journal.pntd.0003709 <br>
+# 
+# 3. Rysava, K., et al. (2020). Towards the Elimination of Dog-Mediated Rabies: Development and Application of an Evidence-Based Management Tool. BMC Infectious Diseases 20, 778 doi.org/10.1186/s12879-020-05457-x <br>
+# 
+# 4. Rajeev, M., et al. (2021). How access to care shapes disease burden: the current impact of post-exposure prophylaxis and potential for expanded access to prevent human rabies deaths in Madagascar. PLoS Negl Trop Dis 15(4): e0008821. doi.org/10.1371/journal.pntd.0008821</div>"
+#         
+#           )
+#   
+#     })
+  
+  
 }
+
 
 
 

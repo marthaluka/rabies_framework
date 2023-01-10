@@ -1,9 +1,8 @@
 
 
-
+# Pre-run the two scripts before launching the app
 
 # source("./scripts/run_models.R")
-
 # source("./scripts/visualizations.R")
 
 # countries in shapefile

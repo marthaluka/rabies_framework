@@ -116,31 +116,6 @@ create_new_names <- function(col_name){
 
 
 #  A function to summarize model output (into mean, upper and lower limits) and store in data frame
-# summarise_stochastic_model_output <- function(model_output){
-#   # Create empty data frame with correct number of columns
-#   stochastic_model_df = data.frame(matrix(nrow = 0, ncol = length(names(model_output[[1]]))*3)) # each variable/col now resolves into 3: mean, upper and lower limits
-#   colnames(stochastic_model_df) = unlist(lapply(names(model_output[[1]]), create_new_names), recursive = FALSE) # get new variable names using `create_new_names` function
-#   # Summarize model output(mean, upper and lower limits)  
-#   for (df in seq_along(model_output)) {
-#     my_list <-list()
-#     for (variable in seq(1,ncol(model_output[[1]]))){
-#       projections <- model_output[[df]][[variable]]
-#       mean_projections <- mean(projections) 
-#       sd_projections <- sd(projections)
-#       margin <- qt(0.975,df=length(projections)-1)*sd_projections/sqrt(length(projections))
-#       lowerinterval <- mean_projections - margin
-#       upperinterval <- mean_projections + margin
-#       new_row <- c(mean_projections, lowerinterval, upperinterval)
-#       stochastic_model_df[df,] <- new_row
-#     }
-#     output <- list(mean_projections, lowerinterval, upperinterval)     
-#     my_list <- append(my_list, output)
-#   }
-#   stochastic_model_df <- cbind(east_africa_shp, stochastic_model_df)
-#   return(stochastic_model_df)
-# }
-
-
 summarise_stochastic_model_output <- function(model_output){
   #Create empty data frame with correct number of columns
     stochastic_model_df = data.frame(matrix(nrow = 0, ncol = length(names(model_output[[1]]))*3)) # each variable/col now resolves into 3: mean, upper and lower limits
@@ -180,7 +155,7 @@ output_stoch_model1 = data.frame()
 loop_thru_vaxs1<- function(){
   for (vax_cov in vax_covs){
     model_output <- lapply(east_africa_shp$Population, stochastic_decision_tree, 
-                           N=100,
+                           N=1000,
                            HDR_min=4, HDR_max=40, 
                            vax_cov=vax_cov,
                            inc_min=0.05, inc_max=0.1, 
@@ -221,7 +196,7 @@ stochastic_model_df2 = data.frame()
 loop_thru_vaxs2<- function(){
   for (vax_cov in vax_covs){
     model_output2<- lapply(east_africa_shp$Population, stochastic_decision_tree, 
-                           N=100,                           # 1000 iterations
+                           N=1000,                           # 1000 iterations
                            HDR_min=10, HDR_max=40, 
                            vax_cov=vax_cov,
                            inc_min=0.05, inc_max=0.1, 

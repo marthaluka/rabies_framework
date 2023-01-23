@@ -10,10 +10,10 @@ deterministic_decision_tree <- function(pop, HDR,
                              vax_cov, incidence, 
                              P_bite_rabid, 
                              # P_bite_healthy, # Now using `0.00231*dog_pop` to get healthy_bites
-                             P_seek_PEP_rabid_bite,
+                             P_seek_care_rabid_bite,
                              P_initiate_PEP_rabid_bite, 
                              P_complete_PEP_rabid_bite,
-                             P_seek_PEP_healthy_bite,
+                             P_seek_care_healthy_bite,
                              P_initiate_PEP_healthy_bite, 
                              P_complete_PEP_healthy_bite,
                              P_death, P_prevent)
@@ -28,12 +28,12 @@ deterministic_decision_tree <- function(pop, HDR,
     # incidence - annual rabies incidence in dog population
     # P_bite_rabid - probability a rabid dog will bite 
     # P_bite_healthy - probability a healthy dog will bite
-    # P_seek_PEP_rabid_bite - probability that a rabies exposure will receive PEP 
+    # P_seek_care_rabid_bite - probability that a rabies exposure will receive PEP 
     # P_initiate_PEP_rabid_bite - probability that a rabies exposure will receive PEP 
     # P_complete_PEP_rabid_bite - probability that a rabies exposure will receive PEP 
-    # P_seek_PEP_healthy_bite - probability that a healthy bite will receive PEP 
-    # P_initiate_PEP_healthy_bite - probability that a healthy bite will receive PEP
-    # P_complete_PEP_healthy_bite- probability that a healthy bite will receive PEP
+    # P_seek_care_healthy_bite - probability that a healthy bite will seek care
+    # P_initiate_PEP_healthy_bite - probability that a healthy bite will initiate PEP
+    # P_complete_PEP_healthy_bite- probability that a healthy bite will complete PEP
     # P_death - probability of infection/death if bitten (in the absence of PEP)
     # P_prevent - probability that PEP will prevent rabies infection 
 
@@ -78,22 +78,22 @@ deterministic_decision_tree <- function(pop, HDR,
   
   # Project rabid_bites who did (and did NOT) seek, initiate and complete PEP  
     # seek 
-  rabid_bites_seek_PEP <- rabid_bites * P_seek_PEP_rabid_bite
-  rabid_bites_do_not_seek_PEP <- rabid_bites - rabid_bites_seek_PEP 
+  rabid_bites_seek_care <- rabid_bites * P_seek_care_rabid_bite
+  rabid_bites_do_not_seek_care <- rabid_bites - rabid_bites_seek_care 
     # initiate
   rabid_bites_initiate_PEP <- rabid_bites * P_initiate_PEP_rabid_bite # rabid_bites who received complete or incomplete PEP
-  rabid_bites_do_not_initiate_PEP <- rabid_bites - rabid_bites_initiate_PEP # rabid_bites_do_not_seek_PEP + seek but do not initiate
+  rabid_bites_do_not_initiate_PEP <- rabid_bites - rabid_bites_initiate_PEP # rabid_bites_do_not_seek_care + seek but do not initiate
     # complete  
-  rabid_bites_complete_PEP <- rabid_bites_seek_PEP * P_complete_PEP_rabid_bite
+  rabid_bites_complete_PEP <- rabid_bites_seek_care * P_complete_PEP_rabid_bite
   rabid_bites_incomplete_PEP <- rabid_bites_initiate_PEP - rabid_bites_complete_PEP
   
   # Project healthy_bites who did (and did NOT) seek, initiate and complete PEP  
     # seek 
-  healthy_bites_seek_PEP <- healthy_bites * P_seek_PEP_healthy_bite
-  healthy_bites_do_not_seek_PEP <- healthy_bites - healthy_bites_seek_PEP 
+  healthy_bites_seek_care <- healthy_bites * P_seek_care_healthy_bite
+  healthy_bites_do_not_seek_care <- healthy_bites - healthy_bites_seek_care 
     # initiate
   healthy_bites_initiate_PEP <- healthy_bites * P_initiate_PEP_healthy_bite # healthy_bites who received complete or incomplete PEP
-  healthy_bites_do_not_initiate_PEP <- healthy_bites - healthy_bites_initiate_PEP # healthy_bites_do_not_seek_PEP + seek but do not initiate
+  healthy_bites_do_not_initiate_PEP <- healthy_bites - healthy_bites_initiate_PEP # healthy_bites_do_not_seek_care + seek but do not initiate
     # complete  
   healthy_bites_complete_PEP <- healthy_bites * P_complete_PEP_healthy_bite
   healthy_bites_incomplete_PEP <- healthy_bites_initiate_PEP - healthy_bites_complete_PEP
@@ -150,11 +150,11 @@ deterministic_decision_tree <- function(pop, HDR,
                rabid_bites_per_capita = rabid_bites_inc,
                healthy_bites_per_capita = healthy_bites_inc,
                rabid_bites_no_PEP = rabid_bites_do_not_initiate_PEP,
-               rabid_bites_seek_PEP = rabid_bites_seek_PEP,
+               rabid_bites_seek_care = rabid_bites_seek_care,
                rabid_bites_initiate_PEP = rabid_bites_initiate_PEP,
                rabid_bites_complete_PEP = rabid_bites_complete_PEP,
                healthy_bites_no_PEP = healthy_bites_do_not_initiate_PEP,
-               healthy_bites_seek_PEP = healthy_bites_seek_PEP,
+               healthy_bites_seek_care = healthy_bites_seek_care,
                healthy_bites_initiate_PEP = healthy_bites_initiate_PEP,
                healthy_bites_complete_PEP = healthy_bites_complete_PEP,
                total_people_PEP = people_get_PEP,

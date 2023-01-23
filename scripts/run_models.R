@@ -42,11 +42,11 @@ for (vax_cov in vax_covs){
                                              vax_cov=vax_cov,
                                              incidence=0.01,         # incidence with no interventions in place
                                              P_bite_rabid=0.38,      # p=0.375
-                                             P_seek_PEP_rabid_bite = 0.75,
+                                             P_seek_care_rabid_bite = 0.75,
                                              P_initiate_PEP_rabid_bite = 0.6,       # of rabid bites (`a further 15% did not obtain PEP`)
                                              P_complete_PEP_rabid_bite = 0.473,      # of those who seek healthcare
                                                 # Also using same values for healthy bites despite PEP policy choice
-                                             P_seek_PEP_healthy_bite = 0.78,
+                                             P_seek_care_healthy_bite = 0.78,
                                              P_initiate_PEP_healthy_bite = 0.2, 
                                              P_complete_PEP_healthy_bite = 0.07,
                                              P_death=0.17,                  # 0.133-0.201 -  Changalucha et al 2019
@@ -76,11 +76,11 @@ for (vax_cov in vax_covs){
                                              vax_cov=vax_cov,
                                              incidence=0.01,          # incidence with no interventions in place
                                              P_bite_rabid=0.38,       # p=0.375
-                                             P_seek_PEP_rabid_bite = 0.75,           # not clear from Changalucha et al., (using value for IF patient pays/ status quo)
+                                             P_seek_care_rabid_bite = 0.75,           # not clear from Changalucha et al., (using value for IF patient pays/ status quo)
                                              P_initiate_PEP_rabid_bite = 0.899, 
                                              P_complete_PEP_rabid_bite = 0.542, 
                                                 # Also using same values for healthy bites despite PEP policy choice
-                                             P_seek_PEP_healthy_bite = 0.78,
+                                             P_seek_care_healthy_bite = 0.78,
                                              P_initiate_PEP_healthy_bite = 0.2, 
                                              P_complete_PEP_healthy_bite = 0.07,
                                              P_death=0.17,             # 0.133-0.201 -  Changalucha et al 2019
@@ -160,10 +160,10 @@ loop_thru_vaxs1<- function(){
                            vax_cov=vax_cov,
                            inc_min=0.05, inc_max=0.1, 
                            P_bite_rabid=0.38, 
-                           P_seek_PEP_rabid_bite=0.75,
+                           P_seek_care_rabid_bite=0.75,
                            P_initiate_PEP_rabid_bite=0.6, 
                            P_complete_PEP_rabid_bite=0.473,
-                           P_seek_PEP_healthy_bite=0.78,
+                           P_seek_care_healthy_bite=0.78,
                            P_initiate_PEP_healthy_bite=0.2, 
                            P_complete_PEP_healthy_bite=0.07,
                            P_death=0.17, 
@@ -201,11 +201,11 @@ loop_thru_vaxs2<- function(){
                            vax_cov=vax_cov,
                            inc_min=0.05, inc_max=0.1, 
                            P_bite_rabid=0.38, 
-                           P_seek_PEP_rabid_bite=0.75,     # not clear from Changalucha et al., (using value for IF patient pays/ status quo)
+                           P_seek_care_rabid_bite=0.75,     # not clear from Changalucha et al., (using value for IF patient pays/ status quo)
                            P_initiate_PEP_rabid_bite=0.899, 
                            P_complete_PEP_rabid_bite=0.542,
                            # No data here there4 using same values for healthy bites despite PEP policy choice
-                           P_seek_PEP_healthy_bite=0.78,
+                           P_seek_care_healthy_bite=0.78,
                            P_initiate_PEP_healthy_bite=0.2, 
                            P_complete_PEP_healthy_bite=0.07,
                            P_death=0.17, 

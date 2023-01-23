@@ -12,10 +12,10 @@ stochastic_decision_tree <- function(N, pop,
                              inc_min, inc_max, 
                              P_bite_rabid, 
                              # P_bite_healthy, # Now using `rgamma(1, shape=6.675, rate=2889.090)*dog_pop` to get healthy_bites
-                             P_seek_PEP_rabid_bite,
+                             P_seek_care_rabid_bite,
                              P_initiate_PEP_rabid_bite, 
                              P_complete_PEP_rabid_bite,
-                             P_seek_PEP_healthy_bite,
+                             P_seek_care_healthy_bite,
                              P_initiate_PEP_healthy_bite, 
                              P_complete_PEP_healthy_bite,
                              P_death, 
@@ -33,12 +33,12 @@ stochastic_decision_tree <- function(N, pop,
   # inc_max - maximum annual rabies incidence in dog population
   # P_bite_rabid - probability a rabid dog will bite 
   # P_bite_healthy - probability a healthy dog will bite
-  # P_seek_PEP_rabid_bite - probability that a rabies exposure will receive PEP 
-  # P_initiate_PEP_rabid_bite - probability that a rabies exposure will receive PEP 
-  # P_complete_PEP_rabid_bite - probability that a rabies exposure will receive PEP 
-  # P_seek_PEP_healthy_bite - probability that a healthy bite will receive PEP 
-  # P_initiate_PEP_healthy_bite - probability that a healthy bite will receive PEP
-  # P_complete_PEP_healthy_bite- probability that a healthy bite will receive PEP
+  # P_seek_care_rabid_bite - probability that a rabies exposure will seek healthcare  
+  # P_initiate_PEP_rabid_bite - probability that a rabies exposure will initiate PEP 
+  # P_complete_PEP_rabid_bite - probability that a rabies exposure will complete PEP 
+  # P_seek_care_healthy_bite - probability that a healthy bite will seek healthcare 
+  # P_initiate_PEP_healthy_bite - probability that a healthy bite will initiate PEP
+  # P_complete_PEP_healthy_bite- probability that a healthy bite will complete PEP
   # P_death - probability of infection/death if bitten (in the absence of PEP)
   # P_prevent_min - minimum probability that PEP will prevent rabies infection. This is the lower value for incomplete PEP
   # P_prevent_max - maximum probability that PEP will prevent rabies infection. This is the upper value for complete PEP (1.0)
@@ -97,22 +97,22 @@ stochastic_decision_tree <- function(N, pop,
 
   # Project rabid_bites who did (and did NOT) seek, initiate and complete PEP  
     # seek 
-  rabid_bites_seek_PEP <- rbinom(n = N,  size = rabid_bites, prob = P_seek_PEP_rabid_bite)
-  rabid_bites_do_not_seek_PEP <- rabid_bites - rabid_bites_seek_PEP 
+  rabid_bites_seek_care <- rbinom(n = N,  size = rabid_bites, prob = P_seek_care_rabid_bite)
+  rabid_bites_do_not_seek_care <- rabid_bites - rabid_bites_seek_care
     # initiate
   rabid_bites_initiate_PEP <- rbinom(n = N,  size = rabid_bites, prob = P_initiate_PEP_rabid_bite) # rabid_bites who received complete or incomplete PEP
-  rabid_bites_do_not_initiate_PEP <- rabid_bites - rabid_bites_initiate_PEP # rabid_bites_do_not_seek_PEP + seek but do not initiate
+  rabid_bites_do_not_initiate_PEP <- rabid_bites - rabid_bites_initiate_PEP # rabid_bites_do_not_seek_care + seek but do not initiate
     # complete  
-  rabid_bites_complete_PEP <- rbinom(n = N,  size = rabid_bites_seek_PEP, prob = P_complete_PEP_rabid_bite)
+  rabid_bites_complete_PEP <- rbinom(n = N,  size = rabid_bites_seek_care, prob = P_complete_PEP_rabid_bite)
   rabid_bites_incomplete_PEP <- rabid_bites_initiate_PEP - rabid_bites_complete_PEP
   
   # Project healthy_bites who did (and did NOT) seek, initiate and complete PEP  
     # seek 
-  healthy_bites_seek_PEP <- rbinom(n = N,  size = round(healthy_bites), prob =  P_seek_PEP_healthy_bite) # R expects the second argument of rbinom, size, to be an integer
-  healthy_bites_do_not_seek_PEP <- healthy_bites - healthy_bites_seek_PEP 
+  healthy_bites_seek_care <- rbinom(n = N,  size = round(healthy_bites), prob =  P_seek_care_healthy_bite) # R expects the second argument of rbinom, size, to be an integer
+  healthy_bites_do_not_seek_care <- healthy_bites - healthy_bites_seek_care 
     # initiate
   healthy_bites_initiate_PEP <- rbinom(n = N,  size = healthy_bites, prob =  P_initiate_PEP_healthy_bite) # healthy_bites who received complete or incomplete PEP
-  healthy_bites_do_not_initiate_PEP <- healthy_bites - healthy_bites_initiate_PEP # healthy_bites_do_not_seek_PEP + seek but do not initiate
+  healthy_bites_do_not_initiate_PEP <- healthy_bites - healthy_bites_initiate_PEP # healthy_bites_do_not_seek_care + seek but do not initiate
     # complete  
   healthy_bites_complete_PEP <- rbinom(n = N,  size = healthy_bites, prob =  P_complete_PEP_healthy_bite)
   healthy_bites_incomplete_PEP <- healthy_bites_initiate_PEP - healthy_bites_complete_PEP
@@ -197,11 +197,11 @@ stochastic_decision_tree <- function(N, pop,
                rabid_bites_per_capita = rabid_bites_inc,
                healthy_bites_per_capita = healthy_bites_inc,
                rabid_bites_no_PEP = rabid_bites_do_not_initiate_PEP,
-               rabid_bites_seek_PEP = rabid_bites_seek_PEP,
+               rabid_bites_seek_care = rabid_bites_seek_care,
                rabid_bites_initiate_PEP = rabid_bites_initiate_PEP,
                rabid_bites_complete_PEP = rabid_bites_complete_PEP,
                healthy_bites_no_PEP = healthy_bites_do_not_initiate_PEP,
-               healthy_bites_seek_PEP = healthy_bites_seek_PEP,
+               healthy_bites_seek_care = healthy_bites_seek_care,
                healthy_bites_initiate_PEP = healthy_bites_initiate_PEP,
                healthy_bites_complete_PEP = healthy_bites_complete_PEP,
                total_people_PEP = people_get_PEP,

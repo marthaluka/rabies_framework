@@ -81,7 +81,7 @@ deterministic_decision_tree <- function(pop, HDR,
   rabid_bites_seek_care <- rabid_bites * P_seek_care_rabid_bite
   rabid_bites_do_not_seek_care <- rabid_bites - rabid_bites_seek_care 
     # initiate
-  rabid_bites_initiate_PEP <- rabid_bites * P_initiate_PEP_rabid_bite # rabid_bites who received complete or incomplete PEP
+  rabid_bites_initiate_PEP <- rabid_bites_seek_care * P_initiate_PEP_rabid_bite # rabid_bites who received complete or incomplete PEP
   rabid_bites_do_not_initiate_PEP <- rabid_bites - rabid_bites_initiate_PEP # rabid_bites_do_not_seek_care + seek but do not initiate
     # complete  
   rabid_bites_complete_PEP <- rabid_bites_seek_care * P_complete_PEP_rabid_bite

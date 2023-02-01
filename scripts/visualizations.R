@@ -102,7 +102,7 @@ dog_pop_df <- output_stoch_model[1:nrow(east_africa_shp),] %>%
 
 # plot
 plot_prediction <- function(no_of_years=8, country){
-  predicted_cases_stochastic <-predict_cases_stochastic(nreps=500, target_coverage=0.7, no_of_years=8, dog_pop=dog_pop_df$dog_pop[dog_pop_df$Country==country])
+  predicted_cases_stochastic <-predict_cases_stochastic(nreps=1000, target_coverage=0.7, no_of_years=8, dog_pop=dog_pop_df$dog_pop[dog_pop_df$Country==country])
   plot(predicted_cases_stochastic[2,],ylim=c(0,max(predicted_cases_stochastic)),type="l",bty="l",ylab="Cases",xlab="Year",
        main="Predicted cases with 70% dog vaccination")
   polygon(c(1:no_of_years,rev(1:no_of_years)),c(predicted_cases_stochastic[1,],rev(predicted_cases_stochastic[3,])),

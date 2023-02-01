@@ -13,7 +13,9 @@ variables <- c("Population", "dog_population", "rabid_dogs", "total_rabid_bites"
                "total_people_PEP", "rabies_deaths", "lives_saved", "cost_per_life_saved")
 
 
-east_africa_shp2<- output_det_model
+# slightly modify col names
+east_africa_shp2<- output_stoch_model %>%
+  rename_with(~str_remove(., '_mean'))
 
 # ui #####
 

@@ -18,7 +18,7 @@ stochastic_decision_tree <- function(N, pop,
                              P_seek_care_healthy_bite,
                              P_initiate_PEP_healthy_bite, 
                              P_complete_PEP_healthy_bite,
-                             P_death, 
+                             P_death_min, P_death_max,
                              P_prevent_min, P_prevent_max)
 
 {
@@ -100,7 +100,7 @@ stochastic_decision_tree <- function(N, pop,
   rabid_bites_seek_care <- rbinom(n = N,  size = rabid_bites, prob = P_seek_care_rabid_bite)
   rabid_bites_do_not_seek_care <- rabid_bites - rabid_bites_seek_care
     # initiate
-  rabid_bites_initiate_PEP <- rbinom(n = N,  size = rabid_bites, prob = P_initiate_PEP_rabid_bite) # rabid_bites who received complete or incomplete PEP
+  rabid_bites_initiate_PEP <- rbinom(n = N,  size = rabid_bites_seek_care, prob = P_initiate_PEP_rabid_bite) # rabid_bites who received complete or incomplete PEP
   rabid_bites_do_not_initiate_PEP <- rabid_bites - rabid_bites_initiate_PEP # rabid_bites_do_not_seek_care + seek but do not initiate
     # complete  
   rabid_bites_complete_PEP <- rbinom(n = N,  size = rabid_bites_seek_care, prob = P_complete_PEP_rabid_bite)
@@ -160,6 +160,7 @@ stochastic_decision_tree <- function(N, pop,
               
 
   # Estimate deaths - and attribute causes
+  P_death <- runif(n = N, min = P_death_min, max = P_death_max) 
   deaths_no_PEP <- rbinom(n = N, size = rabid_bites_do_not_initiate_PEP, prob = P_death) # Deaths because no PEP 
   
   P_prevent <- runif(n = N, min = P_prevent_min, max = P_prevent_min) 
@@ -180,7 +181,7 @@ stochastic_decision_tree <- function(N, pop,
   #vials_per_dose <- runif(n=N, min = 0.1, max = 1)  #vials per dose
 
   vials_per_dose <- 1/rbinom(n = N, size = 10, prob = 0.5)
-  total_PEP_intradermal <- vials_per_dose * Total_PEP_doses
+  total_PEP_intradermal <- round(vials_per_dose * Total_PEP_doses)
   total_PEP_intramuscular <- Total_PEP_doses
   
   # Costs per death averted/ lives saved

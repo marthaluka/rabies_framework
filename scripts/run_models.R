@@ -43,7 +43,7 @@ for (vax_cov in vax_covs){
                                              incidence=0.01,         # incidence with no interventions in place
                                              P_bite_rabid=0.38,      # p=0.375
                                              P_seek_care_rabid_bite = 0.75,
-                                             P_initiate_PEP_rabid_bite = 0.6,       # of rabid bites (`a further 15% did not obtain PEP`)
+                                             P_initiate_PEP_rabid_bite = 0.79,       # of those who seek care (not rabid bites)
                                              P_complete_PEP_rabid_bite = 0.473,      # of those who seek healthcare
                                                 # Also using same values for healthy bites despite PEP policy choice
                                              P_seek_care_healthy_bite = 0.78,
@@ -120,7 +120,8 @@ summarise_stochastic_model_output <- function(model_output){
   #Create empty data frame with correct number of columns
     stochastic_model_df = data.frame(matrix(nrow = 0, ncol = length(names(model_output[[1]]))*3)) # each variable/col now resolves into 3: mean, upper and lower limits
     colnames(stochastic_model_df) = unlist(lapply(names(model_output[[1]]), create_new_names), recursive = FALSE) # get new variable names using `create_new_names` function
-  # Summarize model output(mean, upper and lower limits)  
+  
+    # Summarize model output(mean, upper and lower limits)  
   for (dataf in seq_along(model_output)) {
     my_list = list()
     for (variable in seq(1,ncol(model_output[[1]]))){
@@ -133,12 +134,10 @@ summarise_stochastic_model_output <- function(model_output){
       # We end up with 3 new values from every column (mean, upper limit and lower limit)
       output <- list(mean_projections, lowerinterval, upperinterval)
       my_list <- append(my_list, output)
-      #my_list <- append(my_list, vax_cov)
     }
     # create new row to merge projections per district
     df1 <- data.frame(my_list)
     colnames(df1) = unlist(lapply(names(model_output[[1]]), create_new_names), recursive = FALSE)
-    #df1$vax_cov <- vax_cov
     stochastic_model_df <- rbind(stochastic_model_df, df1)
   }
   stochastic_model_df <- cbind(east_africa_shp, stochastic_model_df)
@@ -156,17 +155,17 @@ loop_thru_vaxs1<- function(){
   for (vax_cov in vax_covs){
     model_output <- lapply(east_africa_shp$Population, stochastic_decision_tree, 
                            N=1000,
-                           HDR_min=4, HDR_max=40, 
+                           HDR_min=4.5, HDR_max=235.3,  
                            vax_cov=vax_cov,
-                           inc_min=0.05, inc_max=0.1, 
+                           inc_min=0.005, inc_max=0.015, 
                            P_bite_rabid=0.38, 
                            P_seek_care_rabid_bite=0.75,
-                           P_initiate_PEP_rabid_bite=0.6, 
+                           P_initiate_PEP_rabid_bite=0.79, 
                            P_complete_PEP_rabid_bite=0.473,
                            P_seek_care_healthy_bite=0.78,
                            P_initiate_PEP_healthy_bite=0.2, 
                            P_complete_PEP_healthy_bite=0.07,
-                           P_death=0.17, 
+                           P_death_min=0.133, P_death_max = 0.201,  
                            P_prevent_min=0.97, P_prevent_max=1)
     
     # summarise stochasticity
@@ -180,6 +179,7 @@ loop_thru_vaxs1<- function(){
 }
 
 output_stoch_model1<- loop_thru_vaxs1()
+
 
   # note the policy choice
 output_stoch_model1$policy_choice <- "Offered under status quo" 
@@ -197,9 +197,9 @@ loop_thru_vaxs2<- function(){
   for (vax_cov in vax_covs){
     model_output2<- lapply(east_africa_shp$Population, stochastic_decision_tree, 
                            N=1000,                           # 1000 iterations
-                           HDR_min=10, HDR_max=40, 
+                           HDR_min=4.5, HDR_max=235.3, 
                            vax_cov=vax_cov,
-                           inc_min=0.05, inc_max=0.1, 
+                           inc_min=0.005, inc_max=0.015, 
                            P_bite_rabid=0.38, 
                            P_seek_care_rabid_bite=0.75,     # not clear from Changalucha et al., (using value for IF patient pays/ status quo)
                            P_initiate_PEP_rabid_bite=0.899, 
@@ -208,7 +208,7 @@ loop_thru_vaxs2<- function(){
                            P_seek_care_healthy_bite=0.78,
                            P_initiate_PEP_healthy_bite=0.2, 
                            P_complete_PEP_healthy_bite=0.07,
-                           P_death=0.17, 
+                           P_death_min=0.133, P_death_max = 0.201,  
                            P_prevent_min=0.97, P_prevent_max=1
                            )
     

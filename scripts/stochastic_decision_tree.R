@@ -1,5 +1,4 @@
 
-library(tidyverse)
 rm(list=ls())
 
 # Decision tree model that can be applied to create different scenarios 
@@ -15,7 +14,7 @@ decision_tree <- function(N=100, pop, HDR, horizon, discount = 0.03,
   
 
 # source helper functions  
-source("./script/HelperFun.R")
+source("./scripts/HelperFun.R")
   
 # SIMULATE TIMESERIES
 
@@ -257,40 +256,6 @@ return(out_matrices)
 }
 
 
-    
-no_interventions <- decision_tree(
-  N=100,pop = 500000,HDR = c(98,100),horizon = 7,discount = 0.03, rabies_inc = c(0.0075, 0.0125),
-  LR_range = c(6.6,12.8),mu = 0.7054917 ,k = 0.3862238,pSeek_healthy=0.6,pStart_healthy= 0.6666667,
-  pComplete_healthy = 0.3968254,pSeek_exposure=0.7,pStart_exposure = 0.6666667,pComplete_exposure = 0.3968254,
-  pDeath = 0.1660119,pPrevent = 0.986,full_cost = 45,partial_cost = 25, #campaign_budget = 500000,
-  base_vax_cov = 0.05, vaccinate_dog_cost = c(2,4),target_vax_cov = 0,
-  pInvestigate = 0.9, pFound = 0.6, pTestable = 0.7, pFN = 0.05
-)
 
 
-summarise_stochasticity <-  function(my_matrix){
-  out<- apply(my_matrix, 2, quantile, c(0.025, 0.5, 0.975), na.rm=TRUE)
-  rownames(out)<-NULL
-  return(out)
-}
 
-
-select_variable <- function(variable, scenario){
-    my_matrix <- scenario[[variable]]
-    out<- summarise_stochasticity(my_matrix)
-    df <- as.data.frame(t(out))
-    names(df) <- c('LL', 'Median', 'UL')
-    return(df)
-}
-
-# return time series values 
-df <- select_variable(variable='ts_healthy_seek_care', scenario=no_interventions)
-
-
-# Plot
-ggplot(df, aes(x = as.numeric(row.names(df)), y = Median)) +
-    geom_line() +
-    geom_ribbon(aes(ymin = LL, ymax = UL), fill = "orchid4", alpha = 0.5) +
-    ylab("Value")+ xlab("Year")+
-    theme_bw() 
-    

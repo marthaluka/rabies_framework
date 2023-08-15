@@ -1,5 +1,9 @@
 
 
+#source("./scripts/run_models.R")
+
+
+
 ui <- fluidPage(
   
   titlePanel(title=div(img(src="./rabies_virus.png", height = 70), "A framework to inform rabies policy in East Africa"),

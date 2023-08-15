@@ -142,7 +142,7 @@ no_interventions$ts_MDV_campaign_cost
 
 
 
-
+# anything below this is old code to be deleted/archived
 ######################
 
 # iterate through different possible vaccination coverages. 

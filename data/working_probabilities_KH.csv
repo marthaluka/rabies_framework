@@ -1,0 +1,4 @@
+﻿scenario,seek_rabid,seek_healthy,start_rabid,start_healthy,complete_rabid,complete_healthy,prevent_incomplete,death
+charged PEP with poor availability ,0.75,0.5,0.873,0.27,0.54,0.17,0.986,0.165
+free PEP (Gavi),0.98,0.75,0.899,0.41,0.91,0.42,0.986,0.165
+free PEP & IBCM (Gavi+),0.99,0.5,0.94,0.27,0.955,0.27,0.986,0.165

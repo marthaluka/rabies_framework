@@ -11,7 +11,8 @@ pacman::p_load(tidyverse, # cleaning, wrangling
                RColorBrewer, # color palettes
                htmltools, # HTML generation and tools
                scales, # format numbers for aesthetics
-               patchwork # multiple plots
+               patchwork, # multiple plots
+               DT # data objects (matrices or data frames)
                )
 
 # source model
@@ -44,12 +45,13 @@ run_decision_tree_from_csv <- function(scenario_name, parameters_df){
     N = 100,
     pop = 50000000,
     horizon = 7, 
+    base_vax_cov=0.05,
     discount = scenario_parameters$discount,
     target_vax_cov = scenario_parameters$target_vax_cov,
     # epidemiological status quo
-    rabies_inc = c(scenario_parameters$rabies_inc1, scenario_parameters$rabies_inc2),
-    LR_range = c(scenario_parameters$LR_range1, scenario_parameters$LR_range1),
+    #LR_range = c(scenario_parameters$LR_range1, scenario_parameters$LR_range1),
     HDR = c(scenario_parameters$HDR1, scenario_parameters$HDR2),
+    pBite_healthy = scenario_parameters$pBite_healthy,
     
     mu = scenario_parameters$mu,
     k = scenario_parameters$k,
@@ -105,7 +107,7 @@ select_variable <- function(variable, scenario){
 names(no_interventions)
 
 # return time series values 
-df <- select_variable(variable='ts_MDV_campaign_cost', scenario=PEP_ID_free_only)
+df <- select_variable(variable='ts_rabid_dogs', scenario=no_interventions)
 
 
 # Plotting to check

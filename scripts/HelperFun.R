@@ -65,7 +65,9 @@ vax_coverage_from_budget <- function(campaign_budget, base_vax_cov, vaccinate_do
   }
 }
 
-
+#rabies incidence used to cap the predictions for rabid dogs. Because there has always been vaccination in the Serengeti (which the model is trained on), 
+  #predictions when vax_cov is zero can exceed max possible values
+rabies_inc= c(0.0075,0.0125)
 
 predict_cases <- function(nreps=N, vax_cov, horizon, dog_pop, rabies_inc, 
                           vax_model_path = "./data/cases_from_vax_par_samples.csv", 

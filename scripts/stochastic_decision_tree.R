@@ -3,16 +3,17 @@ rm(list=ls())
 
 # Decision tree model that can be applied to create different scenarios 
 
-decision_tree <- function(N=100, pop, HDR, horizon, discount = 0.03,
-                          rabies_inc, LR_range, mu, k, pSeek_healthy,
+decision_tree <- function(N, pop, HDR, horizon, discount,#LR_range, 
+                          mu, k, pSeek_healthy,pBite_healthy,
                           pStart_healthy, pComplete_healthy, pSeek_exposure,
                           pStart_exposure, pComplete_exposure, pDeath, pPrevent, 
-                          full_cost, partial_cost, campaign_cost, base_vax_cov=0.05,
-                          vaccinate_dog_cost, target_vax_cov,
+                          full_cost, partial_cost, campaign_cost, base_vax_cov,
+                          vaccinate_dog_cost, target_vax_cov, #campaign_budget
                           pInvestigate, pFound,  pTestable, pFN
                           ) {
-  
 
+  
+  
 # source helper functions  
 source("./scripts/HelperFun.R")
   
@@ -22,22 +23,24 @@ source("./scripts/HelperFun.R")
 HDR <- runif(n=N, min = HDR[1], max = HDR[2])  # Explore uncertainty in HDR - uniform distribution w/ upper & lower limits 
 dog_pop <- pop/HDR 
 
-# Vaccination coverage either from target or budget
-vax_cov <- vax_coverage_over_x_years(0.05, 0.7, horizon)
-# Or
-vax_cov2 <- vax_coverage_from_budget(50000, 0.05, horizon, 20000, 2, discount)
+# # Vaccination coverage either from target or budget
+# vax_cov <- vax_coverage_over_x_years(0.05, 0.7, horizon)
+# # Or
+# vax_cov2 <- vax_coverage_from_budget(50000, 0.05, horizon, 20000, 2, discount)
+
+vax_cov <- vax_coverage_over_x_years(base_vax_cov, target_vax_cov, horizon)
 
 
 # dogs vaccinated
-dogs_vaccinated <- matrix(NA,nrow=N,ncol=horizon)
+ts_dogs_vaccinated <- matrix(NA,nrow=N,ncol=horizon)
 for (year in 1:horizon){
-  dogs_vaccinated[,year] <- dog_pop * vax_cov[[year]]
+  ts_dogs_vaccinated[,year] <- dog_pop * vax_cov[[year]]
 }
 
 # susceptible dogs  
 sus_dogs <- matrix(NA,nrow=N,ncol=horizon)
 for (year in 1:horizon){
-  sus_dogs[,year] <- dog_pop - dogs_vaccinated[,year]
+  sus_dogs[,year] <- dog_pop - ts_dogs_vaccinated[,year]
 }
 
 
@@ -45,7 +48,7 @@ for (year in 1:horizon){
   # Not necessary if input was a set budget
 MDV_campaign_cost <- matrix(NA,nrow=N,ncol=horizon)
 for (year in 1:horizon){
-  MDV_campaign_cost[,year] <- dogs_vaccinated[,year] * (runif(n=N, min = vaccinate_dog_cost[1], max = vaccinate_dog_cost[2]))
+  MDV_campaign_cost[,year] <- ts_dogs_vaccinated[,year] * (runif(n=N, min = vaccinate_dog_cost[1], max = vaccinate_dog_cost[2]))
 }
 
 
@@ -101,32 +104,29 @@ for (year in 1:horizon){
 # consider using IBCM data and running for both low- and high-risk bite patient incidence 
 # for range of bite incidence (high or low risk!) simulate bite patient time series 
 
-# Healthy bites
-sim_patient_ts = function(pop, inc_range, horizon){
-  inc <- runif(horizon, min = inc_range[1], max = inc_range[2]) # select incidence each year over time horizon
-  ts <- unlist(lapply(FUN = rpois, n=N, X = inc/100000 * pop)) # convert incidence into bite patients per year for population
-  return(ts) 
-}
-
 
 # Healthy bites #####
-sim_patient_ts = function(pop, inc_range, horizon){
-  inc <- runif(horizon, min = inc_range[1], max = inc_range[2]) # select incidence each year over time horizon
-  # open matrix for output
-  ts_healthy_bites <- matrix(nrow = N, ncol = horizon)
-  #loop through years
-  for (year in seq(1, horizon)){
-    ts_healthy_bites[,year] <- unlist(lapply(FUN = rpois, n=N, X = inc[year]/100000 * pop)) # convert incidence into bite patients per year for population
-  }
-  return(ts_healthy_bites) 
+  # Using LR_range --to review if still in use for IBCM
+# sim_patient_ts = function(pop, inc_range, horizon){
+#   inc <- runif(horizon, min = inc_range[1], max = inc_range[2]) # select incidence each year over time horizon
+#   # open matrix for output
+#   ts_healthy_bites <- matrix(nrow = N, ncol = horizon)
+#   #loop through years
+#   for (year in seq(1, horizon)){
+#     ts_healthy_bites[,year] <- unlist(lapply(FUN = rpois, n=N, X = inc[year]/100000 * pop)) # convert incidence into bite patients per year for population
+#   }
+#   return(ts_healthy_bites) 
+# }
+
+ts_healthy_bites <- matrix(nrow = N, ncol = horizon)
+for (year in seq(1, horizon)){
+  ts_healthy_bites[,year] <- rbinom(n=N,  size = round(dog_pop), prob = pBite_healthy)
 }
+
 
 # Persons bitten by healthy dogs
 # healthy_bites <- sim_patient_ts(pop, inc_range = LR_range, horizon)
     # healthy_bites <- round(rgamma(N, shape=6.675, rate=2889.090)* dog_pop) 
-
-ts_healthy_bites <- sim_patient_ts(pop, inc_range = LR_range, horizon)
-
 
 # pSEEK for rabid bites
 # exposures_seek_care <- rbinom(n=N,  size = exposures, prob = pSeek_exposure)
@@ -181,6 +181,14 @@ for (year in seq(1, horizon)){
 # time series ts_exposures_do_not_seek_care
 ts_healthy_do_not_seek_care <- ts_healthy_bites - ts_healthy_seek_care
 
+
+# IBCM ######
+# Total bite victims seeking care
+total_seek_care = ts_exposures_seek_care + ts_healthy_seek_care
+ts_total_seek_care_inc = (total_seek_care/pop)*1E5
+
+ts_exposures_seek_care_inc = (ts_exposures_seek_care/pop)*1E5
+ts_healthy_seek_care_inc = (ts_healthy_seek_care/pop)*1E5
 
 # pStart
 healthy_start <- matrix(nrow = N, ncol = horizon)

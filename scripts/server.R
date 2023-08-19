@@ -45,12 +45,12 @@ server <- function(input, output) {
       
     } else {
       return(list(
-        numericInput(inputId="pop", label="Population:", value=1000),
-        numericInput(inputId="HDR", label="HDR:", value=0.5),
-        numericInput(inputId="rabies_inc", label="Rabies Incidence:", value=10),
+        numericInput(inputId="pop", label="Population:", value=1E6),
+        numericInput(inputId="HDR", label="Human:Dog ratio:", value=25),
+        #numericInput(inputId="rabies_inc", label="Rabies Incidence:", min=0, max=1, value=0.1, step=0.05),
         sliderInput(inputId="base_vax_cov", label="Base vaccination coverage:", min=0, max=1, value=0.05, step=0.05),
         sliderInput(inputId="target_vax_cov", label="Target vaccination coverage:", min=0, max=1, value=0.7, step=0.1),
-        selectInput(inputId="PEP_policy_calc", label="PEP policy:", choices = c("Free of charge", "Status quo"))
+        selectInput(inputId="PEP_policy_calc", label="PEP policy:", choices = c("Status quo", "Free of charge"))
       ))
     }
   })

@@ -4,32 +4,12 @@
 
 require(pacman)
 pacman::p_load(tidyverse, # cleaning, wrangling
-               sf, # spatial manipulation
-               leaflet, # leaflet maps
-               shiny, # interactive web apps
-               shinycssloaders, # loading symbol for app
-               RColorBrewer, # color palettes
-               htmltools, # HTML generation and tools
-               scales, # format numbers for aesthetics
-               patchwork, # multiple plots
-               DT # data objects (matrices or data frames)
+               scales,    # display neat number values
+               paletteer  # cool color palettes
                )
 
 # source model
 source("./scripts/stochastic_decision_tree.R")
-
-# read shapefile #####
-east_africa_shp <- st_read(dsn="./shapefiles/", layer="ea_shapefile")
-east_africa_shp$Population <- as.numeric(east_africa_shp$Population) 
-
-
-# countries in shapefile
-countries <- sort(unique(east_africa_shp$Country))
-
-# for app --to review this
-# variables for selection. Can add or reduce
-variables <- c("Population", "dog_population", "rabid_dogs", "total_rabid_bites", 
-               "total_people_PEP", "rabies_deaths", "lives_saved", "cost_per_life_saved")
 
 
 # scenarios
@@ -38,14 +18,14 @@ variables <- c("Population", "dog_population", "rabid_dogs", "total_rabid_bites"
 parameters_df <- read.csv("./data/parameters.csv")
 
 # extract parameter values from csv
-run_decision_tree_from_csv <- function(scenario_name, parameters_df){
+run_decision_tree_from_csv <- function(scenario_name, parameters_df, pop=50000000, horizon = 7,base_vax_cov=0.05, N = 100){
   scenario_parameters <- parameters_df[parameters_df$scenario == scenario_name, ]
   
   decision_tree(
-    N = 100,
-    pop = 50000000,
-    horizon = 7, 
-    base_vax_cov=0.05,
+    N = N,
+    pop = pop,
+    horizon = horizon, 
+    base_vax_cov=base_vax_cov,
     discount = scenario_parameters$discount,
     target_vax_cov = scenario_parameters$target_vax_cov,
     # epidemiological status quo
@@ -70,7 +50,7 @@ run_decision_tree_from_csv <- function(scenario_name, parameters_df){
     full_cost = scenario_parameters$full_cost,
     partial_cost = scenario_parameters$partial_cost,
     vaccinate_dog_cost = c(scenario_parameters$vaccinate_dog_cost1, scenario_parameters$vaccinate_dog_cost2),
-        # campaign cost
+    # campaign cost
     #IBCM
     pInvestigate = scenario_parameters$pInvestigate,
     pFound = scenario_parameters$pFound,
@@ -109,6 +89,10 @@ names(no_interventions)
 # return time series values 
 df <- select_variable(variable='ts_rabid_dogs', scenario=no_interventions)
 
+# run this across all variables and store the summarised object instead
+
+
+
 
 # Plotting to check
 ggplot(df, aes(x = as.numeric(row.names(df)), y = Median)) +
@@ -132,25 +116,50 @@ compare_scenarios <- function(variable, ...){
   }, scenario = scenarios, name = scenario_names, SIMPLIFY = FALSE)
   
   # Combine the results into one dataframe
-  compare_df <- do.call("rbind", compare_df_list)
+  compare_df <- as.data.frame(do.call("rbind", compare_df_list))
   
-  return(as.data.frame(compare_df))
+  # Convert list columns into a more manageable data type
+  for (col_name in names(compare_df)) {
+    if (is.list(compare_df[[col_name]])) {
+      compare_df[[col_name]] <- as.character(unlist(compare_df[[col_name]]))
+    }
+  }
+  
+  return(compare_df)
+  
 }
 
-compare_scenarios("ts_MDV_campaign_cost", no_interventions, MDV_only, MDV_PEP_ID_free)
+my_data<- compare_scenarios("ts_MDV_campaign_cost", no_interventions, MDV_only, MDV_PEP_ID_free)
 
 
-# plot to check
+# plot
 
-
-
-MDV_only$ts_MDV_campaign_cost
-
-no_interventions$ts_MDV_campaign_cost
-
-
-
-
+# plot_slope_chart <- function(data) {
+#   # Ensure data is ordered by scenario
+#   #data <- data[order(data$scenario), ]
+#   
+#   # Define the color palette
+#   colors <- paletteer_d("beyonce::X6")
+#   
+#   ggplot(my_data, aes(x = scenario, y = Median, group = 1)) +
+#     geom_line(color = "grey", size = 0.5) +
+#     geom_point(aes(y = Median, color = scenario), size = 3) #+
+#     # #geom_crossbar(aes(ymin = LL, ymax = UL, color = scenario), width = 0.2, size = 0.5) +
+#     # geom_linerange(aes(ymin = LL, ymax = UL, color = scenario), size = 0.5) +
+#     # labs(y = "Value", x = "Scenario") +
+#     # #theme_minimal() +
+#     # #scale_color_manual(values = colors, name = "Scenario") +
+#     # scale_y_continuous(labels = comma)+ 
+#     # theme(legend.position = "none")
+# }
+# 
+# plot_slope_chart(my_data)
+# 
+# 
+# as.factor(unlist(my_data$scenario))
+# 
+# 
+# data <- my_data$LL
 
 
 

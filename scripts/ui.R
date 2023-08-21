@@ -1,6 +1,6 @@
 
 
-#source("./scripts/run_models.R")
+#source("./scripts/run_model_to_db.R")
 
 
 
@@ -26,10 +26,8 @@ ui <- fluidPage(
                  plotOutput("plot")), 
         tabPanel("Explore the data",
                  DT::dataTableOutput("table")),
-        tabPanel("Simple calculator",
-                 uiOutput("dynamic_main")),
+        tabPanel("Simple calculator"),
         tabPanel("About", includeHTML("about.html"))
-        
       )
     )
   )

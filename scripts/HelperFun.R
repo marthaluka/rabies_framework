@@ -82,7 +82,7 @@ predict_cases <- function(nreps=N, vax_cov, horizon, dog_pop, rabies_inc,
   cases_mat <- matrix(NA, nrow = nreps, ncol = horizon)
   #vc_last_year <- vax_coverage_over_x_years(base_vax_cov, target_vax_cov, horizon)
   vc_last_year <- vax_cov
-  
+  # To fix --- if horizon is 1 not working
   # Estimate cases 
   for(rep in 1:nreps){
     pars_sim <- vax_model_samples[sample.int(nrow(vax_model_samples), size = 1), ]

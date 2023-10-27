@@ -12,8 +12,6 @@ decision_tree <- function(N, pop, HDR, horizon, discount,#LR_range,
                           pInvestigate, pFound,  pTestable, pFN
                           ) {
 
-  
-  
 # source helper functions  
 source("./scripts/HelperFun.R")
   
@@ -21,7 +19,12 @@ source("./scripts/HelperFun.R")
 
 # Estimate dog population
 HDR <- runif(n=N, min = HDR[1], max = HDR[2])  # Explore uncertainty in HDR - uniform distribution w/ upper & lower limits 
-dog_pop <- pop/HDR 
+
+dog_pop <- matrix(NA,nrow=N,ncol=horizon)
+for (year in 1:horizon){
+  dog_pop[,year] <- pop/HDR 
+}
+
 
 # # Vaccination coverage either from target or budget
 # vax_cov <- vax_coverage_over_x_years(0.05, 0.7, horizon)
@@ -34,13 +37,13 @@ vax_cov <- vax_coverage_over_x_years(base_vax_cov, target_vax_cov, horizon)
 # dogs vaccinated
 ts_dogs_vaccinated <- matrix(NA,nrow=N,ncol=horizon)
 for (year in 1:horizon){
-  ts_dogs_vaccinated[,year] <- dog_pop * vax_cov[[year]]
+  ts_dogs_vaccinated[,year] <- dog_pop[,year] * vax_cov[[year]]
 }
 
 # susceptible dogs  
 sus_dogs <- matrix(NA,nrow=N,ncol=horizon)
 for (year in 1:horizon){
-  sus_dogs[,year] <- dog_pop - ts_dogs_vaccinated[,year]
+  sus_dogs[,year] <- dog_pop[,year] - ts_dogs_vaccinated[,year]
 }
 
 
@@ -89,15 +92,6 @@ for (year in 1:horizon){
 }
 
 
-# Add probability that a healthy animal bite is flagged as potentially suspicious (0.05)
-# false positives
- # not sure if the denominator should be ts_rabid_biting_found or ts_rabid_biting_investigated
-ts_healthy_FP <- matrix(NA,nrow=N,ncol=horizon)
-for (year in 1:horizon){
-  ts_healthy_FP[,year] <- rbinom(n=N,  size = ts_rabid_biting_found[,year], prob = pFN)
-}
-
-
 
 
 # Create patient time series for a given population 
@@ -122,6 +116,38 @@ ts_healthy_bites <- matrix(nrow = N, ncol = horizon)
 for (year in seq(1, horizon)){
   ts_healthy_bites[,year] <- rbinom(n=N,  size = round(dog_pop), prob = pBite_healthy)
 }
+
+# Add probability that a healthy animal bite is flagged as potentially suspicious (0.05)
+# false positives         #to do
+# not sure if the denominator should be ts_rabid_biting_investigated (I now think this should be ts_healthy_biting_dogs)# Chat with Elaine
+ts_healthy_biting_investigated <- matrix(NA,nrow=N,ncol=horizon)
+for (year in 1:horizon){
+  ts_healthy_biting_investigated[,year] <- rbinom(n=N,  size = ts_healthy_bites[,year], prob = pFN)
+}
+
+
+
+# Healthy biting dogs ########
+    # to do # in this case are bites==biting dogs? Chat with Elaine
+#ts_healthy_biting_dogs <- matrix(nrow = N, ncol = horizon)
+# ts_healthy_biting_dogs <- ts_healthy_bites #(to be assigned outside the function)
+# 
+# # Healthy biting dogs that are investigated
+# ts_healthy_biting_investigated <- ts_healthy_FP         # healthy animal bite is flagged as potentially suspicious (0.05) 
+        ##(to also be assigned outside the function)
+
+# Healthy biting dogs that are found
+ts_healthy_biting_found <- matrix(NA,nrow=N,ncol=horizon)
+for (year in 1:horizon){
+  ts_healthy_biting_found[,year] <- rbinom(n=N,  size = ts_healthy_biting_investigated[,year], prob = pFound)
+}
+
+# Rabid biting dogs that are testable
+ts_healthy_biting_testable <- matrix(NA,nrow=N,ncol=horizon)
+for (year in 1:horizon){
+  ts_healthy_biting_testable[,year] <- rbinom(n=N,  size = ts_healthy_biting_found[,year], prob = pTestable)
+}
+
 
 
 # Persons bitten by healthy dogs
@@ -191,17 +217,17 @@ ts_exposures_seek_care_inc = (ts_exposures_seek_care/pop)*1E5
 ts_healthy_seek_care_inc = (ts_healthy_seek_care/pop)*1E5
 
 # pStart
-healthy_start <- matrix(nrow = N, ncol = horizon)
+ts_healthy_start <- matrix(nrow = N, ncol = horizon)
 ts_healthy_complete <- matrix(nrow = N, ncol = horizon)
 for (year in seq(1, horizon)){
   # time series start PEP
-  healthy_start[,year] <- rbinom(n=N,  size = ts_healthy_seek_care[,year], prob = pStart_healthy)
+  ts_healthy_start[,year] <- rbinom(n=N,  size = ts_healthy_seek_care[,year], prob = pStart_healthy)
   # time series complete PEP
-  ts_healthy_complete[,year] <- rbinom(n=N,  size = healthy_start[,year], prob = pComplete_healthy)
+  ts_healthy_complete[,year] <- rbinom(n=N,  size = ts_healthy_start[,year], prob = pComplete_healthy)
 }
 
-healthy_no_start <- (ts_healthy_seek_care - healthy_start) + ts_healthy_do_not_seek_care
-ts_healthy_incomplete <- healthy_start - ts_healthy_complete
+healthy_no_start <- (ts_healthy_seek_care - ts_healthy_start) + ts_healthy_do_not_seek_care
+ts_healthy_incomplete <- ts_healthy_start - ts_healthy_complete
 
 
 # DEATHS

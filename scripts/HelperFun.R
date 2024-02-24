@@ -70,35 +70,39 @@ vax_coverage_from_budget <- function(campaign_budget, base_vax_cov, vaccinate_do
 rabies_inc= c(0.0075,0.0125)
 
 predict_cases <- function(nreps=N, vax_cov, horizon, dog_pop, rabies_inc, 
-                          vax_model_path = "./data/cases_from_vax_par_samples.csv", 
-                          vax_case_model_path = "./data/cases_from_vax+cases_par_samples.csv"){
+                          vax_model_path = "./data/cases_from_vax_model.rds", 
+                          vax_case_model_path = "./data/cases_from_vax+cases_model.rds"){
   set.seed(123)
   
-  # Load model inputs from provided paths
-  vax_model_samples <- read.csv(vax_model_path)
-  vax_case_model_samples <- read.csv(vax_case_model_path)
+  # Load models and extract parameter samples
+  vax_model <- readRDS(vax_model_path)
+  vax_case_model <- readRDS(vax_case_model_path)
+  vax_model_samples <- posterior_samples(vax_model)[,1:3]
+  vax_case_model_samples <- posterior_samples(vax_case_model)[,1:4]
+  
+  # Set up model inputs for a district
+  incidence_adjust <- 0.0001394842
   
   # Initialize output matrix
   cases_mat <- matrix(NA, nrow = nreps, ncol = horizon)
-  #vc_last_year <- vax_coverage_over_x_years(base_vax_cov, target_vax_cov, horizon)
   vc_last_year <- vax_cov
-  # To fix --- if horizon is 1 not working
+  
   # Estimate cases 
   for(rep in 1:nreps){
-    pars_sim <- vax_model_samples[sample.int(nrow(vax_model_samples), size = 1), ]
-    mu <- exp(sum(pars_sim[1:2] * c(1, vc_last_year[1]), log(dog_pop[rep])))
-    cases_mat[rep, 1] <- min(rnbinom(n = 1, mu = mu, size = as.numeric(pars_sim[3])), rabies_inc[2] * dog_pop[rep])
-    
-    pars_sim <- vax_case_model_samples[sample.int(nrow(vax_case_model_samples), size = 1), ]
+    pars_sim <- vax_model_samples[sample.int(nrow(vax_model_samples), size=1), ]
+    mu <- exp(sum(pars_sim[1:2]*c(1,vc_last_year[1]),log(dog_pop[rep])))
+    cases_mat[rep,1] <- min(rnbinom(n=1,mu=mu,size=as.numeric(pars_sim[3])), rabies_inc[2] * dog_pop[rep])
+    pars_sim <- vax_case_model_samples[sample.int(nrow(vax_case_model_samples),size=1), ]
     
     for(year in 2:horizon){
-      mu <- exp(sum(pars_sim[1:3] * c(1, vc_last_year[year], log(cases_mat[rep, year - 1] + 1)), log(dog_pop[rep])))
-      cases_mat[rep, year] <- min(rnbinom(n = 1, mu = mu, size = as.numeric(pars_sim[4])), rabies_inc[2] * dog_pop[rep])
-    }
+      mu <- exp(sum(pars_sim[1:3]*c(1,vc_last_year[year],log(cases_mat[rep, year-1]/dog_pop[rep]+incidence_adjust)),log(dog_pop[rep])))
+      cases_mat[rep,year] <- min(rnbinom(n=1,mu=mu,size=as.numeric(pars_sim[4])), rabies_inc[2] * dog_pop[rep])
+    }  
   }
+  
   return(cases_mat)
 }
-
+  
 
 # dog_pop <- matrix(runif(N, 1000, 9877),nrow=N,ncol=horizon)
 # 

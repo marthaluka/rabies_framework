@@ -26,7 +26,7 @@ ui <- fluidPage(
                  plotOutput("plot")), 
         tabPanel("Explore the data",
                  DT::dataTableOutput("table")),
-        tabPanel("Simple calculator"),
+        tabPanel("Calculator"),
         tabPanel("About", includeHTML("about.html"))
       )
     )

@@ -1,0 +1,2474 @@
+new_FACILITY,Year_month,PEP,risk,n
+Buhemba Health Center,2018-11,yes,low,4
+Buhemba Health Center,2018-12,yes,low,1
+Buhemba Health Center,2018-7,yes,high,1
+Buhemba Health Center,2018-9,NA,low,1
+Buhemba Health Center,2019-2,yes,high,1
+Buhemba Health Center,2019-3,yes,high,1
+Buhemba Health Center,2019-6,yes,high,2
+Buhemba Health Center,2019-7,yes,high,1
+Buhemba Health Center,2019-8,yes,high,1
+Buhemba Health Center,2020-4,yes,high,3
+Buhemba Health Center,2020-5,yes,high,2
+Buhemba Health Center,2021-1,yes,high,1
+Buhemba Health Center,2021-10,no,low,1
+Buhemba Health Center,2021-11,no,low,1
+Buhemba Health Center,2021-12,no,low,2
+Buhemba Health Center,2021-2,NA,low,1
+Buhemba Health Center,2021-3,NA,high,1
+Buhemba Health Center,2021-3,NA,low,1
+Buhemba Health Center,2021-4,NA,low,1
+Buhemba Health Center,2021-5,NA,low,3
+Buhemba Health Center,2021-7,NA,low,1
+Buhemba Health Center,2021-8,NA,low,1
+Buhemba Health Center,2022-1,NA,low,2
+Buhemba Health Center,2022-10,yes,low,1
+Buhemba Health Center,2022-2,no,low,1
+Buhemba Health Center,2022-2,NA,high,1
+Buhemba Health Center,2022-2,NA,low,3
+Buhemba Health Center,2022-3,yes,high,2
+Buhemba Health Center,2022-3,NA,low,1
+Buhemba Health Center,2022-4,yes,high,1
+Buhemba Health Center,2022-4,NA,low,2
+Buhemba Health Center,2022-5,yes,high,2
+Buhemba Health Center,2022-5,NA,low,2
+Buhemba Health Center,2022-6,NA,low,3
+Buhemba Health Center,2022-7,yes,high,1
+Buhemba Health Center,2022-7,NA,high,1
+Buhemba Health Center,2022-7,NA,low,2
+Buhemba Health Center,2022-9,NA,high,2
+Bunda District Designated Hospital (Bunda DDH),2018-10,NA,low,1
+Bunda District Designated Hospital (Bunda DDH),2018-7,NA,high,1
+Bunda District Designated Hospital (Bunda DDH),2018-8,NA,low,1
+Bunda District Designated Hospital (Bunda DDH),2018-9,no,low,1
+Bunda District Designated Hospital (Bunda DDH),2018-9,yes,high,1
+Bunda District Designated Hospital (Bunda DDH),2018-9,NA,low,1
+Bunda District Designated Hospital (Bunda DDH),2019-12,NA,low,2
+Bunda District Designated Hospital (Bunda DDH),2019-3,yes,high,3
+Bunda District Designated Hospital (Bunda DDH),2019-4,yes,high,5
+Bunda District Designated Hospital (Bunda DDH),2019-5,yes,high,3
+Bunda District Designated Hospital (Bunda DDH),2019-6,yes,high,1
+Bunda District Designated Hospital (Bunda DDH),2019-6,yes,low,4
+Bunda District Designated Hospital (Bunda DDH),2019-7,yes,low,1
+Bunda District Designated Hospital (Bunda DDH),2019-9,yes,high,1
+Bunda District Designated Hospital (Bunda DDH),2020-1,yes,high,1
+Bunda District Designated Hospital (Bunda DDH),2020-11,yes,high,9
+Bunda District Designated Hospital (Bunda DDH),2020-12,yes,high,5
+Bunda District Designated Hospital (Bunda DDH),2020-12,NA,low,4
+Bunda District Designated Hospital (Bunda DDH),2020-3,yes,high,6
+Bunda District Designated Hospital (Bunda DDH),2020-4,yes,high,8
+Bunda District Designated Hospital (Bunda DDH),2020-5,yes,high,2
+Bunda District Designated Hospital (Bunda DDH),2020-7,yes,high,2
+Bunda District Designated Hospital (Bunda DDH),2020-8,yes,high,4
+Bunda District Designated Hospital (Bunda DDH),2021-10,NA,high,3
+Bunda District Designated Hospital (Bunda DDH),2021-11,yes,high,2
+Bunda District Designated Hospital (Bunda DDH),2021-11,NA,high,3
+Bunda District Designated Hospital (Bunda DDH),2021-12,yes,high,5
+Bunda District Designated Hospital (Bunda DDH),2021-12,NA,high,2
+Bunda District Designated Hospital (Bunda DDH),2021-5,yes,high,6
+Bunda District Designated Hospital (Bunda DDH),2021-5,NA,low,4
+Bunda District Designated Hospital (Bunda DDH),2021-6,yes,high,3
+Bunda District Designated Hospital (Bunda DDH),2021-6,NA,low,4
+Bunda District Designated Hospital (Bunda DDH),2021-7,yes,high,1
+Bunda District Designated Hospital (Bunda DDH),2021-9,yes,high,2
+Bunda District Designated Hospital (Bunda DDH),2021-9,NA,high,1
+Bunda District Designated Hospital (Bunda DDH),2022-1,yes,high,5
+Bunda District Designated Hospital (Bunda DDH),2022-1,NA,high,4
+Bunda District Designated Hospital (Bunda DDH),2022-11,yes,high,1
+Bunda District Designated Hospital (Bunda DDH),2022-11,NA,low,6
+Bunda District Designated Hospital (Bunda DDH),2022-12,yes,high,1
+Bunda District Designated Hospital (Bunda DDH),2022-12,yes,low,1
+Bunda District Designated Hospital (Bunda DDH),2022-12,NA,low,1
+Bunda District Designated Hospital (Bunda DDH),2022-2,yes,high,4
+Bunda District Designated Hospital (Bunda DDH),2022-2,NA,high,4
+Bunda District Designated Hospital (Bunda DDH),2022-3,yes,high,4
+Bunda District Designated Hospital (Bunda DDH),2022-3,NA,high,4
+Bunda District Designated Hospital (Bunda DDH),2022-4,yes,high,3
+Bunda District Designated Hospital (Bunda DDH),2022-4,NA,high,1
+Bunda District Designated Hospital (Bunda DDH),2022-5,yes,low,6
+Bunda District Designated Hospital (Bunda DDH),2022-5,NA,high,3
+Bunda District Designated Hospital (Bunda DDH),2022-6,yes,low,4
+Bunda District Designated Hospital (Bunda DDH),2022-8,yes,low,1
+Bunda District Designated Hospital (Bunda DDH),2022-8,NA,low,2
+Bunda District Designated Hospital (Bunda DDH),2023-1,yes,high,7
+Bunda District Designated Hospital (Bunda DDH),2023-1,yes,low,1
+Bunda District Designated Hospital (Bunda DDH),2023-2,yes,high,3
+Bunda District Designated Hospital (Bunda DDH),2023-3,yes,high,3
+Bunda District Designated Hospital (Bunda DDH),2023-4,yes,high,1
+Bunda District Designated Hospital (Bunda DDH),2023-4,yes,low,1
+Bunda District Designated Hospital (Bunda DDH),2023-5,yes,high,1
+Bunda District Designated Hospital (Bunda DDH),2023-5,yes,low,1
+Bunda District Designated Hospital (Bunda DDH),2023-5,NA,low,1
+Bunda District Designated Hospital (Bunda DDH),2023-7,yes,high,2
+Bunda District Designated Hospital (Bunda DDH),2023-8,yes,high,2
+Bunda District Hospital,2018-10,yes,low,2
+Bunda District Hospital,2018-10,NA,low,1
+Bunda District Hospital,2018-11,NA,low,1
+Bunda District Hospital,2018-12,NA,low,1
+Bunda District Hospital,2018-7,yes,high,1
+Bunda District Hospital,2018-7,NA,low,1
+Bunda District Hospital,2018-8,yes,high,2
+Bunda District Hospital,2018-8,yes,low,2
+Bunda District Hospital,2018-9,yes,high,1
+Bunda District Hospital,2018-9,yes,low,1
+Bunda District Hospital,2019-10,yes,low,6
+Bunda District Hospital,2019-7,yes,low,1
+Bunda District Hospital,2019-8,yes,low,1
+Bunda District Hospital,2020-12,yes,high,2
+Bunda District Hospital,2020-4,yes,high,4
+Bunda District Hospital,2020-5,yes,high,6
+Bunda District Hospital,2021-1,yes,high,7
+Bunda District Hospital,2021-2,no,low,1
+Bunda District Hospital,2021-2,yes,high,4
+Bunda District Hospital,2021-2,NA,high,6
+Bunda District Hospital,2021-5,yes,high,5
+Bunda District Hospital,2021-5,NA,low,1
+Bunda District Hospital,2022-6,yes,high,1
+Bunda District Hospital,2022-6,yes,low,1
+Bunda District Hospital,2022-7,yes,high,4
+Bunda District Hospital,2022-7,NA,low,1
+Butiama District Hospital,2018-11,NA,low,1
+Butiama District Hospital,2018-12,yes,low,2
+Butiama District Hospital,2018-12,NA,low,1
+Butiama District Hospital,2018-9,yes,high,1
+Butiama District Hospital,2018-9,NA,low,1
+Butiama District Hospital,2019-1,yes,high,5
+Butiama District Hospital,2019-1,yes,low,1
+Butiama District Hospital,2019-1,NA,low,3
+Butiama District Hospital,2019-3,yes,high,8
+Butiama District Hospital,2019-3,yes,low,2
+Butiama District Hospital,2019-4,yes,high,6
+Butiama District Hospital,2019-4,NA,low,1
+Butiama District Hospital,2019-5,yes,high,1
+Butiama District Hospital,2019-6,yes,high,15
+Butiama District Hospital,2019-6,yes,low,4
+Butiama District Hospital,2019-7,yes,high,9
+Butiama District Hospital,2019-7,yes,low,1
+Butiama District Hospital,2019-8,yes,high,1
+Butiama District Hospital,2020-1,yes,high,1
+Butiama District Hospital,2020-11,yes,high,4
+Butiama District Hospital,2020-12,yes,high,7
+Butiama District Hospital,2020-12,NA,low,3
+Butiama District Hospital,2020-2,yes,high,1
+Butiama District Hospital,2020-5,yes,high,3
+Butiama District Hospital,2020-6,yes,high,2
+Butiama District Hospital,2021-1,yes,high,3
+Butiama District Hospital,2021-1,NA,low,1
+Butiama District Hospital,2021-10,yes,high,1
+Butiama District Hospital,2021-11,yes,high,4
+Butiama District Hospital,2021-11,NA,high,1
+Butiama District Hospital,2021-2,NA,high,3
+Butiama District Hospital,2021-3,yes,high,2
+Butiama District Hospital,2021-3,NA,high,1
+Butiama District Hospital,2021-4,yes,high,1
+Butiama District Hospital,2021-4,NA,high,2
+Butiama District Hospital,2021-8,yes,high,2
+Butiama District Hospital,2021-8,NA,high,1
+Butiama District Hospital,2021-9,yes,high,2
+Butiama District Hospital,2021-9,NA,high,2
+Butiama District Hospital,2022-1,yes,high,3
+Butiama District Hospital,2022-12,yes,high,3
+Butiama District Hospital,2022-12,yes,low,1
+Butiama District Hospital,2022-3,yes,high,2
+Butiama District Hospital,2022-3,yes,low,1
+Butiama District Hospital,2022-3,NA,high,1
+Butiama District Hospital,2022-6,yes,high,2
+Butiama District Hospital,2022-6,yes,low,2
+Butiama District Hospital,2022-6,NA,low,2
+Butiama District Hospital,2022-7,yes,high,6
+Butiama District Hospital,2022-7,yes,low,2
+Butiama District Hospital,2022-7,NA,low,1
+Butiama District Hospital,2022-8,yes,low,4
+Butiama District Hospital,2022-8,NA,low,1
+Butiama District Hospital,2022-9,yes,high,2
+Butiama District Hospital,2022-9,yes,low,1
+Butiama District Hospital,2022-9,NA,low,1
+Butiama District Hospital,2023-1,yes,high,4
+Butiama District Hospital,2023-2,yes,high,1
+Butiama District Hospital,2023-3,yes,high,1
+Butiama District Hospital,2023-5,NA,high,1
+Chiponda Health Center,2020-1,yes,low,1
+Chiponda Health Center,2020-10,yes,high,2
+Chiponda Health Center,2020-11,yes,low,1
+Chiponda Health Center,2020-12,yes,high,1
+Chiponda Health Center,2020-3,yes,high,3
+Chiponda Health Center,2020-3,yes,low,1
+Chiponda Health Center,2020-5,yes,high,1
+Chiponda Health Center,2020-7,yes,high,1
+Chiponda Health Center,2020-8,yes,high,1
+Chiponda Health Center,2020-9,yes,high,1
+Coptic Health Center,2022-6,yes,high,2
+Coptic Health Center,2022-6,yes,low,1
+Coptic Health Center,2022-7,yes,high,1
+Coptic Health Center,2022-7,yes,low,1
+Dinyecha Health Center,2020-3,NA,low,1
+Dinyecha Health Center,2021-7,yes,high,1
+Dinyecha Health Center,2021-8,yes,high,1
+Dinyecha Health Center,2021-8,NA,low,1
+Dinyecha Health Center,2021-9,NA,low,1
+Dumila Dispensary,2020-11,yes,low,4
+Dumila Dispensary,2020-12,yes,low,1
+Dumila Dispensary,2020-8,no,low,2
+Dumila Dispensary,2020-8,NA,low,1
+Dumila Dispensary,2021-1,no,low,2
+Dumila Dispensary,2021-2,no,high,1
+Dumila Dispensary,2021-2,no,low,5
+Dumila Dispensary,2021-4,no,low,1
+Dumila Dispensary,2021-9,no,high,1
+Dumila Dispensary,2022-6,yes,low,6
+Dumila Dispensary,2022-7,yes,low,7
+Dumila Dispensary,2022-8,yes,low,2
+Dutumi Health Center,2019-11,yes,low,7
+Dutumi Health Center,2019-12,yes,high,4
+Dutumi Health Center,2019-12,yes,low,1
+Dutumi Health Center,2019-4,yes,high,2
+Dutumi Health Center,2019-5,yes,high,4
+Dutumi Health Center,2019-6,yes,high,3
+Dutumi Health Center,2019-7,yes,high,1
+Dutumi Health Center,2019-8,yes,high,6
+Dutumi Health Center,2019-8,yes,low,1
+Dutumi Health Center,2020-2,yes,low,2
+Dutumi Health Center,2020-7,yes,high,19
+Dutumi Health Center,2021-10,yes,high,3
+Dutumi Health Center,2021-11,yes,high,1
+Dutumi Health Center,2021-11,NA,low,1
+Dutumi Health Center,2022-1,no,high,1
+Dutumi Health Center,2022-1,yes,high,2
+Dutumi Health Center,2022-10,yes,high,8
+Dutumi Health Center,2022-10,NA,low,1
+Dutumi Health Center,2022-11,yes,high,2
+Dutumi Health Center,2022-11,yes,low,1
+Dutumi Health Center,2022-2,yes,high,3
+Dutumi Health Center,2022-2,NA,low,2
+Dutumi Health Center,2022-3,yes,high,1
+Dutumi Health Center,2022-4,yes,high,4
+Dutumi Health Center,2022-5,yes,high,7
+Dutumi Health Center,2022-6,no,high,3
+Dutumi Health Center,2022-6,yes,high,13
+Dutumi Health Center,2022-7,no,high,2
+Dutumi Health Center,2022-7,yes,high,16
+Dutumi Health Center,2022-8,yes,low,1
+Dutumi Health Center,2023-8,yes,low,1
+Dutumi Health Center,2023-8,NA,low,1
+FAME Hospital,2021-4,yes,high,1
+Fulwe Dispensary,2020-5,yes,high,1
+Fulwe Dispensary,2020-7,yes,high,5
+Fulwe Dispensary,2020-7,yes,low,1
+Ikizu Health Center,2018-12,NA,low,1
+Ikizu Health Center,2018-7,yes,high,1
+Ikizu Health Center,2018-9,yes,low,1
+Ikizu Health Center,2020-1,NA,low,1
+Ikizu Health Center,2021-1,NA,low,1
+Ikizu Health Center,2022-3,yes,high,4
+Ikizu Health Center,2022-3,yes,low,4
+Ikizu Health Center,2022-4,yes,high,4
+Ikizu Health Center,2022-4,yes,low,7
+Ikizu Health Center,2022-4,NA,low,1
+Ikizu Health Center,2022-5,yes,high,2
+Ikizu Health Center,2022-5,yes,low,1
+Ikizu Health Center,2022-6,no,low,1
+Ikizu Health Center,2023-1,yes,high,2
+Iramba Health Center,2020-8,yes,high,3
+Iramba Health Center,2020-8,yes,low,1
+Iramba Health Center,2020-8,NA,low,13
+Isenye Dispensary,2018-9,yes,high,2
+Isenye Dispensary,2019-11,NA,low,2
+Isenye Dispensary,2019-12,NA,low,23
+Isenye Dispensary,2020-1,yes,high,1
+Isenye Dispensary,2020-12,yes,high,1
+Isenye Dispensary,2020-12,NA,low,17
+Isenye Dispensary,2020-2,yes,high,1
+Isenye Dispensary,2020-2,NA,low,10
+Isenye Dispensary,2020-6,yes,high,3
+Isenye Dispensary,2020-6,yes,low,1
+Isenye Dispensary,2020-6,NA,low,18
+Isenye Dispensary,2020-9,yes,high,3
+Isenye Dispensary,2020-9,NA,low,25
+Isenye Dispensary,2021-2,yes,high,3
+Isenye Dispensary,2021-2,NA,high,2
+Isenye Dispensary,2021-2,NA,low,29
+Isenye Dispensary,2021-7,yes,high,6
+Isenye Dispensary,2021-7,yes,low,1
+Isenye Dispensary,2021-7,NA,low,10
+Kiagata Health Center,2022-3,no,high,2
+Kiagata Health Center,2022-3,no,low,1
+Kiagata Health Center,2022-4,yes,high,2
+Kiagata Health Center,2022-5,yes,high,2
+Kiagata Health Center,2022-5,NA,low,1
+Kiagata Health Center,2022-6,no,low,2
+Kiagata Health Center,2022-6,yes,high,1
+Kiagata Health Center,2022-6,yes,low,2
+Kiagata Health Center,2022-6,NA,low,1
+Kiagata Health Center,2022-7,no,low,1
+Kiagata Health Center,2022-7,NA,low,1
+Kiagata Health Center,2022-8,no,low,1
+Kiagata Health Center,2022-9,no,low,1
+Kiagata Health Center,2023-9,NA,low,2
+Kibaoni Health Center,2018-11,no,low,4
+Kibaoni Health Center,2018-12,no,high,1
+Kibaoni Health Center,2018-12,no,low,6
+Kibaoni Health Center,2018-8,no,high,5
+Kibaoni Health Center,2018-8,no,low,6
+Kibaoni Health Center,2018-8,NA,low,1
+Kibaoni Health Center,2018-9,no,low,2
+Kibaoni Health Center,2018-9,NA,high,1
+Kibaoni Health Center,2019-12,yes,low,1
+Kibaoni Health Center,2019-2,yes,high,5
+Kibaoni Health Center,2019-2,yes,low,1
+Kibaoni Health Center,2019-3,yes,high,8
+Kibaoni Health Center,2019-4,yes,high,2
+Kibaoni Health Center,2019-4,yes,low,4
+Kibaoni Health Center,2019-6,yes,low,1
+Kibaoni Health Center,2020-10,yes,high,8
+Kibaoni Health Center,2020-10,NA,low,11
+Kibaoni Health Center,2020-11,yes,high,6
+Kibaoni Health Center,2020-11,NA,low,4
+Kibaoni Health Center,2020-12,NA,low,1
+Kibaoni Health Center,2020-2,yes,high,12
+Kibaoni Health Center,2020-2,yes,low,2
+Kibaoni Health Center,2020-3,no,high,1
+Kibaoni Health Center,2020-3,yes,high,7
+Kibaoni Health Center,2020-6,NA,low,1
+Kibaoni Health Center,2020-8,yes,high,11
+Kibaoni Health Center,2020-8,NA,low,3
+Kibaoni Health Center,2020-9,yes,high,37
+Kibaoni Health Center,2020-9,NA,low,6
+Kibaoni Health Center,2021-10,yes,high,10
+Kibaoni Health Center,2021-10,NA,low,1
+Kibaoni Health Center,2021-11,yes,high,14
+Kibaoni Health Center,2021-11,NA,high,12
+Kibaoni Health Center,2021-12,yes,high,1
+Kibaoni Health Center,2021-12,NA,high,1
+Kibaoni Health Center,2021-6,yes,high,1
+Kibaoni Health Center,2021-7,yes,high,12
+Kibaoni Health Center,2021-7,NA,high,11
+Kibaoni Health Center,2021-7,NA,low,4
+Kibaoni Health Center,2021-8,yes,high,3
+Kibaoni Health Center,2021-8,NA,high,8
+Kibaoni Health Center,2021-9,yes,high,16
+Kibaoni Health Center,2021-9,NA,high,8
+Kibaoni Health Center,2021-9,NA,low,3
+Kibaoni Health Center,2022-1,yes,high,4
+Kibaoni Health Center,2022-1,NA,high,3
+Kibaoni Health Center,2022-10,yes,high,3
+Kibaoni Health Center,2022-11,yes,high,2
+Kibaoni Health Center,2022-12,yes,high,1
+Kibaoni Health Center,2022-12,yes,low,2
+Kibaoni Health Center,2022-2,yes,high,1
+Kibaoni Health Center,2022-2,NA,high,2
+Kibaoni Health Center,2022-7,yes,high,1
+Kibaoni Health Center,2022-7,yes,low,7
+Kibaoni Health Center,2022-8,yes,high,4
+Kibaoni Health Center,2022-8,yes,low,14
+Kibaoni Health Center,2022-9,yes,high,4
+Kibaoni Health Center,2023-1,yes,high,6
+Kibaoni Health Center,2023-1,yes,low,1
+Kibaoni Health Center,2023-2,yes,high,2
+Kibaoni Health Center,2023-3,yes,high,2
+Kibaoni Health Center,2023-5,yes,high,3
+Kibaoni Health Center,2023-5,yes,low,2
+Kibaoni Health Center,2023-8,yes,high,1
+Kibaoni Health Center,2023-8,yes,low,5
+Kibaoni Health Center,2023-9,yes,low,6
+Kibutuka Health Center,2020-11,no,low,1
+Kibutuka Health Center,2020-9,yes,high,1
+Kidodi Health Center,2020-10,yes,high,2
+Kidodi Health Center,2020-11,yes,high,1
+Kidodi Health Center,2020-11,NA,low,1
+Kidodi Health Center,2020-8,yes,high,3
+Kidodi Health Center,2020-8,NA,low,2
+Kidodi Health Center,2020-9,yes,high,6
+Kidodi Health Center,2020-9,NA,low,1
+Kidodi Health Center,2021-1,NA,low,1
+Kidodi Health Center,2021-6,NA,low,1
+Kidodi Health Center,2021-7,yes,high,1
+Kidodi Health Center,2021-7,NA,low,1
+Kidodi Health Center,2021-8,NA,low,1
+Kidodi Health Center,2022-1,yes,high,3
+Kidodi Health Center,2022-10,yes,low,2
+Kidodi Health Center,2022-11,yes,low,1
+Kidodi Health Center,2022-2,yes,high,8
+Kidodi Health Center,2022-2,NA,low,1
+Kidodi Health Center,2022-3,NA,low,1
+Kidodi Health Center,2022-4,yes,high,14
+Kidodi Health Center,2022-4,NA,low,1
+Kidodi Health Center,2022-5,yes,high,1
+Kidodi Health Center,2022-5,yes,low,2
+Kidodi Health Center,2022-6,yes,low,4
+Kidodi Health Center,2022-7,yes,low,1
+Kidodi Health Center,2022-8,yes,low,1
+Kidodi Health Center,2023-1,yes,low,4
+Kidodi Health Center,2023-2,yes,low,5
+Kidodi Health Center,2023-3,yes,low,2
+Kidodi Health Center,2023-4,yes,low,1
+Kidodi Health Center,2023-6,yes,low,1
+Kidodi Health Center,2023-7,yes,low,3
+Kidodi Health Center,2023-8,yes,low,2
+Kilosa District Hospital,2018-10,yes,high,6
+Kilosa District Hospital,2018-11,yes,high,1
+Kilosa District Hospital,2018-12,yes,high,2
+Kilosa District Hospital,2018-6,yes,high,3
+Kilosa District Hospital,2018-7,no,high,1
+Kilosa District Hospital,2018-7,yes,high,2
+Kilosa District Hospital,2018-8,yes,high,14
+Kilosa District Hospital,2018-8,yes,low,3
+Kilosa District Hospital,2018-8,NA,low,1
+Kilosa District Hospital,2018-9,yes,high,17
+Kilosa District Hospital,2018-9,yes,low,1
+Kilosa District Hospital,2018-9,NA,high,1
+Kilosa District Hospital,2018-9,NA,low,1
+Kilosa District Hospital,2019-11,yes,low,1
+Kilosa District Hospital,2019-2,yes,high,3
+Kilosa District Hospital,2019-3,no,high,1
+Kilosa District Hospital,2019-3,NA,low,1
+Kilosa District Hospital,2019-6,NA,low,1
+Kilosa District Hospital,2019-7,no,high,2
+Kilosa District Hospital,2020-10,yes,high,15
+Kilosa District Hospital,2020-11,yes,high,5
+Kilosa District Hospital,2020-12,NA,low,5
+Kilosa District Hospital,2020-6,yes,low,1
+Kilosa District Hospital,2020-8,yes,high,1
+Kilosa District Hospital,2020-8,yes,low,2
+Kilosa District Hospital,2020-8,NA,low,1
+Kilosa District Hospital,2020-9,yes,high,3
+Kilosa District Hospital,2021-1,yes,high,4
+Kilosa District Hospital,2021-1,NA,low,2
+Kilosa District Hospital,2021-10,yes,high,1
+Kilosa District Hospital,2021-11,yes,high,3
+Kilosa District Hospital,2021-11,NA,low,1
+Kilosa District Hospital,2021-2,yes,high,1
+Kilosa District Hospital,2021-2,NA,low,1
+Kilosa District Hospital,2021-4,yes,high,2
+Kilosa District Hospital,2021-5,yes,high,4
+Kilosa District Hospital,2021-7,yes,high,1
+Kilosa District Hospital,2021-7,NA,low,3
+Kilosa District Hospital,2021-8,yes,high,4
+Kilosa District Hospital,2021-8,NA,low,3
+Kilosa District Hospital,2021-9,NA,low,1
+Kilosa District Hospital,2022-10,yes,high,11
+Kilosa District Hospital,2022-10,yes,low,3
+Kilosa District Hospital,2022-3,yes,high,2
+Kilosa District Hospital,2022-3,NA,low,1
+Kilosa District Hospital,2022-4,yes,high,2
+Kilosa District Hospital,2022-4,yes,low,4
+Kilosa District Hospital,2022-5,yes,high,6
+Kilosa District Hospital,2022-5,yes,low,5
+Kilosa District Hospital,2022-5,NA,high,1
+Kilosa District Hospital,2022-6,yes,high,15
+Kilosa District Hospital,2022-6,yes,low,5
+Kilosa District Hospital,2022-6,NA,high,1
+Kilosa District Hospital,2022-6,NA,low,5
+Kilosa District Hospital,2022-7,yes,high,9
+Kilosa District Hospital,2022-7,yes,low,1
+Kilosa District Hospital,2022-7,NA,low,2
+Kilosa District Hospital,2022-8,yes,high,6
+Kilosa District Hospital,2022-8,NA,low,1
+Kilosa District Hospital,2022-9,yes,high,1
+Kilosa District Hospital,2022-9,yes,low,15
+Kilosa District Hospital,2023-1,yes,low,2
+Kilosa District Hospital,2023-2,yes,low,3
+Kilosa District Hospital,2023-3,yes,high,2
+Kilosa District Hospital,2023-4,yes,high,3
+Kilosa District Hospital,2023-6,yes,high,5
+Kilwa Masoko Health Center,2018-8,yes,high,2
+Kilwa Masoko Health Center,2018-8,NA,low,2
+Kilwa Masoko Health Center,2019-4,yes,high,1
+Kilwa Masoko Health Center,2019-9,yes,high,2
+Kilwa Masoko Health Center,2020-1,yes,low,1
+Kilwa Masoko Health Center,2020-12,NA,low,4
+Kilwa Masoko Health Center,2020-2,yes,low,6
+Kilwa Masoko Health Center,2020-3,yes,low,1
+Kilwa Masoko Health Center,2020-4,yes,high,1
+Kilwa Masoko Health Center,2020-4,yes,low,3
+Kilwa Masoko Health Center,2020-5,yes,high,3
+Kilwa Masoko Health Center,2020-7,yes,high,5
+Kilwa Masoko Health Center,2020-8,yes,high,4
+Kilwa Masoko Health Center,2020-9,yes,high,1
+Kilwa Masoko Health Center,2021-10,yes,low,1
+Kilwa Masoko Health Center,2021-10,NA,low,1
+Kilwa Masoko Health Center,2021-11,yes,high,3
+Kilwa Masoko Health Center,2021-11,NA,low,1
+Kilwa Masoko Health Center,2021-2,yes,high,2
+Kilwa Masoko Health Center,2021-2,yes,low,1
+Kilwa Masoko Health Center,2021-2,NA,low,2
+Kilwa Masoko Health Center,2021-3,yes,high,1
+Kilwa Masoko Health Center,2021-3,NA,low,1
+Kilwa Masoko Health Center,2021-4,yes,high,1
+Kilwa Masoko Health Center,2021-5,yes,low,1
+Kilwa Masoko Health Center,2021-5,NA,low,2
+Kilwa Masoko Health Center,2022-4,yes,high,1
+Kilwa Masoko Health Center,2022-7,yes,high,21
+Kilwa Masoko Health Center,2022-7,NA,high,1
+Kinesi Dispensary,2020-10,NA,low,2
+Kinesi Dispensary,2020-11,NA,low,1
+Kinesi Dispensary,2020-5,yes,high,1
+Kinesi Dispensary,2020-6,yes,high,2
+Kinesi Dispensary,2020-7,yes,high,3
+Kinesi Dispensary,2020-9,no,low,1
+Kinesi Dispensary,2020-9,NA,low,1
+Kinesi Dispensary,2021-2,NA,low,1
+Kinesi Dispensary,2021-5,NA,low,1
+Kinesi Dispensary,2021-6,no,low,1
+Kinesi Dispensary,2021-6,NA,low,2
+Kinesi Dispensary,2021-9,no,low,1
+Kinesi Dispensary,2022-3,yes,high,1
+Kinesi Dispensary,2022-4,yes,high,1
+Kinesi Dispensary,2022-4,NA,low,1
+Kinesi Dispensary,2022-5,yes,high,2
+Kinesi Dispensary,2022-7,NA,low,1
+Kinesi Dispensary,2022-8,yes,high,1
+Kinesi Dispensary,2022-8,NA,high,1
+Kinesi Dispensary,2022-8,NA,low,1
+Kinesi Dispensary,2023-1,yes,high,1
+Kinesi Dispensary,2023-4,yes,high,1
+Kinesi Dispensary,2023-6,yes,low,1
+Kingolwira Health Center,2019-10,yes,low,3
+Kingolwira Health Center,2019-11,yes,low,1
+Kingolwira Health Center,2019-12,yes,high,1
+Kingolwira Health Center,2019-6,yes,high,1
+Kingolwira Health Center,2019-7,yes,high,1
+Kingolwira Health Center,2019-8,yes,high,3
+Kingolwira Health Center,2019-8,yes,low,3
+Kingolwira Health Center,2019-9,yes,high,2
+Kingolwira Health Center,2019-9,yes,low,2
+Kingolwira Health Center,2020-1,yes,high,9
+Kingolwira Health Center,2020-1,NA,high,1
+Kingolwira Health Center,2020-12,yes,high,6
+Kingolwira Health Center,2020-2,yes,high,7
+Kingolwira Health Center,2020-4,yes,high,5
+Kingolwira Health Center,2020-6,yes,high,2
+Kingolwira Health Center,2020-7,yes,high,6
+Kingolwira Health Center,2021-1,yes,high,4
+Kingolwira Health Center,2021-4,yes,high,8
+Kingolwira Health Center,2021-4,NA,low,1
+Kingolwira Health Center,2021-5,yes,high,1
+Kingolwira Health Center,2021-6,NA,low,1
+Kingolwira Health Center,2021-7,yes,high,1
+Kingolwira Health Center,2021-7,NA,low,5
+Kingolwira Health Center,2021-8,yes,high,1
+Kingolwira Health Center,2022-12,yes,high,6
+Kingolwira Health Center,2022-12,NA,low,1
+Kingolwira Health Center,2022-3,yes,high,2
+Kingolwira Health Center,2022-4,yes,high,1
+Kingolwira Health Center,2022-5,yes,high,1
+Kingolwira Health Center,2023-2,yes,high,1
+Kingolwira Health Center,2023-2,yes,low,6
+Kingolwira Health Center,2023-5,yes,high,3
+Kingolwira Health Center,2023-6,yes,high,4
+Kingolwira Health Center,2023-6,NA,high,1
+Kingolwira Health Center,2023-8,yes,high,2
+Kingolwira Health Center,2023-8,yes,low,3
+Kinyonga District Hospital,2018-10,NA,low,1
+Kinyonga District Hospital,2018-11,yes,high,7
+Kinyonga District Hospital,2018-11,NA,low,1
+Kinyonga District Hospital,2018-12,yes,high,5
+Kinyonga District Hospital,2018-12,NA,high,2
+Kinyonga District Hospital,2018-8,yes,high,2
+Kinyonga District Hospital,2018-8,yes,low,1
+Kinyonga District Hospital,2018-8,NA,low,3
+Kinyonga District Hospital,2018-9,yes,high,5
+Kinyonga District Hospital,2018-9,NA,high,3
+Kinyonga District Hospital,2018-9,NA,low,1
+Kinyonga District Hospital,2019-1,yes,high,2
+Kinyonga District Hospital,2019-1,NA,high,1
+Kinyonga District Hospital,2019-1,NA,low,1
+Kinyonga District Hospital,2019-10,yes,high,23
+Kinyonga District Hospital,2019-10,yes,low,4
+Kinyonga District Hospital,2019-10,NA,low,2
+Kinyonga District Hospital,2019-11,yes,high,15
+Kinyonga District Hospital,2019-11,yes,low,1
+Kinyonga District Hospital,2019-11,NA,low,1
+Kinyonga District Hospital,2019-12,yes,high,6
+Kinyonga District Hospital,2019-12,yes,low,1
+Kinyonga District Hospital,2019-12,NA,low,2
+Kinyonga District Hospital,2019-2,yes,high,2
+Kinyonga District Hospital,2019-2,yes,low,1
+Kinyonga District Hospital,2019-2,NA,low,2
+Kinyonga District Hospital,2019-3,yes,high,9
+Kinyonga District Hospital,2019-3,yes,low,3
+Kinyonga District Hospital,2019-3,NA,low,1
+Kinyonga District Hospital,2019-4,yes,high,8
+Kinyonga District Hospital,2019-4,yes,low,4
+Kinyonga District Hospital,2019-5,yes,high,1
+Kinyonga District Hospital,2019-6,yes,high,7
+Kinyonga District Hospital,2019-6,yes,low,2
+Kinyonga District Hospital,2019-6,NA,low,1
+Kinyonga District Hospital,2019-7,yes,high,4
+Kinyonga District Hospital,2019-7,yes,low,5
+Kinyonga District Hospital,2019-8,yes,high,4
+Kinyonga District Hospital,2019-8,yes,low,5
+Kinyonga District Hospital,2019-9,yes,high,11
+Kinyonga District Hospital,2019-9,yes,low,2
+Kinyonga District Hospital,2020-1,NA,low,2
+Kinyonga District Hospital,2020-10,yes,high,2
+Kinyonga District Hospital,2020-10,NA,low,1
+Kinyonga District Hospital,2020-11,NA,low,2
+Kinyonga District Hospital,2020-12,yes,low,1
+Kinyonga District Hospital,2020-12,NA,low,1
+Kinyonga District Hospital,2020-2,NA,low,3
+Kinyonga District Hospital,2020-3,yes,high,2
+Kinyonga District Hospital,2020-3,yes,low,1
+Kinyonga District Hospital,2020-4,yes,low,4
+Kinyonga District Hospital,2020-4,NA,low,2
+Kinyonga District Hospital,2020-5,yes,high,1
+Kinyonga District Hospital,2020-5,NA,low,3
+Kinyonga District Hospital,2020-6,yes,high,1
+Kinyonga District Hospital,2020-6,NA,low,2
+Kinyonga District Hospital,2020-7,yes,high,1
+Kinyonga District Hospital,2020-7,NA,low,2
+Kinyonga District Hospital,2020-8,yes,low,1
+Kinyonga District Hospital,2020-8,NA,low,7
+Kinyonga District Hospital,2020-9,yes,low,1
+Kinyonga District Hospital,2020-9,NA,low,1
+Kinyonga District Hospital,2021-10,yes,high,8
+Kinyonga District Hospital,2021-10,NA,high,9
+Kinyonga District Hospital,2021-11,yes,high,3
+Kinyonga District Hospital,2021-11,NA,high,4
+Kinyonga District Hospital,2021-6,NA,low,2
+Kinyonga District Hospital,2021-7,no,low,1
+Kinyonga District Hospital,2021-7,NA,low,3
+Kinyonga District Hospital,2021-8,yes,high,1
+Kinyonga District Hospital,2021-8,yes,low,1
+Kinyonga District Hospital,2021-8,NA,low,3
+Kinyonga District Hospital,2021-9,yes,high,1
+Kinyonga District Hospital,2021-9,yes,low,2
+Kinyonga District Hospital,2022-1,yes,high,1
+Kinyonga District Hospital,2022-10,yes,high,2
+Kinyonga District Hospital,2022-10,yes,low,5
+Kinyonga District Hospital,2022-12,yes,low,9
+Kinyonga District Hospital,2022-12,NA,low,2
+Kinyonga District Hospital,2022-2,NA,high,2
+Kinyonga District Hospital,2022-3,yes,high,5
+Kinyonga District Hospital,2022-3,NA,high,3
+Kinyonga District Hospital,2022-4,yes,high,5
+Kinyonga District Hospital,2022-4,NA,high,8
+Kinyonga District Hospital,2022-5,yes,high,14
+Kinyonga District Hospital,2022-5,NA,low,1
+Kinyonga District Hospital,2022-6,yes,high,11
+Kinyonga District Hospital,2022-7,yes,high,9
+Kinyonga District Hospital,2022-7,yes,low,3
+Kinyonga District Hospital,2022-8,yes,high,18
+Kinyonga District Hospital,2022-8,yes,low,26
+Kinyonga District Hospital,2022-9,yes,high,3
+Kinyonga District Hospital,2022-9,yes,low,22
+Kinyonga District Hospital,2023-1,yes,low,8
+Kinyonga District Hospital,2023-1,NA,low,2
+Kinyonga District Hospital,2023-2,yes,low,8
+Kinyonga District Hospital,2023-2,NA,low,1
+Kinyonga District Hospital,2023-3,yes,high,1
+Kinyonga District Hospital,2023-3,yes,low,11
+Kinyonga District Hospital,2023-4,yes,low,11
+Kinyonga District Hospital,2023-5,yes,low,6
+Kinyonga District Hospital,2023-6,yes,low,6
+Kinyonga District Hospital,2023-7,yes,low,15
+Kinyonga District Hospital,2023-7,NA,low,1
+Kinyonga District Hospital,2023-8,yes,low,8
+Kinyonga District Hospital,2023-8,NA,low,1
+Kisaka Dispensary,2020-11,yes,high,2
+Kisaka Dispensary,2020-11,NA,low,1
+Kisaka Dispensary,2020-12,yes,high,4
+Kisaka Dispensary,2021-1,yes,high,3
+Kisaka Dispensary,2021-10,yes,high,2
+Kisaka Dispensary,2021-2,yes,high,3
+Kisaka Dispensary,2021-2,NA,low,8
+Kisaka Dispensary,2021-3,NA,low,1
+Kisaka Dispensary,2021-8,yes,high,2
+Kisaka Dispensary,2021-9,yes,high,1
+Kisaka Dispensary,2021-9,NA,low,2
+Kisaka Dispensary,2023-2,yes,low,4
+Kisaka Dispensary,2023-3,yes,low,2
+Kisemu Dispensary,2018-11,no,low,1
+Kisemu Dispensary,2018-12,no,low,1
+Kisemu Dispensary,2018-8,no,low,1
+Kisemu Dispensary,2019-1,no,high,1
+Kisemu Dispensary,2019-10,yes,high,1
+Kisemu Dispensary,2019-3,yes,high,2
+Kisemu Dispensary,2019-4,yes,high,1
+Kisemu Dispensary,2019-5,yes,high,4
+Kisemu Dispensary,2019-6,yes,high,1
+Kisemu Dispensary,2019-7,yes,high,1
+Kisemu Dispensary,2019-7,yes,low,1
+Kisemu Dispensary,2019-8,yes,high,6
+Kisemu Dispensary,2019-8,NA,high,1
+Kisemu Dispensary,2019-9,yes,high,6
+Kisemu Dispensary,2020-10,yes,high,2
+Kisemu Dispensary,2020-4,yes,high,2
+Kisemu Dispensary,2020-5,yes,high,3
+Kisemu Dispensary,2020-6,yes,high,5
+Kisemu Dispensary,2020-7,yes,high,2
+Kisemu Dispensary,2020-7,NA,low,2
+Kisemu Dispensary,2020-8,NA,low,1
+Kisemu Dispensary,2021-5,no,high,3
+Kitangari,2018-7,yes,high,1
+Kitomanga Health Center,2020-10,yes,low,1
+Kitomanga Health Center,2020-11,yes,high,1
+Kitomanga Health Center,2020-2,yes,high,1
+Kitomanga Health Center,2020-7,yes,high,2
+Kitomanga Health Center,2020-7,yes,low,1
+Kitomanga Health Center,2020-9,yes,high,1
+Kitomanga Health Center,2020-9,yes,low,2
+Kitomanga Health Center,2021-1,yes,high,1
+Kitomanga Health Center,2021-10,yes,high,2
+Kitomanga Health Center,2021-10,NA,low,1
+Kitomanga Health Center,2021-11,yes,high,1
+Kitomanga Health Center,2021-6,NA,low,1
+Kitomanga Health Center,2021-7,NA,low,1
+Kitomanga Health Center,2021-8,NA,low,1
+Kitomanga Health Center,2021-9,yes,high,2
+Kitomanga Health Center,2022-1,yes,high,4
+Kitomanga Health Center,2022-11,NA,low,3
+Kitomanga Health Center,2022-12,no,low,1
+Kitomanga Health Center,2022-12,NA,low,7
+Kitomanga Health Center,2022-2,yes,high,1
+Kitomanga Health Center,2022-3,yes,high,1
+Kitomanga Health Center,2023-1,NA,low,1
+Kitomanga Health Center,2023-2,yes,high,1
+Kitomanga Health Center,2023-4,yes,high,2
+Kitomanga Health Center,2023-4,yes,low,1
+Kitomanga Health Center,2023-5,yes,high,1
+Kitomanga Health Center,2023-6,yes,high,5
+Kitomanga Health Center,2023-6,NA,low,1
+Ligula Hospital,2018-10,yes,high,1
+Ligula Hospital,2018-10,yes,low,2
+Ligula Hospital,2018-12,yes,low,1
+Ligula Hospital,2018-8,yes,low,1
+Ligula Hospital,2019-1,yes,high,2
+Ligula Hospital,2019-1,yes,low,1
+Ligula Hospital,2019-2,yes,low,1
+Ligula Hospital,2019-2,NA,low,1
+Ligula Hospital,2019-3,yes,low,5
+Ligula Hospital,2019-4,yes,low,1
+Ligula Hospital,2020-10,yes,low,2
+Ligula Hospital,2020-11,yes,low,3
+Ligula Hospital,2020-11,NA,low,1
+Ligula Hospital,2020-9,yes,high,1
+Ligula Hospital,2020-9,yes,low,1
+Ligula Hospital,2021-1,yes,high,4
+Ligula Hospital,2021-11,no,low,1
+Ligula Hospital,2021-11,yes,low,1
+Ligula Hospital,2021-2,yes,high,10
+Ligula Hospital,2021-3,yes,high,7
+Ligula Hospital,2021-4,yes,high,6
+Ligula Hospital,2021-4,yes,low,1
+Ligula Hospital,2021-7,yes,low,1
+Ligula Hospital,2022-12,yes,high,1
+Ligula Hospital,2022-2,yes,high,1
+Ligula Hospital,2022-2,yes,low,1
+Ligula Hospital,2022-3,yes,low,1
+Ligula Hospital,2022-3,NA,high,1
+Ligula Hospital,2022-4,yes,high,1
+Ligula Hospital,2022-5,yes,high,2
+Ligula Hospital,2022-6,yes,high,4
+Ligula Hospital,2022-6,yes,low,3
+Ligula Hospital,2022-7,yes,high,2
+Ligula Hospital,2022-7,yes,low,4
+Ligula Hospital,2022-8,yes,high,6
+Ligula Hospital,2022-8,yes,low,4
+Ligula Hospital,2022-9,yes,high,5
+Ligula Hospital,2022-9,yes,low,9
+Ligula Hospital,2023-1,yes,high,1
+Ligula Hospital,2023-2,yes,high,3
+Ligula Hospital,2023-3,yes,high,1
+Ligula Hospital,2023-4,yes,high,1
+Ligula Hospital,2023-5,yes,high,1
+Likombe Health Center,2018-1,yes,low,1
+Likombe Health Center,2018-10,NA,low,1
+Likombe Health Center,2018-2,yes,low,1
+Likombe Health Center,2018-3,yes,low,1
+Likombe Health Center,2018-4,yes,low,2
+Liwale District Hospital,2018-11,yes,high,1
+Liwale District Hospital,2018-11,NA,low,3
+Liwale District Hospital,2018-7,no,low,1
+Liwale District Hospital,2018-7,yes,low,2
+Liwale District Hospital,2018-8,no,low,1
+Liwale District Hospital,2019-8,yes,high,1
+Liwale District Hospital,2019-9,yes,low,1
+Liwale District Hospital,2021-10,yes,high,5
+Liwale District Hospital,2021-10,yes,low,1
+Liwale District Hospital,2021-12,NA,low,1
+Liwale District Hospital,2021-8,yes,high,2
+Liwale District Hospital,2021-9,NA,low,3
+Liwale District Hospital,2022-1,NA,low,1
+Liwale District Hospital,2022-10,yes,high,3
+Liwale District Hospital,2022-11,yes,low,7
+Liwale District Hospital,2022-12,yes,low,1
+Liwale District Hospital,2022-2,yes,high,1
+Liwale District Hospital,2022-2,NA,low,3
+Liwale District Hospital,2022-3,yes,high,2
+Liwale District Hospital,2022-4,yes,high,1
+Liwale District Hospital,2022-4,NA,low,1
+Liwale District Hospital,2022-5,yes,low,1
+Liwale District Hospital,2022-6,yes,high,1
+Liwale District Hospital,2022-9,yes,high,3
+Liwale District Hospital,2023-1,yes,low,1
+Liwale District Hospital,2023-2,yes,low,2
+Liwale District Hospital,2023-3,yes,low,1
+Liwale District Hospital,2023-4,yes,high,2
+Liwale District Hospital,2023-4,yes,low,1
+Liwale District Hospital,2023-5,yes,high,1
+Liwale District Hospital,2023-6,yes,low,1
+Liwale District Hospital,2023-6,NA,low,1
+Liwale District Hospital,2023-7,yes,low,1
+Liwale District Hospital,2023-8,yes,low,2
+Lugala Hospital,2018-11,no,low,2
+Lugala Hospital,2018-11,yes,high,12
+Lugala Hospital,2018-11,yes,low,4
+Lugala Hospital,2018-8,no,high,2
+Lugala Hospital,2018-8,NA,low,2
+Lugala Hospital,2018-9,no,high,3
+Lugala Hospital,2019-1,yes,high,3
+Lugala Hospital,2019-10,yes,high,2
+Lugala Hospital,2019-10,NA,low,2
+Lugala Hospital,2019-11,no,high,1
+Lugala Hospital,2019-11,yes,high,2
+Lugala Hospital,2019-12,yes,high,2
+Lugala Hospital,2019-2,yes,high,1
+Lugala Hospital,2019-6,yes,high,2
+Lugala Hospital,2019-6,NA,low,1
+Lugala Hospital,2020-1,yes,high,1
+Lugala Hospital,2020-3,no,high,1
+Lugala Hospital,2020-4,no,high,1
+Lugala Hospital,2020-6,NA,low,1
+Lugala Hospital,2020-7,no,high,1
+Lugala Hospital,2020-7,yes,high,4
+Lugala Hospital,2020-7,yes,low,1
+Lugala Hospital,2020-8,no,high,1
+Lugala Hospital,2020-8,yes,high,2
+Lugala Hospital,2020-8,yes,low,1
+Lugala Hospital,2021-1,no,high,3
+Lugala Hospital,2021-2,no,high,1
+Lugala Hospital,2021-3,NA,low,1
+Lugala Hospital,2021-4,no,high,1
+Lugala Hospital,2021-4,yes,high,1
+Lugala Hospital,2021-4,NA,low,1
+Lugala Hospital,2021-5,no,high,1
+Lugala Hospital,2022-1,yes,high,1
+Lugala Hospital,2022-7,no,high,1
+Lugala Hospital,2022-7,yes,high,1
+Lugala Hospital,2022-8,no,high,1
+Lugala Hospital,2022-8,yes,high,1
+Lugala Hospital,2023-1,no,low,2
+Lugala Hospital,2023-1,yes,high,2
+Lugala Hospital,2023-3,yes,high,1
+Lugala Hospital,2023-4,no,low,1
+Lugala Hospital,2023-4,yes,high,1
+Lugala Hospital,2023-5,no,high,1
+Lugala Hospital,2023-5,no,low,1
+Lugala Hospital,2023-7,NA,low,1
+Lupiro Health Center,2019-10,yes,low,1
+Lupiro Health Center,2019-11,yes,high,1
+Lupiro Health Center,2019-8,yes,low,2
+Lupiro Health Center,2020-3,yes,high,3
+Lupiro Health Center,2020-6,yes,high,2
+Lupiro Health Center,2020-7,yes,high,5
+Lupiro Health Center,2021-10,yes,high,3
+Lupiro Health Center,2021-10,NA,low,1
+Lupiro Health Center,2021-11,yes,high,4
+Lupiro Health Center,2021-12,yes,high,2
+Lupiro Health Center,2022-10,yes,low,3
+Lupiro Health Center,2022-11,no,low,1
+Lupiro Health Center,2022-11,yes,low,4
+Lupiro Health Center,2022-12,yes,low,4
+Lupiro Health Center,2022-5,yes,high,2
+Lupiro Health Center,2022-6,yes,high,3
+Lupiro Health Center,2022-6,NA,low,1
+Lupiro Health Center,2022-7,yes,high,4
+Lupiro Health Center,2022-7,yes,low,2
+Lupiro Health Center,2022-7,NA,low,1
+Lupiro Health Center,2022-8,yes,high,4
+Lupiro Health Center,2022-8,yes,low,1
+Lupiro Health Center,2023-1,yes,low,8
+Lupiro Health Center,2023-2,yes,low,3
+Lupiro Health Center,2023-3,yes,high,6
+Lupiro Health Center,2023-3,yes,low,9
+Lupiro Health Center,2023-3,NA,low,1
+Lupiro Health Center,2023-4,NA,low,1
+Lupiro Health Center,2023-5,yes,low,2
+Lupiro Health Center,2023-6,yes,low,4
+Lupiro Health Center,2023-7,no,low,1
+Lupiro Health Center,2023-7,yes,low,9
+Lupiro Health Center,2023-7,NA,low,3
+Maburi Dispensary,2019-11,NA,low,1
+Maburi Dispensary,2019-12,NA,low,3
+Maburi Dispensary,2020-1,NA,low,1
+Maburi Dispensary,2020-2,NA,low,2
+Maburi Dispensary,2021-6,yes,high,1
+Maburi Dispensary,2021-6,NA,low,5
+Maburi Dispensary,2021-7,yes,high,1
+Maburi Dispensary,2021-7,NA,low,1
+Maburi Dispensary,2022-7,NA,low,3
+Maburi Dispensary,2022-8,NA,low,10
+Maburi Dispensary,2022-9,NA,low,10
+Mafiga Health Center,2021-5,yes,high,1
+Mafiga Health Center,2021-5,NA,low,1
+Mafiga Health Center,2021-6,yes,high,1
+Mafiga Health Center,2023-7,yes,low,1
+Magubike Health Center,2022-3,yes,high,3
+Magubike Health Center,2022-3,yes,low,1
+Mahenge District Hospital,2018-10,yes,high,1
+Mahenge District Hospital,2018-10,yes,low,15
+Mahenge District Hospital,2018-11,yes,high,5
+Mahenge District Hospital,2018-11,yes,low,14
+Mahenge District Hospital,2018-12,yes,low,10
+Mahenge District Hospital,2018-6,yes,high,1
+Mahenge District Hospital,2018-7,yes,high,1
+Mahenge District Hospital,2018-8,no,low,2
+Mahenge District Hospital,2018-9,yes,low,7
+Mahenge District Hospital,2019-1,yes,high,9
+Mahenge District Hospital,2019-10,yes,high,1
+Mahenge District Hospital,2019-10,yes,low,1
+Mahenge District Hospital,2019-11,no,high,1
+Mahenge District Hospital,2019-12,yes,high,1
+Mahenge District Hospital,2019-2,yes,high,13
+Mahenge District Hospital,2019-2,yes,low,1
+Mahenge District Hospital,2019-3,yes,high,21
+Mahenge District Hospital,2019-4,yes,high,48
+Mahenge District Hospital,2019-4,yes,low,1
+Mahenge District Hospital,2019-5,yes,high,33
+Mahenge District Hospital,2019-5,yes,low,14
+Mahenge District Hospital,2019-6,yes,high,10
+Mahenge District Hospital,2019-6,yes,low,16
+Mahenge District Hospital,2019-7,yes,high,13
+Mahenge District Hospital,2019-7,yes,low,18
+Mahenge District Hospital,2019-8,yes,high,8
+Mahenge District Hospital,2019-8,yes,low,13
+Mahenge District Hospital,2019-9,yes,high,18
+Mahenge District Hospital,2019-9,yes,low,11
+Mahenge District Hospital,2020-1,yes,high,11
+Mahenge District Hospital,2020-2,yes,high,5
+Mahenge District Hospital,2020-3,yes,high,9
+Mahenge District Hospital,2020-4,yes,high,8
+Mahenge District Hospital,2020-5,yes,high,6
+Mahenge District Hospital,2020-6,yes,high,12
+Mahenge District Hospital,2020-6,NA,high,1
+Mahenge District Hospital,2020-7,yes,high,13
+Mahenge District Hospital,2020-7,NA,high,1
+Mahenge District Hospital,2020-8,yes,low,5
+Mahenge District Hospital,2020-8,NA,low,1
+Mahenge District Hospital,2020-9,yes,low,3
+Mahenge District Hospital,2021-10,yes,high,4
+Mahenge District Hospital,2021-10,NA,low,2
+Mahenge District Hospital,2021-11,yes,high,4
+Mahenge District Hospital,2021-11,NA,low,1
+Mahenge District Hospital,2021-2,NA,high,4
+Mahenge District Hospital,2021-3,NA,high,2
+Mahenge District Hospital,2021-4,NA,high,2
+Mahenge District Hospital,2021-5,yes,high,5
+Mahenge District Hospital,2021-5,NA,high,9
+Mahenge District Hospital,2021-8,yes,high,5
+Mahenge District Hospital,2021-8,yes,low,1
+Mahenge District Hospital,2021-8,NA,low,2
+Mahenge District Hospital,2021-9,yes,high,3
+Mahenge District Hospital,2021-9,NA,low,3
+Mahenge District Hospital,2022-1,no,high,2
+Mahenge District Hospital,2022-1,yes,high,4
+Mahenge District Hospital,2022-1,NA,low,1
+Mahenge District Hospital,2022-2,no,high,1
+Mahenge District Hospital,2022-2,yes,high,7
+Mahenge District Hospital,2022-2,yes,low,1
+Mahenge District Hospital,2022-2,NA,low,1
+Mahenge District Hospital,2022-3,yes,high,4
+Mahenge District Hospital,2022-3,NA,low,8
+Mahenge District Hospital,2022-4,no,high,2
+Mahenge District Hospital,2022-4,yes,high,3
+Mahenge District Hospital,2022-4,NA,low,6
+Mahenge District Hospital,2022-5,NA,low,5
+Mahenge District Hospital,2022-6,yes,high,9
+Mahenge District Hospital,2022-6,NA,low,6
+Mahenge District Hospital,2022-7,yes,high,16
+Mahenge District Hospital,2022-7,NA,low,1
+Mahenge District Hospital,2022-8,yes,high,6
+Mahenge District Hospital,2022-8,yes,low,2
+Mahenge District Hospital,2022-8,NA,low,1
+Mahenge District Hospital,2022-9,yes,high,6
+Mahenge District Hospital,2022-9,yes,low,2
+Mahenge District Hospital,2023-3,yes,high,1
+Mahurunga Health Center,2019-3,yes,high,1
+Mahurunga Health Center,2019-4,yes,high,3
+Mahurunga Health Center,2019-4,yes,low,1
+Mahurunga Health Center,2019-5,yes,high,3
+Mahurunga Health Center,2019-5,yes,low,1
+Mahurunga Health Center,2019-6,yes,high,10
+Mahurunga Health Center,2019-6,yes,low,4
+Mahurunga Health Center,2019-7,yes,high,2
+Mahurunga Health Center,2019-7,yes,low,1
+Mahurunga Health Center,2019-8,no,low,2
+Mahurunga Health Center,2019-8,yes,high,2
+Mahurunga Health Center,2019-8,yes,low,3
+Mahuta Health Center,2020-9,yes,high,1
+Mahuta Health Center,2022-3,NA,low,1
+Majimoto Dispensary,2020-8,yes,high,2
+Majimoto Dispensary,2020-8,yes,low,1
+Majimoto Dispensary,2020-8,NA,low,10
+Majimoto Dispensary,2021-2,NA,low,1
+Majimoto Dispensary,2021-5,yes,high,1
+Majimoto Dispensary,2021-5,NA,low,2
+Majimoto Dispensary,2021-6,yes,high,3
+Majimoto Dispensary,2021-6,NA,low,2
+Majimoto Dispensary,2021-7,yes,high,3
+Majimoto Dispensary,2021-7,NA,low,3
+Majimoto Dispensary,2022-3,yes,high,2
+Majimoto Dispensary,2022-4,yes,low,2
+Majimoto Dispensary,2022-5,yes,low,5
+Majimoto Dispensary,2022-6,no,high,1
+Majimoto Dispensary,2022-6,yes,high,2
+Majimoto Dispensary,2022-6,yes,low,1
+Majimoto Dispensary,2022-7,yes,high,1
+Majimoto Dispensary,2022-8,yes,high,4
+Majimoto Dispensary,2022-8,NA,low,3
+Majimoto Dispensary,2022-9,NA,low,1
+Majimoto Dispensary,2023-2,yes,low,3
+Malinyi Dispensary,2020-10,no,low,1
+Malinyi Dispensary,2020-10,NA,low,1
+Malinyi Dispensary,2020-7,yes,high,1
+Malinyi Dispensary,2020-7,yes,low,1
+Malinyi Dispensary,2020-7,NA,low,1
+Malinyi Dispensary,2020-8,yes,high,2
+Malinyi Dispensary,2020-9,NA,low,1
+Malinyi Dispensary,2021-3,yes,high,3
+Malinyi Dispensary,2021-4,yes,high,10
+Malinyi Dispensary,2022-10,no,high,2
+Malinyi Dispensary,2022-10,yes,low,1
+Malinyi Dispensary,2022-11,no,high,2
+Malinyi Dispensary,2022-12,yes,high,8
+Malinyi Dispensary,2022-12,yes,low,2
+Malinyi Dispensary,2022-3,yes,high,5
+Malinyi Dispensary,2022-6,yes,high,3
+Malinyi Dispensary,2022-6,NA,low,1
+Malinyi Dispensary,2022-7,no,high,1
+Malinyi Dispensary,2022-7,yes,high,8
+Malinyi Dispensary,2022-8,yes,high,5
+Malinyi Dispensary,2022-8,yes,low,4
+Malinyi Dispensary,2022-9,yes,high,6
+Malinyi Dispensary,2023-1,yes,high,1
+Malinyi Dispensary,2023-1,yes,low,5
+Malinyi Dispensary,2023-2,yes,high,2
+Malinyi Dispensary,2023-2,yes,low,2
+Malinyi Dispensary,2023-4,yes,high,1
+Mang'ula Health Center,2021-8,yes,high,2
+Mang'ula Health Center,2021-9,yes,high,2
+Mang'ula Health Center,2021-9,NA,low,1
+Mang'ula Health Center,2022-10,yes,high,3
+Mang'ula Health Center,2022-4,yes,low,3
+Mang'ula Health Center,2022-5,yes,low,1
+Mang'ula Health Center,2022-5,NA,low,1
+Mang'ula Health Center,2022-6,NA,high,4
+Mang'ula Health Center,2022-6,NA,low,4
+Mang'ula Health Center,2022-7,NA,high,1
+Mang'ula Health Center,2022-7,NA,low,1
+Mang'ula Health Center,2022-9,yes,high,1
+Mang'ula Health Center,2023-4,yes,high,1
+Mang'ula Health Center,2023-5,yes,high,1
+Mang'ula Health Center,2023-5,NA,low,2
+Mang'ula Health Center,2023-6,yes,high,1
+Mang'ula Health Center,2023-6,NA,low,3
+Mang'ula Health Center,2023-7,yes,high,3
+Mang'ula Health Center,2023-7,NA,low,1
+Mang'ula Health Center,2023-9,yes,low,1
+Manyamanyama Health Center,2018-10,NA,low,1
+Manyamanyama Health Center,2018-11,NA,low,1
+Manyamanyama Health Center,2018-12,yes,low,2
+Manyamanyama Health Center,2018-7,no,high,1
+Manyamanyama Health Center,2018-8,yes,low,1
+Manyamanyama Health Center,2019-1,yes,high,3
+Manyamanyama Health Center,2019-1,yes,low,2
+Manyamanyama Health Center,2019-1,NA,low,2
+Manyamanyama Health Center,2019-10,yes,high,1
+Manyamanyama Health Center,2019-10,yes,low,2
+Manyamanyama Health Center,2019-10,NA,low,2
+Manyamanyama Health Center,2019-11,yes,high,5
+Manyamanyama Health Center,2019-11,yes,low,1
+Manyamanyama Health Center,2019-11,NA,low,1
+Manyamanyama Health Center,2019-12,yes,high,6
+Manyamanyama Health Center,2019-2,NA,low,2
+Manyamanyama Health Center,2019-3,yes,high,3
+Manyamanyama Health Center,2019-3,NA,low,3
+Manyamanyama Health Center,2019-4,yes,low,1
+Manyamanyama Health Center,2019-6,yes,high,2
+Manyamanyama Health Center,2019-8,yes,high,1
+Manyamanyama Health Center,2019-9,yes,high,1
+Manyamanyama Health Center,2019-9,yes,low,1
+Manyamanyama Health Center,2020-1,yes,high,6
+Manyamanyama Health Center,2020-12,yes,high,4
+Manyamanyama Health Center,2020-12,yes,low,4
+Manyamanyama Health Center,2020-12,NA,low,1
+Manyamanyama Health Center,2020-3,yes,low,1
+Manyamanyama Health Center,2020-3,NA,low,1
+Manyamanyama Health Center,2020-4,yes,high,5
+Manyamanyama Health Center,2020-4,yes,low,3
+Manyamanyama Health Center,2020-4,NA,low,4
+Manyamanyama Health Center,2020-5,yes,high,4
+Manyamanyama Health Center,2020-5,NA,low,5
+Manyamanyama Health Center,2020-6,yes,high,6
+Manyamanyama Health Center,2020-6,NA,low,4
+Manyamanyama Health Center,2020-7,yes,high,6
+Manyamanyama Health Center,2020-7,yes,low,3
+Manyamanyama Health Center,2020-7,NA,low,2
+Manyamanyama Health Center,2020-8,yes,high,1
+Manyamanyama Health Center,2020-9,yes,high,3
+Manyamanyama Health Center,2021-1,yes,high,1
+Manyamanyama Health Center,2021-11,yes,high,3
+Manyamanyama Health Center,2021-5,yes,high,3
+Manyamanyama Health Center,2021-6,yes,high,6
+Manyamanyama Health Center,2021-6,NA,low,1
+Manyamanyama Health Center,2021-7,yes,high,1
+Manyamanyama Health Center,2021-8,yes,high,2
+Manyamanyama Health Center,2021-9,yes,high,1
+Manyamanyama Health Center,2022-1,yes,high,1
+Manyamanyama Health Center,2022-10,yes,low,4
+Manyamanyama Health Center,2022-11,yes,low,3
+Manyamanyama Health Center,2022-12,yes,high,3
+Manyamanyama Health Center,2022-12,yes,low,3
+Manyamanyama Health Center,2022-12,NA,low,1
+Manyamanyama Health Center,2022-2,yes,high,1
+Manyamanyama Health Center,2022-2,yes,low,2
+Manyamanyama Health Center,2022-3,yes,low,2
+Manyamanyama Health Center,2022-6,yes,high,3
+Manyamanyama Health Center,2022-6,yes,low,3
+Manyamanyama Health Center,2022-7,yes,high,6
+Manyamanyama Health Center,2023-1,yes,low,5
+Manyamanyama Health Center,2023-1,NA,low,3
+Manyamanyama Health Center,2023-2,yes,low,8
+Manyamanyama Health Center,2023-2,NA,low,14
+Manyamanyama Health Center,2023-3,yes,low,3
+Manyamanyama Health Center,2023-3,NA,low,2
+Masasi Hospital,2018-1,yes,low,5
+Masasi Hospital,2018-6,yes,low,1
+Masasi Hospital,2020-8,yes,high,1
+Mbingu Dispensary,2020-11,yes,high,4
+Mbingu Dispensary,2020-12,yes,high,4
+Mbingu Dispensary,2020-8,no,high,1
+Mbingu Dispensary,2020-8,NA,low,1
+Mbingu Dispensary,2020-9,yes,high,1
+Mbingu Dispensary,2022-7,no,high,1
+Mikumi Health Center,2020-10,yes,high,13
+Mikumi Health Center,2020-11,NA,low,1
+Mikumi Health Center,2020-9,yes,high,1
+Mkomaindo Hospital,2019-1,yes,high,2
+Mkomaindo Hospital,2019-1,yes,low,3
+Mkomaindo Hospital,2019-1,NA,low,2
+Mkomaindo Hospital,2019-11,yes,high,1
+Mkomaindo Hospital,2019-2,yes,high,2
+Mkomaindo Hospital,2019-2,yes,low,1
+Mkomaindo Hospital,2019-3,yes,low,1
+Mkomaindo Hospital,2019-4,yes,low,1
+Mkomaindo Hospital,2019-5,yes,low,1
+Mkomaindo Hospital,2019-6,yes,low,3
+Mkomaindo Hospital,2019-7,yes,low,1
+Mkomaindo Hospital,2019-9,yes,high,6
+Mkomaindo Hospital,2020-10,yes,high,1
+Mkomaindo Hospital,2020-10,NA,low,1
+Mkomaindo Hospital,2020-11,yes,high,2
+Mkomaindo Hospital,2020-12,yes,high,1
+Mkomaindo Hospital,2020-3,yes,high,3
+Mkomaindo Hospital,2020-3,yes,low,2
+Mkomaindo Hospital,2020-3,NA,low,1
+Mkomaindo Hospital,2020-8,yes,high,1
+Mkomaindo Hospital,2020-9,no,low,1
+Mkomaindo Hospital,2020-9,yes,high,1
+Mkomaindo Hospital,2021-10,NA,low,1
+Mkomaindo Hospital,2021-2,yes,high,2
+Mkomaindo Hospital,2021-3,yes,high,2
+Mkomaindo Hospital,2021-4,yes,high,2
+Mkomaindo Hospital,2021-8,yes,high,1
+Mkomaindo Hospital,2021-9,yes,high,2
+Mkomaindo Hospital,2022-1,yes,high,3
+Mkomaindo Hospital,2022-10,yes,high,7
+Mkomaindo Hospital,2022-10,yes,low,1
+Mkomaindo Hospital,2022-11,yes,high,4
+Mkomaindo Hospital,2022-2,yes,high,2
+Mkomaindo Hospital,2022-3,yes,high,5
+Mkomaindo Hospital,2022-4,yes,high,5
+Mkomaindo Hospital,2022-7,NA,high,2
+Mkomaindo Hospital,2022-8,yes,high,1
+Mkomaindo Hospital,2022-9,yes,low,1
+Mkomaindo Hospital,2023-1,yes,high,4
+Mkomaindo Hospital,2023-1,NA,low,1
+Mkomaindo Hospital,2023-2,yes,high,1
+Mkomaindo Hospital,2023-4,yes,high,2
+Mkomaindo Hospital,2023-5,NA,low,1
+Mkuyuni Health Center,2021-5,yes,high,1
+Mkuyuni Health Center,2021-5,NA,low,1
+Mlimba Health Center,2018-1,yes,low,1
+Mlimba Health Center,2018-2,yes,low,3
+Mlimba Health Center,2018-3,yes,low,6
+Mlimba Health Center,2018-8,yes,low,1
+Mlimba Health Center,2019-1,yes,low,9
+Mlimba Health Center,2019-10,yes,high,1
+Mlimba Health Center,2019-10,yes,low,9
+Mlimba Health Center,2019-11,yes,high,1
+Mlimba Health Center,2019-11,yes,low,1
+Mlimba Health Center,2019-11,NA,low,1
+Mlimba Health Center,2019-12,yes,high,4
+Mlimba Health Center,2019-12,yes,low,9
+Mlimba Health Center,2019-2,yes,low,6
+Mlimba Health Center,2019-3,yes,low,2
+Mlimba Health Center,2019-4,yes,low,2
+Mlimba Health Center,2019-5,yes,low,5
+Mlimba Health Center,2019-7,yes,low,3
+Mlimba Health Center,2019-8,yes,low,2
+Mlimba Health Center,2019-9,yes,high,1
+Mlimba Health Center,2019-9,yes,low,10
+Mlimba Health Center,2019-9,NA,low,1
+Mlimba Health Center,2020-1,NA,low,2
+Mlimba Health Center,2020-10,yes,high,1
+Mlimba Health Center,2020-11,yes,high,6
+Mlimba Health Center,2020-2,yes,high,1
+Mlimba Health Center,2020-3,yes,high,4
+Mlimba Health Center,2020-3,NA,low,1
+Mlimba Health Center,2020-5,yes,high,2
+Mlimba Health Center,2020-7,yes,high,1
+Mlimba Health Center,2020-8,yes,high,11
+Mlimba Health Center,2020-8,NA,low,4
+Mlimba Health Center,2020-9,yes,high,1
+Mlimba Health Center,2021-1,yes,high,2
+Mlimba Health Center,2021-2,yes,high,4
+Mlimba Health Center,2021-5,yes,high,1
+Mlimba Health Center,2021-6,NA,low,2
+Mlimba Health Center,2021-7,NA,low,2
+Mlimba Health Center,2022-10,yes,high,1
+Mlimba Health Center,2022-10,yes,low,5
+Mlimba Health Center,2022-11,yes,high,4
+Mlimba Health Center,2022-5,yes,high,7
+Mlimba Health Center,2022-5,yes,low,1
+Mlimba Health Center,2022-6,yes,high,8
+Mlimba Health Center,2022-6,yes,low,5
+Mlimba Health Center,2022-6,NA,low,1
+Mlimba Health Center,2022-7,yes,high,8
+Mlimba Health Center,2022-7,yes,low,2
+Mlimba Health Center,2022-7,NA,low,2
+Mlimba Health Center,2022-8,yes,high,1
+Mlimba Health Center,2022-9,yes,high,8
+Mlimba Health Center,2022-9,NA,low,1
+Mlimba Health Center,2023-1,yes,high,3
+Mlimba Health Center,2023-2,yes,high,2
+Mlimba Health Center,2023-2,yes,low,1
+Mlimba Health Center,2023-3,yes,high,3
+Mlimba Health Center,2023-5,yes,high,4
+Mlimba Health Center,2023-5,yes,low,1
+Mlimba Health Center,2023-6,yes,high,1
+Mlimba Health Center,2023-7,yes,high,4
+Mlimba Health Center,2023-7,NA,low,1
+Mlimba Health Center,2023-8,yes,high,2
+Mnero Health Center,2020-10,NA,low,2
+Mnero Health Center,2021-1,NA,high,1
+Mnero Health Center,2021-10,no,low,1
+Mnero Health Center,2021-10,NA,low,1
+Mnero Health Center,2021-3,no,high,1
+Mnero Health Center,2022-12,NA,low,1
+Mnero Health Center,2022-7,NA,low,1
+Mnero Health Center,2022-8,NA,low,2
+Mngeta Health Center,2020-1,NA,low,1
+Mngeta Health Center,2020-4,NA,low,2
+Mngeta Health Center,2020-6,NA,low,2
+Mngeta Health Center,2020-7,yes,high,1
+Mngeta Health Center,2020-8,NA,low,2
+Mngeta Health Center,2022-2,no,low,1
+Mngeta Health Center,2022-3,no,low,2
+Mngeta Health Center,2022-3,NA,low,1
+Mngeta Health Center,2022-6,no,low,1
+Mngeta Health Center,2022-6,yes,high,1
+Mngeta Health Center,2022-7,yes,high,6
+Mngeta Health Center,2022-7,yes,low,9
+Mngeta Health Center,2022-7,NA,low,4
+Mngeta Health Center,2022-8,yes,high,8
+Mngeta Health Center,2022-8,yes,low,2
+Mngeta Health Center,2022-8,NA,low,1
+Morogoro General Hospital,2022-10,yes,high,1
+Morogoro General Hospital,2022-4,no,high,1
+Morogoro General Hospital,2022-4,yes,high,3
+Morogoro General Hospital,2022-4,NA,low,2
+Morogoro General Hospital,2022-5,yes,high,3
+Morogoro General Hospital,2022-6,yes,high,5
+Morogoro General Hospital,2022-6,NA,low,2
+Morogoro General Hospital,2022-7,yes,high,1
+Morogoro General Hospital,2022-8,yes,high,8
+Morogoro General Hospital,2022-8,yes,low,3
+Morogoro General Hospital,2022-9,yes,high,2
+Morogoro General Hospital,2022-9,yes,low,1
+Morogoro General Hospital,2023-1,yes,high,6
+Morogoro General Hospital,2023-2,yes,high,2
+Morogoro General Hospital,2023-2,yes,low,1
+Morogoro General Hospital,2023-3,yes,high,1
+Mtimbira Health Center,2018-1,yes,high,4
+Mtimbira Health Center,2018-2,yes,high,3
+Mtimbira Health Center,2018-3,yes,high,5
+Mtimbira Health Center,2018-4,yes,high,2
+Mtimbira Health Center,2018-5,yes,high,8
+Mtimbira Health Center,2018-6,yes,high,2
+Mtimbira Health Center,2018-7,yes,high,9
+Mtimbira Health Center,2018-8,yes,high,2
+Mtimbira Health Center,2018-9,yes,high,1
+Mtimbira Health Center,2019-2,yes,high,1
+Mtimbira Health Center,2020-1,yes,high,2
+Mtimbira Health Center,2020-10,no,high,1
+Mtimbira Health Center,2020-10,yes,high,8
+Mtimbira Health Center,2020-10,NA,low,1
+Mtimbira Health Center,2020-11,no,high,1
+Mtimbira Health Center,2020-11,NA,low,1
+Mtimbira Health Center,2020-12,no,high,1
+Mtimbira Health Center,2020-3,yes,high,5
+Mtimbira Health Center,2020-4,yes,high,3
+Mtimbira Health Center,2020-5,yes,high,1
+Mtimbira Health Center,2020-6,yes,high,3
+Mtimbira Health Center,2020-7,yes,high,1
+Mtimbira Health Center,2020-8,no,high,2
+Mtimbira Health Center,2020-8,yes,high,4
+Mtimbira Health Center,2020-8,yes,low,1
+Mtimbira Health Center,2020-9,yes,high,3
+Mtimbira Health Center,2021-1,no,high,7
+Mtimbira Health Center,2021-10,no,low,1
+Mtimbira Health Center,2021-10,yes,high,1
+Mtimbira Health Center,2021-10,yes,low,1
+Mtimbira Health Center,2021-10,NA,low,6
+Mtimbira Health Center,2021-11,yes,high,3
+Mtimbira Health Center,2021-11,NA,high,3
+Mtimbira Health Center,2021-11,NA,low,5
+Mtimbira Health Center,2021-12,no,high,3
+Mtimbira Health Center,2021-12,yes,high,2
+Mtimbira Health Center,2021-12,NA,high,1
+Mtimbira Health Center,2021-12,NA,low,2
+Mtimbira Health Center,2021-2,no,high,2
+Mtimbira Health Center,2021-3,NA,low,1
+Mtimbira Health Center,2021-4,no,high,2
+Mtimbira Health Center,2021-5,no,high,4
+Mtimbira Health Center,2021-5,NA,high,1
+Mtimbira Health Center,2021-5,NA,low,3
+Mtimbira Health Center,2021-6,no,high,7
+Mtimbira Health Center,2021-6,yes,high,3
+Mtimbira Health Center,2021-6,yes,low,2
+Mtimbira Health Center,2021-6,NA,low,5
+Mtimbira Health Center,2021-7,no,high,6
+Mtimbira Health Center,2021-7,yes,high,4
+Mtimbira Health Center,2021-7,NA,low,5
+Mtimbira Health Center,2021-8,no,high,2
+Mtimbira Health Center,2021-8,NA,low,2
+Mtimbira Health Center,2021-9,no,high,5
+Mtimbira Health Center,2021-9,NA,low,1
+Mtimbira Health Center,2022-1,no,high,1
+Mtimbira Health Center,2022-1,yes,high,3
+Mtimbira Health Center,2022-1,NA,high,3
+Mtimbira Health Center,2022-1,NA,low,1
+Mtimbira Health Center,2022-10,yes,high,2
+Mtimbira Health Center,2022-2,yes,high,8
+Mtimbira Health Center,2022-3,yes,high,6
+Mtimbira Health Center,2022-3,NA,low,2
+Mtimbira Health Center,2022-4,yes,high,2
+Mtimbira Health Center,2022-4,NA,low,1
+Mtimbira Health Center,2022-5,yes,high,9
+Mtimbira Health Center,2022-5,yes,low,1
+Mtimbira Health Center,2022-6,yes,high,12
+Mtimbira Health Center,2022-7,yes,high,1
+Mtimbira Health Center,2022-8,yes,high,1
+Mtimbira Health Center,2022-8,yes,low,1
+Mtimbira Health Center,2022-9,yes,high,3
+Mtimbira Health Center,2022-9,yes,low,1
+Mtimbira Health Center,2022-9,NA,low,1
+Mtimbira Health Center,2023-1,yes,high,3
+Mtimbira Health Center,2023-2,yes,high,4
+Mtimbira Health Center,2023-3,yes,high,3
+Mtimbira Health Center,2023-5,yes,high,8
+Mtimbira Health Center,2023-6,yes,high,5
+Mugango Health Center,2020-8,no,low,2
+Mugango Health Center,2022-10,yes,high,1
+Mugango Health Center,2023-3,yes,high,1
+Mugango Health Center,2023-6,no,low,1
+Mugango Health Center,2023-7,no,low,1
+Mugeta Health Center,2018-10,yes,high,1
+Mugeta Health Center,2018-6,yes,low,1
+Mugeta Health Center,2019-10,yes,low,1
+Mugeta Health Center,2019-8,yes,low,1
+Mugeta Health Center,2020-7,yes,low,5
+Mugeta Health Center,2020-9,yes,high,1
+Mugeta Health Center,2022-3,yes,high,1
+Mugeta Health Center,2022-3,NA,low,1
+Mugeta Health Center,2023-1,no,high,1
+Mugeta Health Center,2023-2,no,high,1
+Murangi Health Center,2018-11,yes,low,1
+Murangi Health Center,2018-12,yes,low,1
+Murangi Health Center,2018-9,yes,high,4
+Murangi Health Center,2018-9,NA,low,1
+Murangi Health Center,2019-10,yes,low,1
+Murangi Health Center,2019-12,yes,low,1
+Murangi Health Center,2019-3,yes,high,1
+Murangi Health Center,2019-5,yes,low,1
+Murangi Health Center,2019-7,yes,low,1
+Murangi Health Center,2020-1,yes,low,5
+Murangi Health Center,2020-10,yes,low,2
+Murangi Health Center,2020-11,yes,high,2
+Murangi Health Center,2020-11,NA,low,1
+Murangi Health Center,2020-12,yes,high,2
+Murangi Health Center,2020-12,NA,low,1
+Murangi Health Center,2020-2,yes,low,2
+Murangi Health Center,2020-4,yes,low,1
+Murangi Health Center,2020-7,yes,low,5
+Murangi Health Center,2020-9,yes,high,1
+Murangi Health Center,2020-9,yes,low,1
+Murangi Health Center,2021-1,NA,low,1
+Murangi Health Center,2021-11,yes,high,3
+Murangi Health Center,2021-11,yes,low,1
+Murangi Health Center,2021-11,NA,high,1
+Murangi Health Center,2021-12,yes,high,3
+Murangi Health Center,2021-12,yes,low,1
+Murangi Health Center,2021-12,NA,high,3
+Murangi Health Center,2021-2,yes,high,3
+Murangi Health Center,2021-3,yes,low,2
+Murangi Health Center,2021-5,yes,low,2
+Murangi Health Center,2021-7,yes,low,1
+Murangi Health Center,2021-8,yes,low,1
+Murangi Health Center,2021-9,yes,low,1
+Murangi Health Center,2022-3,yes,high,1
+Murangi Health Center,2022-3,yes,low,2
+Murangi Health Center,2022-3,NA,low,1
+Murangi Health Center,2022-4,NA,low,1
+Murangi Health Center,2022-5,NA,low,1
+Murangi Health Center,2022-6,yes,high,2
+Murangi Health Center,2022-6,yes,low,1
+Murangi Health Center,2022-6,NA,low,2
+Murangi Health Center,2022-7,yes,high,4
+Murangi Health Center,2022-7,yes,low,8
+Murangi Health Center,2022-8,yes,low,1
+Murangi Health Center,2023-1,yes,high,1
+Murangi Health Center,2023-2,yes,high,1
+Murangi Health Center,2023-3,yes,high,1
+Murangi Health Center,2023-5,NA,low,1
+Murangi Health Center,2023-7,NA,low,1
+Muriba Health Center,2018-10,no,low,4
+Muriba Health Center,2018-10,NA,low,2
+Muriba Health Center,2018-11,no,high,1
+Muriba Health Center,2018-12,NA,low,1
+Muriba Health Center,2019-11,NA,low,2
+Muriba Health Center,2019-12,NA,low,1
+Muriba Health Center,2019-2,no,high,1
+Muriba Health Center,2019-3,no,low,1
+Muriba Health Center,2019-3,NA,low,1
+Muriba Health Center,2019-4,NA,low,3
+Muriba Health Center,2019-5,NA,low,2
+Muriba Health Center,2019-6,NA,low,2
+Muriba Health Center,2019-7,NA,high,1
+Muriba Health Center,2019-8,no,high,1
+Muriba Health Center,2019-9,no,low,3
+Muriba Health Center,2019-9,NA,low,2
+Muriba Health Center,2020-1,NA,low,1
+Muriba Health Center,2020-10,no,high,1
+Muriba Health Center,2020-2,NA,low,2
+Muriba Health Center,2020-3,yes,low,2
+Muriba Health Center,2020-4,no,low,1
+Muriba Health Center,2020-4,yes,low,1
+Muriba Health Center,2020-5,no,low,1
+Muriba Health Center,2020-6,no,low,1
+Muriba Health Center,2020-7,no,low,2
+Muriba Health Center,2020-8,NA,low,1
+Muriba Health Center,2021-10,yes,high,2
+Muriba Health Center,2021-10,NA,low,1
+Muriba Health Center,2021-3,yes,low,1
+Muriba Health Center,2021-4,yes,high,1
+Muriba Health Center,2021-6,NA,low,1
+Muriba Health Center,2021-7,NA,low,1
+Muriba Health Center,2021-9,yes,high,1
+Muriba Health Center,2022-3,NA,low,1
+Muriba Health Center,2022-7,NA,low,3
+Muriba Health Center,2022-8,NA,low,2
+Muriba Health Center,2022-9,NA,low,1
+Muriba Health Center,2023-2,NA,low,1
+Muriba Health Center,2023-3,yes,high,1
+Muriba Health Center,2023-4,yes,low,1
+Musoma Regional Hospital,2020-10,yes,high,1
+Musoma Regional Hospital,2020-11,no,low,1
+Musoma Regional Hospital,2020-12,yes,high,1
+Musoma Regional Hospital,2020-9,yes,high,2
+Musoma Regional Hospital,2021-1,NA,low,1
+Musoma Regional Hospital,2021-10,yes,high,1
+Musoma Regional Hospital,2021-10,NA,low,1
+Musoma Regional Hospital,2021-2,no,low,1
+Musoma Regional Hospital,2021-2,yes,low,1
+Musoma Regional Hospital,2021-9,yes,high,1
+Musoma Regional Hospital,2022-12,yes,high,1
+Musoma Regional Hospital,2023-1,yes,high,1
+Musoma Regional Hospital,2023-1,yes,low,1
+Musoma Regional Hospital,2023-1,NA,low,1
+Musoma Regional Hospital,2023-2,yes,high,1
+Musoma Regional Hospital,2023-3,yes,high,2
+Mwembesongo Dispensary,2019-10,yes,low,1
+Mwembesongo Dispensary,2019-10,NA,low,1
+Mwembesongo Dispensary,2019-8,yes,low,1
+Mwembesongo Dispensary,2020-1,yes,high,10
+Mwembesongo Dispensary,2020-5,yes,high,1
+Mwembesongo Dispensary,2021-11,yes,high,2
+Mwembesongo Dispensary,2021-12,yes,high,2
+Mwembesongo Dispensary,2021-12,NA,low,2
+Mwembesongo Dispensary,2022-5,yes,low,1
+Nachingwea Hospital,2018-10,yes,high,3
+Nachingwea Hospital,2018-10,yes,low,4
+Nachingwea Hospital,2018-11,yes,high,2
+Nachingwea Hospital,2018-11,yes,low,1
+Nachingwea Hospital,2018-6,yes,high,1
+Nachingwea Hospital,2018-7,yes,high,4
+Nachingwea Hospital,2018-8,yes,low,4
+Nachingwea Hospital,2018-8,NA,low,1
+Nachingwea Hospital,2018-9,yes,low,1
+Nachingwea Hospital,2019-10,NA,low,1
+Nachingwea Hospital,2019-11,NA,low,1
+Nachingwea Hospital,2019-12,NA,low,1
+Nachingwea Hospital,2019-2,NA,low,2
+Nachingwea Hospital,2019-7,NA,low,1
+Nachingwea Hospital,2019-9,NA,low,1
+Nachingwea Hospital,2020-1,yes,low,2
+Nachingwea Hospital,2020-10,yes,high,1
+Nachingwea Hospital,2020-11,NA,low,1
+Nachingwea Hospital,2020-3,no,high,4
+Nachingwea Hospital,2020-3,yes,high,2
+Nachingwea Hospital,2020-4,yes,high,2
+Nachingwea Hospital,2020-8,NA,low,1
+Nachingwea Hospital,2020-9,no,high,1
+Nachingwea Hospital,2021-1,yes,high,1
+Nachingwea Hospital,2021-2,yes,high,1
+Nachingwea Hospital,2021-2,NA,low,1
+Nachingwea Hospital,2021-4,yes,high,1
+Nachingwea Hospital,2021-4,NA,low,1
+Nachingwea Hospital,2021-5,yes,high,2
+Nachingwea Hospital,2021-6,yes,high,2
+Nachingwea Hospital,2022-10,yes,high,1
+Nachingwea Hospital,2022-11,yes,low,4
+Nachingwea Hospital,2022-2,yes,high,2
+Nachingwea Hospital,2022-3,yes,high,2
+Nachingwea Hospital,2022-3,NA,low,1
+Nachingwea Hospital,2022-4,yes,high,5
+Nachingwea Hospital,2022-5,yes,high,7
+Nachingwea Hospital,2022-6,yes,high,1
+Nachingwea Hospital,2023-4,yes,high,1
+Nachingwea Hospital,2023-4,yes,low,1
+Nachingwea Hospital,2023-5,yes,high,5
+Nachingwea Hospital,2023-6,yes,high,1
+Nachingwea Hospital,2023-8,yes,high,3
+Nachingwea Hospital,2023-9,yes,high,1
+Namikupa Health Center,2020-11,yes,high,2
+Namikupa Health Center,2020-11,yes,low,2
+Nanguruwe Health Center,2018-10,no,low,1
+Nanguruwe Health Center,2021-1,yes,high,1
+Nanguruwe Health Center,2021-10,yes,high,2
+Nanguruwe Health Center,2021-10,NA,low,1
+Nanguruwe Health Center,2021-11,NA,high,2
+Nanguruwe Health Center,2021-2,yes,high,1
+Nanguruwe Health Center,2021-3,yes,high,1
+Nanguruwe Health Center,2021-3,NA,low,1
+Nanguruwe Health Center,2021-4,yes,high,2
+Nanguruwe Health Center,2021-8,yes,high,2
+Nanguruwe Health Center,2023-4,yes,high,1
+Nanguruwe Health Center,2023-5,yes,high,1
+Nanguruwe Health Center,2023-6,yes,high,1
+Nanyamba Health Center,2019-8,no,low,1
+Nanyamba Health Center,2022-3,yes,high,7
+Nanyamba Health Center,2022-5,yes,high,11
+Nanyamba Health Center,2022-8,no,high,1
+Nanyumbu District Hospital,2018-1,yes,low,2
+Nanyumbu District Hospital,2018-10,yes,low,1
+Nanyumbu District Hospital,2018-12,yes,low,1
+Nanyumbu District Hospital,2018-7,NA,low,1
+Nanyumbu District Hospital,2018-8,NA,low,1
+Nanyumbu District Hospital,2018-9,yes,high,2
+Nanyumbu District Hospital,2019-1,yes,low,1
+Nanyumbu District Hospital,2019-4,NA,low,2
+Nanyumbu District Hospital,2019-5,NA,low,2
+Nanyumbu District Hospital,2020-9,yes,high,1
+Nanyumbu District Hospital,2020-9,yes,low,2
+Nanyumbu District Hospital,2021-10,yes,high,1
+Nanyumbu District Hospital,2021-11,yes,high,1
+Nanyumbu District Hospital,2021-12,yes,high,2
+Nanyumbu District Hospital,2021-12,NA,low,3
+Nanyumbu District Hospital,2021-8,NA,low,1
+Nanyumbu District Hospital,2021-9,yes,high,4
+Nanyumbu District Hospital,2022-1,yes,high,3
+Nanyumbu District Hospital,2022-10,yes,low,1
+Nanyumbu District Hospital,2022-12,yes,high,1
+Nanyumbu District Hospital,2022-3,yes,high,3
+Nanyumbu District Hospital,2022-5,yes,high,3
+Nanyumbu District Hospital,2022-6,yes,high,10
+Nanyumbu District Hospital,2022-6,NA,low,1
+Nanyumbu District Hospital,2022-7,yes,low,2
+Nanyumbu District Hospital,2022-7,NA,low,1
+Nanyumbu District Hospital,2022-8,yes,low,4
+Nanyumbu District Hospital,2023-1,yes,high,1
+Nanyumbu District Hospital,2023-2,yes,high,1
+Nanyumbu District Hospital,2023-4,yes,high,1
+Nanyumbu District Hospital,2023-5,yes,high,2
+Natta Health Center,2022-7,yes,high,3
+Natta Health Center,2022-8,yes,high,5
+Natta Health Center,2023-1,yes,low,7
+Natta Health Center,2023-2,yes,low,3
+Ndanda Hospital,2020-8,no,low,1
+Ndanda Hospital,2022-1,yes,high,2
+Ndanda Hospital,2022-6,yes,low,1
+Ndanda Hospital,2022-6,NA,low,1
+Ndanda Hospital,2023-8,yes,high,1
+Newala District Hospital,2018-7,yes,high,3
+Newala District Hospital,2019-5,yes,low,1
+Newala District Hospital,2019-9,yes,low,1
+Newala District Hospital,2020-3,yes,high,1
+Newala District Hospital,2020-7,yes,high,1
+Newala District Hospital,2021-2,no,high,1
+Newala District Hospital,2021-5,NA,low,1
+Newala District Hospital,2021-8,no,low,1
+Newala District Hospital,2022-11,no,low,1
+Newala District Hospital,2022-4,no,high,1
+Newala District Hospital,2022-4,no,low,1
+Newala District Hospital,2022-4,yes,high,1
+Newala District Hospital,2023-4,yes,high,2
+Newala District Hospital,2023-5,no,high,1
+Newala District Hospital,2023-6,yes,high,1
+Ngerengere Health Center,2019-3,yes,high,1
+Ngerengere Health Center,2019-4,yes,high,1
+Ngerengere Health Center,2019-4,yes,low,1
+Ngerengere Health Center,2019-5,yes,high,1
+Ngerengere Health Center,2019-6,yes,low,6
+Ngerengere Health Center,2020-10,yes,high,12
+Ngerengere Health Center,2020-10,NA,low,2
+Ngerengere Health Center,2020-11,yes,high,1
+Ngerengere Health Center,2020-11,NA,low,2
+Ngerengere Health Center,2020-5,yes,high,1
+Ngerengere Health Center,2020-6,yes,high,19
+Ngerengere Health Center,2020-7,yes,high,2
+Ngerengere Health Center,2020-7,NA,low,1
+Ngerengere Health Center,2020-8,yes,high,22
+Ngerengere Health Center,2020-9,yes,high,3
+Ngerengere Health Center,2020-9,yes,low,1
+Ngerengere Health Center,2020-9,NA,low,2
+Ngerengere Health Center,2021-5,yes,high,6
+Ngerengere Health Center,2021-5,yes,low,1
+Ngerengere Health Center,2021-5,NA,low,1
+Ngerengere Health Center,2021-6,NA,low,1
+Ngerengere Health Center,2022-1,yes,high,5
+Ngerengere Health Center,2022-1,NA,high,3
+Ngerengere Health Center,2022-12,yes,high,1
+Ngerengere Health Center,2022-2,yes,high,5
+Ngerengere Health Center,2022-2,NA,low,2
+Ngerengere Health Center,2022-3,yes,high,1
+Ngerengere Health Center,2022-3,yes,low,1
+Ngerengere Health Center,2022-4,yes,high,1
+Ngerengere Health Center,2022-4,yes,low,2
+Ngerengere Health Center,2022-5,yes,low,4
+Ngerengere Health Center,2022-6,yes,high,2
+Ngerengere Health Center,2022-6,yes,low,1
+Ngerengere Health Center,2022-7,yes,high,2
+Ngerengere Health Center,2022-8,yes,high,5
+Ngerengere Health Center,2022-8,NA,low,3
+Ngerengere Health Center,2022-9,yes,high,1
+Ngerengere Health Center,2023-1,yes,high,3
+Ngerengere Health Center,2023-2,yes,high,6
+Ngerengere Health Center,2023-3,yes,high,5
+Ngerengere Health Center,2023-4,yes,high,3
+Ngerengere Health Center,2023-4,NA,high,1
+Ngerengere Health Center,2023-5,yes,high,7
+Ngerengere Health Center,2023-6,yes,high,1
+Nyamagaro Dispensary,2020-10,NA,low,1
+Nyamagaro Dispensary,2020-11,yes,high,1
+Nyamagaro Dispensary,2020-12,NA,low,1
+Nyamagaro Dispensary,2020-9,yes,low,1
+Nyamagaro Dispensary,2021-1,NA,low,2
+Nyamagaro Dispensary,2021-2,NA,low,1
+Nyamagaro Dispensary,2022-10,NA,low,1
+Nyamagaro Dispensary,2022-11,yes,high,1
+Nyamagaro Dispensary,2022-11,NA,low,3
+Nyamagaro Dispensary,2022-4,yes,high,2
+Nyamagaro Dispensary,2022-4,NA,low,2
+Nyamagaro Dispensary,2022-5,no,low,1
+Nyamagaro Dispensary,2022-5,yes,high,3
+Nyamagaro Dispensary,2022-7,no,low,1
+Nyamagoro Health Center,2022-12,yes,high,1
+Nyamagoro Health Center,2022-12,NA,low,1
+Nyamagoro Health Center,2023-1,yes,high,2
+Nyamagoro Health Center,2023-2,yes,high,5
+Nyamagoro Health Center,2023-3,yes,high,2
+Nyamwaga Hospital,2023-6,yes,low,1
+Nyangao Hospital,2018-12,NA,low,1
+Nyangao Hospital,2018-8,yes,high,1
+Nyangao Hospital,2018-8,yes,low,3
+Nyangao Hospital,2018-9,yes,low,1
+Nyangao Hospital,2019-1,yes,high,1
+Nyangao Hospital,2019-10,yes,high,1
+Nyangao Hospital,2019-11,yes,high,1
+Nyangao Hospital,2019-12,yes,high,1
+Nyangao Hospital,2019-2,NA,low,1
+Nyangao Hospital,2019-4,NA,low,1
+Nyangao Hospital,2019-5,NA,low,1
+Nyangao Hospital,2019-7,yes,high,1
+Nyangao Hospital,2019-8,yes,high,2
+Nyangao Hospital,2020-1,yes,high,3
+Nyangao Hospital,2020-1,NA,low,1
+Nyangao Hospital,2020-2,yes,high,2
+Nyangao Hospital,2020-2,yes,low,1
+Nyangao Hospital,2020-3,yes,high,1
+Nyangao Hospital,2020-6,yes,high,2
+Nyangao Hospital,2020-6,NA,low,2
+Nyangao Hospital,2020-7,yes,high,1
+Nyangao Hospital,2020-7,NA,low,1
+Nyangao Hospital,2020-8,yes,low,1
+Nyangao Hospital,2020-8,NA,low,1
+Nyangao Hospital,2020-9,yes,high,1
+Nyangao Hospital,2020-9,yes,low,1
+Nyangao Hospital,2021-1,yes,high,1
+Nyangao Hospital,2021-11,yes,high,3
+Nyangao Hospital,2021-2,yes,high,2
+Nyangao Hospital,2021-2,NA,high,1
+Nyangao Hospital,2021-3,yes,high,3
+Nyangao Hospital,2021-3,NA,high,1
+Nyangao Hospital,2021-4,yes,high,1
+Nyangao Hospital,2021-4,NA,low,1
+Nyangao Hospital,2021-7,NA,low,1
+Nyangao Hospital,2021-8,NA,low,1
+Nyangao Hospital,2021-9,yes,low,1
+Nyangao Hospital,2022-1,yes,high,3
+Nyangao Hospital,2022-10,yes,high,3
+Nyangao Hospital,2022-11,yes,high,1
+Nyangao Hospital,2022-6,yes,high,1
+Nyangao Hospital,2022-7,yes,high,3
+Nyangao Hospital,2022-8,yes,high,4
+Nyangao Hospital,2023-1,yes,high,3
+Nyangao Hospital,2023-4,yes,high,1
+Nyangao Hospital,2023-5,yes,high,4
+Nyangao Hospital,2023-6,yes,high,1
+Nyangao Hospital,2023-6,NA,high,2
+Nyangao Hospital,2023-7,yes,high,3
+Nyangao Hospital,2023-7,NA,high,1
+Nyangao Hospital,2023-8,yes,high,2
+Nyangoto Dispensary,2022-2,NA,low,1
+Nyangoto Dispensary,2022-5,NA,low,2
+Nyangoto Dispensary,2023-1,NA,low,1
+Nyangoto Dispensary,2023-3,NA,low,1
+Nyangoto Dispensary,2023-4,yes,high,1
+Nyangoto Dispensary,2023-5,NA,low,1
+Nyangoto Dispensary,2023-6,NA,low,1
+Nyasho Health Center,2018-8,no,high,1
+Nyasho Health Center,2018-8,no,low,1
+Nyasho Health Center,2018-8,NA,low,1
+Nyasho Health Center,2019-10,no,high,1
+Nyasho Health Center,2019-12,no,low,1
+Nyasho Health Center,2019-3,no,high,1
+Nyasho Health Center,2019-5,yes,high,1
+Nyasho Health Center,2019-5,yes,low,2
+Nyasho Health Center,2019-5,NA,low,4
+Nyasho Health Center,2019-9,no,high,2
+Nyasho Health Center,2019-9,no,low,1
+Nyasho Health Center,2019-9,yes,high,1
+Nyasho Health Center,2019-9,yes,low,1
+Nyasho Health Center,2020-1,no,high,1
+Nyasho Health Center,2020-1,no,low,1
+Nyasho Health Center,2020-1,NA,high,1
+Nyasho Health Center,2020-10,yes,high,2
+Nyasho Health Center,2020-11,yes,high,3
+Nyasho Health Center,2020-12,yes,high,1
+Nyasho Health Center,2020-12,NA,low,1
+Nyasho Health Center,2020-2,no,high,5
+Nyasho Health Center,2020-2,no,low,2
+Nyasho Health Center,2020-3,no,high,1
+Nyasho Health Center,2021-1,yes,high,5
+Nyasho Health Center,2021-10,yes,high,1
+Nyasho Health Center,2021-11,yes,high,4
+Nyasho Health Center,2021-11,NA,low,1
+Nyasho Health Center,2021-12,yes,high,1
+Nyasho Health Center,2021-2,yes,high,2
+Nyasho Health Center,2021-6,yes,high,1
+Nyasho Health Center,2021-6,NA,low,1
+Nyasho Health Center,2021-7,yes,high,1
+Nyasho Health Center,2021-7,NA,low,3
+Nyasho Health Center,2021-8,yes,high,1
+Nyasho Health Center,2021-8,NA,low,3
+Nyasho Health Center,2021-9,yes,high,3
+Nyasho Health Center,2021-9,NA,low,4
+Nyasho Health Center,2022-11,yes,low,1
+Nyasho Health Center,2022-12,yes,low,6
+Nyasho Health Center,2022-3,yes,high,5
+Nyasho Health Center,2022-3,yes,low,1
+Nyasho Health Center,2022-4,yes,high,5
+Nyasho Health Center,2022-4,yes,low,1
+Nyasho Health Center,2022-5,yes,high,1
+Nyasho Health Center,2022-6,yes,high,1
+Nyasho Health Center,2022-6,yes,low,2
+Nyasho Health Center,2022-7,yes,high,1
+Nyasho Health Center,2022-7,yes,low,1
+Nyasho Health Center,2023-1,yes,low,4
+Nyasho Health Center,2023-1,NA,low,1
+Nyasho Health Center,2023-2,yes,low,1
+Nyasho Health Center,2023-3,yes,high,2
+Nyasho Health Center,2023-4,yes,low,1
+Nyasho Health Center,2023-5,yes,low,3
+RCH A Health Center,2022-10,NA,low,2
+RCH A Health Center,2022-11,NA,low,2
+RCH A Health Center,2022-12,NA,low,2
+RCH A Health Center,2022-2,NA,low,2
+RCH A Health Center,2022-3,yes,low,3
+RCH A Health Center,2022-3,NA,low,1
+RCH A Health Center,2022-4,yes,low,1
+RCH A Health Center,2022-5,yes,low,1
+RCH A Health Center,2022-6,yes,high,1
+RCH A Health Center,2022-6,yes,low,1
+RCH A Health Center,2022-8,NA,high,1
+RCH A Health Center,2022-9,NA,low,1
+RCH A Health Center,2023-1,NA,low,1
+RCH B Health Center,2018-10,no,low,7
+RCH B Health Center,2018-10,NA,low,6
+RCH B Health Center,2018-11,yes,low,1
+RCH B Health Center,2018-11,NA,low,2
+RCH B Health Center,2018-12,no,low,1
+RCH B Health Center,2018-12,NA,low,3
+RCH B Health Center,2018-9,NA,low,4
+RCH B Health Center,2019-1,yes,high,2
+RCH B Health Center,2019-1,NA,low,2
+RCH B Health Center,2019-10,yes,high,8
+RCH B Health Center,2019-10,yes,low,1
+RCH B Health Center,2019-10,NA,low,28
+RCH B Health Center,2019-11,yes,high,3
+RCH B Health Center,2019-11,NA,low,35
+RCH B Health Center,2019-12,NA,low,28
+RCH B Health Center,2019-2,yes,high,3
+RCH B Health Center,2019-2,NA,low,11
+RCH B Health Center,2019-3,yes,high,6
+RCH B Health Center,2019-3,NA,low,5
+RCH B Health Center,2019-4,no,low,1
+RCH B Health Center,2019-4,yes,high,5
+RCH B Health Center,2019-4,yes,low,2
+RCH B Health Center,2019-4,NA,low,32
+RCH B Health Center,2019-5,yes,high,10
+RCH B Health Center,2019-5,NA,low,42
+RCH B Health Center,2019-6,yes,high,4
+RCH B Health Center,2019-6,yes,low,2
+RCH B Health Center,2019-6,NA,low,27
+RCH B Health Center,2019-7,yes,high,11
+RCH B Health Center,2019-7,yes,low,1
+RCH B Health Center,2019-7,NA,low,34
+RCH B Health Center,2019-8,NA,low,14
+RCH B Health Center,2019-9,no,low,2
+RCH B Health Center,2019-9,yes,high,4
+RCH B Health Center,2019-9,yes,low,2
+RCH B Health Center,2019-9,NA,low,41
+RCH B Health Center,2020-1,NA,low,15
+RCH B Health Center,2020-10,no,low,1
+RCH B Health Center,2020-10,yes,high,3
+RCH B Health Center,2020-10,yes,low,1
+RCH B Health Center,2020-10,NA,low,25
+RCH B Health Center,2020-11,yes,high,4
+RCH B Health Center,2020-11,yes,low,1
+RCH B Health Center,2020-11,NA,low,29
+RCH B Health Center,2020-12,yes,high,1
+RCH B Health Center,2020-12,yes,low,2
+RCH B Health Center,2020-12,NA,low,16
+RCH B Health Center,2020-2,yes,high,2
+RCH B Health Center,2020-2,yes,low,1
+RCH B Health Center,2020-2,NA,low,9
+RCH B Health Center,2020-3,no,low,1
+RCH B Health Center,2020-3,yes,low,1
+RCH B Health Center,2020-3,NA,low,23
+RCH B Health Center,2020-4,yes,low,1
+RCH B Health Center,2020-4,NA,low,3
+RCH B Health Center,2020-7,no,low,2
+RCH B Health Center,2020-7,yes,high,4
+RCH B Health Center,2020-7,NA,low,24
+RCH B Health Center,2020-8,NA,low,2
+RCH B Health Center,2020-9,NA,low,7
+RCH B Health Center,2021-1,yes,high,4
+RCH B Health Center,2021-1,yes,low,2
+RCH B Health Center,2021-1,NA,low,22
+RCH B Health Center,2021-10,yes,high,10
+RCH B Health Center,2021-10,NA,low,9
+RCH B Health Center,2021-11,yes,high,15
+RCH B Health Center,2021-11,NA,low,6
+RCH B Health Center,2021-12,yes,high,6
+RCH B Health Center,2021-12,NA,high,2
+RCH B Health Center,2021-12,NA,low,10
+RCH B Health Center,2021-3,yes,high,9
+RCH B Health Center,2021-3,NA,low,24
+RCH B Health Center,2021-4,yes,high,5
+RCH B Health Center,2021-4,NA,low,32
+RCH B Health Center,2021-6,yes,high,4
+RCH B Health Center,2021-6,NA,low,14
+RCH B Health Center,2021-7,NA,low,1
+RCH B Health Center,2021-8,yes,high,8
+RCH B Health Center,2021-8,yes,low,1
+RCH B Health Center,2021-8,NA,high,1
+RCH B Health Center,2021-8,NA,low,11
+RCH B Health Center,2021-9,no,low,1
+RCH B Health Center,2021-9,yes,high,7
+RCH B Health Center,2021-9,NA,low,12
+RCH B Health Center,2022-2,no,low,1
+RCH B Health Center,2022-2,yes,high,7
+RCH B Health Center,2022-2,yes,low,1
+RCH B Health Center,2022-2,NA,low,10
+RCH B Health Center,2022-3,yes,high,8
+RCH B Health Center,2022-3,yes,low,1
+RCH B Health Center,2022-3,NA,low,14
+RCH B Health Center,2022-4,yes,high,10
+RCH B Health Center,2022-4,NA,low,5
+RCH B Health Center,2022-5,yes,high,9
+RCH B Health Center,2022-5,NA,low,5
+RCH B Health Center,2022-6,yes,high,5
+RCH B Health Center,2022-6,NA,low,6
+RCH B Health Center,2022-7,yes,high,8
+RCH B Health Center,2022-7,yes,low,1
+RCH B Health Center,2022-7,NA,low,8
+RCH B Health Center,2022-8,yes,high,7
+RCH B Health Center,2022-8,NA,low,5
+RCH B Health Center,2022-9,yes,high,8
+RCH B Health Center,2022-9,yes,low,1
+RCH B Health Center,2022-9,NA,low,4
+Rabies Test Facility,2018-1,yes,high,26
+Rabies Test Facility,2018-1,yes,low,22
+Rabies Test Facility,2018-1,NA,high,2
+Rabies Test Facility,2018-2,yes,high,13
+Rabies Test Facility,2018-2,yes,low,44
+Rabies Test Facility,2018-2,NA,high,2
+Rabies Test Facility,2018-2,NA,low,2
+Rabies Test Facility,2018-3,yes,high,23
+Rabies Test Facility,2018-3,yes,low,43
+Rabies Test Facility,2018-3,NA,low,3
+Rabies Test Facility,2018-4,yes,high,13
+Rabies Test Facility,2018-4,yes,low,68
+Rabies Test Facility,2018-4,NA,high,2
+Rabies Test Facility,2018-4,NA,low,2
+Rabies Test Facility,2018-5,yes,high,9
+Rabies Test Facility,2018-5,yes,low,37
+Rabies Test Facility,2018-6,yes,high,5
+Rabies Test Facility,2018-6,yes,low,17
+Rabies Test Facility,2018-6,NA,high,1
+Rabies Test Facility,2018-7,yes,high,4
+Rabies Test Facility,2018-7,yes,low,3
+Rabies Test Facility,2018-8,yes,high,1
+Rabies Test Facility,2018-9,yes,low,1
+Ruangwa District Hospital,2018-1,yes,high,2
+Ruangwa District Hospital,2018-10,yes,high,3
+Ruangwa District Hospital,2018-11,yes,high,10
+Ruangwa District Hospital,2018-12,yes,high,2
+Ruangwa District Hospital,2018-12,NA,low,1
+Ruangwa District Hospital,2018-2,yes,high,1
+Ruangwa District Hospital,2018-2,NA,high,1
+Ruangwa District Hospital,2018-3,yes,high,2
+Ruangwa District Hospital,2018-4,yes,high,3
+Ruangwa District Hospital,2018-6,yes,high,1
+Ruangwa District Hospital,2018-6,yes,low,1
+Ruangwa District Hospital,2018-7,no,high,1
+Ruangwa District Hospital,2018-7,yes,high,3
+Ruangwa District Hospital,2018-8,yes,high,13
+Ruangwa District Hospital,2018-9,yes,high,2
+Ruangwa District Hospital,2018-9,yes,low,1
+Ruangwa District Hospital,2019-1,NA,low,1
+Ruangwa District Hospital,2019-10,yes,high,1
+Ruangwa District Hospital,2019-12,yes,high,1
+Ruangwa District Hospital,2019-2,yes,high,1
+Ruangwa District Hospital,2019-3,yes,high,3
+Ruangwa District Hospital,2019-3,yes,low,2
+Ruangwa District Hospital,2019-4,yes,low,1
+Ruangwa District Hospital,2019-4,NA,low,1
+Ruangwa District Hospital,2019-5,yes,low,4
+Ruangwa District Hospital,2019-8,yes,high,1
+Ruangwa District Hospital,2020-1,yes,high,1
+Ruangwa District Hospital,2020-7,yes,high,1
+Ruangwa District Hospital,2020-8,yes,high,1
+Ruangwa District Hospital,2021-3,yes,high,4
+Ruangwa District Hospital,2022-1,yes,high,1
+Ruangwa District Hospital,2022-10,yes,high,2
+Ruangwa District Hospital,2022-10,NA,low,1
+Ruangwa District Hospital,2022-11,yes,high,4
+Ruangwa District Hospital,2022-11,yes,low,1
+Ruangwa District Hospital,2022-2,yes,high,1
+Ruangwa District Hospital,2022-5,NA,low,2
+Ruangwa District Hospital,2022-6,yes,high,1
+Ruangwa District Hospital,2022-7,yes,high,3
+Ruangwa District Hospital,2022-7,yes,low,1
+Ruangwa District Hospital,2022-8,yes,high,1
+Ruangwa District Hospital,2022-8,yes,low,1
+Ruangwa District Hospital,2023-1,yes,low,1
+Ruangwa District Hospital,2023-2,yes,low,2
+Ruangwa District Hospital,2023-3,yes,low,8
+Ruangwa District Hospital,2023-3,NA,low,1
+Ruangwa District Hospital,2023-4,yes,low,1
+Ruangwa District Hospital,2023-4,NA,low,3
+Ruangwa District Hospital,2023-6,yes,high,6
+Rung'abore Dispensary,2020-1,NA,low,1
+Rung'abore Dispensary,2020-6,NA,low,4
+Rung'abore Dispensary,2020-8,yes,high,1
+Rung'abore Dispensary,2020-8,NA,low,1
+Rung'abore Dispensary,2021-5,yes,high,2
+Rung'abore Dispensary,2021-5,NA,low,5
+Rung'abore Dispensary,2022-10,NA,low,2
+Rung'abore Dispensary,2022-12,no,low,1
+Rung'abore Dispensary,2022-8,no,low,1
+Rung'abore Dispensary,2022-9,no,low,3
+Rung'abore Dispensary,2022-9,NA,low,1
+Rung'abore Dispensary,2023-1,NA,low,1
+Rung'abore Dispensary,2023-2,no,low,1
+Rung'abore Dispensary,2023-3,no,low,1
+Rung'abore Dispensary,2023-3,NA,low,1
+Rung'abore Dispensary,2023-4,no,low,1
+Rung'abore Dispensary,2023-4,NA,low,1
+Rung'abore Dispensary,2023-6,no,low,2
+Rung'abore Dispensary,2023-6,NA,low,1
+Rung'abore Dispensary,2023-7,NA,low,1
+Rung'abore Dispensary,2023-8,no,low,4
+Rung'abore Dispensary,2023-9,no,low,2
+Rutamba Health Center,2022-8,yes,high,5
+Sabasaba Health Center,2018-7,NA,low,1
+Sabasaba Health Center,2019-12,yes,high,3
+Sabasaba Health Center,2019-3,yes,high,8
+Sabasaba Health Center,2019-3,yes,low,3
+Sabasaba Health Center,2019-3,NA,low,1
+Sabasaba Health Center,2019-4,yes,high,1
+Sabasaba Health Center,2019-5,yes,high,1
+Sabasaba Health Center,2020-1,yes,high,2
+Sabasaba Health Center,2020-1,yes,low,1
+Sabasaba Health Center,2020-10,yes,high,3
+Sabasaba Health Center,2020-10,NA,low,1
+Sabasaba Health Center,2020-3,yes,high,3
+Sabasaba Health Center,2020-6,yes,high,5
+Sabasaba Health Center,2020-9,yes,high,4
+Sabasaba Health Center,2020-9,yes,low,6
+Sabasaba Health Center,2020-9,NA,low,4
+Sabasaba Health Center,2021-6,NA,high,1
+Sabasaba Health Center,2021-7,NA,high,9
+Sabasaba Health Center,2021-8,yes,high,4
+Sabasaba Health Center,2021-8,NA,high,12
+Sabasaba Health Center,2021-9,yes,high,1
+Sabasaba Health Center,2021-9,NA,high,9
+Sabasaba Health Center,2022-11,yes,high,4
+Sabasaba Health Center,2023-1,yes,high,1
+Sabasaba Health Center,2023-1,yes,low,1
+Sabasaba Health Center,2023-2,yes,high,1
+Sabasaba Health Center,2023-3,yes,high,3
+Sabasaba Health Center,2023-4,yes,high,1
+Sabasaba Health Center,2023-4,yes,low,6
+Sabasaba Health Center,2023-5,yes,high,1
+Sabasaba Health Center,2023-8,no,low,1
+Sabasaba Health Center,2023-8,yes,high,1
+Sabasaba Health Center,2023-8,yes,low,3
+Serengeti District Hospital,2019-11,NA,low,2
+Serengeti District Hospital,2019-12,NA,low,1
+Serengeti District Hospital,2020-1,NA,low,1
+Serengeti District Hospital,2022-6,yes,high,3
+Serengeti District Hospital,2022-6,yes,low,1
+Serengeti District Hospital,2022-9,NA,low,1
+Serengeti District Hospital,2023-1,yes,low,7
+Serengeti District Hospital,2023-1,NA,low,10
+Serengeti District Hospital,2023-2,yes,high,9
+Serengeti District Hospital,2023-2,yes,low,1
+Serengeti District Hospital,2023-2,NA,high,1
+Serengeti District Hospital,2023-2,NA,low,5
+Shirati Hospital,2018-4,yes,low,1
+Shirati Hospital,2018-6,yes,low,5
+Shirati Hospital,2018-7,yes,low,1
+Shirati Hospital,2018-8,yes,high,2
+Shirati Hospital,2018-8,yes,low,2
+Shirati Hospital,2018-9,yes,low,1
+Shirati Hospital,2019-10,yes,high,1
+Shirati Hospital,2019-11,yes,high,3
+Shirati Hospital,2019-12,yes,high,1
+Shirati Hospital,2019-4,yes,low,3
+Shirati Hospital,2019-5,yes,high,1
+Shirati Hospital,2019-5,NA,low,1
+Shirati Hospital,2019-6,yes,high,2
+Shirati Hospital,2019-6,yes,low,2
+Shirati Hospital,2019-6,NA,low,1
+Shirati Hospital,2019-7,yes,high,2
+Shirati Hospital,2019-7,yes,low,1
+Shirati Hospital,2019-8,yes,high,3
+Shirati Hospital,2019-9,yes,high,1
+Shirati Hospital,2020-1,yes,high,5
+Shirati Hospital,2020-11,NA,low,2
+Shirati Hospital,2020-12,NA,low,2
+Shirati Hospital,2020-2,yes,high,4
+Shirati Hospital,2020-3,yes,high,3
+Shirati Hospital,2020-4,yes,high,1
+Shirati Hospital,2020-7,yes,high,3
+Shirati Hospital,2020-8,yes,high,2
+Shirati Hospital,2020-8,NA,high,1
+Shirati Hospital,2020-9,NA,low,1
+Shirati Hospital,2021-1,yes,high,2
+Shirati Hospital,2021-1,NA,low,3
+Shirati Hospital,2021-10,yes,high,1
+Shirati Hospital,2021-10,yes,low,1
+Shirati Hospital,2021-10,NA,low,1
+Shirati Hospital,2021-11,yes,high,4
+Shirati Hospital,2021-11,yes,low,2
+Shirati Hospital,2021-11,NA,high,1
+Shirati Hospital,2021-11,NA,low,1
+Shirati Hospital,2021-12,yes,high,2
+Shirati Hospital,2021-12,yes,low,3
+Shirati Hospital,2021-12,NA,high,3
+Shirati Hospital,2021-2,yes,high,2
+Shirati Hospital,2021-2,NA,low,1
+Shirati Hospital,2021-3,yes,high,1
+Shirati Hospital,2021-7,NA,low,3
+Shirati Hospital,2021-8,yes,high,3
+Shirati Hospital,2021-8,NA,low,2
+Shirati Hospital,2021-9,yes,high,2
+Shirati Hospital,2021-9,NA,low,3
+Shirati Hospital,2022-1,yes,low,1
+Shirati Hospital,2022-11,yes,low,1
+Shirati Hospital,2022-12,yes,low,3
+Shirati Hospital,2022-12,NA,low,1
+Shirati Hospital,2022-2,yes,low,1
+Shirati Hospital,2022-3,yes,high,1
+Shirati Hospital,2022-3,yes,low,6
+Shirati Hospital,2022-4,yes,low,1
+Shirati Hospital,2022-5,no,low,1
+Shirati Hospital,2022-5,yes,low,1
+Shirati Hospital,2022-6,yes,low,3
+Shirati Hospital,2023-4,yes,low,1
+Shirati Hospital,2023-6,yes,low,1
+Sirari Health Center,2020-7,NA,low,1
+Sirari Health Center,2021-10,yes,high,1
+Sirari Health Center,2021-10,NA,low,1
+Sirari Health Center,2021-3,no,high,1
+Sirari Health Center,2021-9,yes,high,1
+Sirari Health Center,2023-1,yes,high,1
+Sirari Health Center,2023-2,yes,high,1
+Sirari Health Center,2023-5,yes,high,1
+Sirari Health Center,2023-6,no,low,2
+Sirari Health Center,2023-8,yes,low,1
+Sokoine Hospital,2018-9,yes,low,1
+Sokoine Hospital,2019-3,yes,high,1
+Sokoine Hospital,2019-3,NA,low,1
+Sokoine Hospital,2019-4,yes,high,2
+Sokoine Hospital,2022-3,yes,high,1
+Sokoine Hospital,2022-5,yes,high,1
+Sokoine Hospital,2022-6,yes,high,1
+St. Joseph Hospital,2020-8,no,high,1
+St. Joseph Hospital,2022-5,yes,high,2
+St. Joseph Hospital,2022-6,yes,high,1
+St. Kizito Hospital,2022-4,yes,high,1
+St. Kizito Hospital,2022-4,NA,low,1
+St. Kizito Hospital,2022-5,yes,high,1
+St. Kizito Hospital,2022-6,yes,high,3
+St. Kizito Hospital,2022-8,yes,high,4
+Tandahimba Hospital,2018-10,yes,high,1
+Tandahimba Hospital,2018-11,yes,low,2
+Tandahimba Hospital,2018-12,yes,low,5
+Tandahimba Hospital,2018-2,yes,high,1
+Tandahimba Hospital,2018-3,yes,low,1
+Tandahimba Hospital,2018-4,yes,low,2
+Tandahimba Hospital,2018-5,yes,low,1
+Tandahimba Hospital,2018-6,yes,high,1
+Tandahimba Hospital,2018-7,yes,low,2
+Tandahimba Hospital,2018-8,yes,high,1
+Tandahimba Hospital,2018-8,yes,low,6
+Tandahimba Hospital,2018-9,yes,high,3
+Tandahimba Hospital,2019-1,no,low,1
+Tandahimba Hospital,2019-1,yes,high,1
+Tandahimba Hospital,2019-1,yes,low,1
+Tandahimba Hospital,2019-1,NA,low,1
+Tandahimba Hospital,2019-2,no,high,1
+Tandahimba Hospital,2019-2,no,low,2
+Tandahimba Hospital,2019-2,yes,high,5
+Tandahimba Hospital,2019-2,yes,low,4
+Tandahimba Hospital,2019-3,yes,high,3
+Tandahimba Hospital,2019-3,yes,low,2
+Tandahimba Hospital,2019-4,yes,high,1
+Tandahimba Hospital,2019-4,NA,low,1
+Tandahimba Hospital,2019-7,yes,high,1
+Tandahimba Hospital,2020-10,yes,high,1
+Tandahimba Hospital,2020-7,no,low,1
+Tandahimba Hospital,2020-9,yes,high,1
+Tandahimba Hospital,2021-1,yes,high,2
+Tandahimba Hospital,2021-10,yes,high,2
+Tandahimba Hospital,2021-11,yes,high,1
+Tandahimba Hospital,2021-11,NA,low,1
+Tandahimba Hospital,2021-2,yes,high,2
+Tandahimba Hospital,2021-2,NA,low,1
+Tandahimba Hospital,2021-3,yes,high,2
+Tandahimba Hospital,2021-4,yes,high,2
+Tandahimba Hospital,2021-4,yes,low,1
+Tandahimba Hospital,2021-8,yes,high,1
+Tandahimba Hospital,2021-9,yes,high,2
+Tandahimba Hospital,2022-2,no,high,1
+Tandahimba Hospital,2022-2,no,low,1
+Tandahimba Hospital,2022-2,yes,high,4
+Tandahimba Hospital,2022-4,no,high,1
+Tandahimba Hospital,2022-8,no,high,1
+Tandahimba Hospital,2022-9,no,low,1
+Tanzania Facility,2022-8,yes,low,1
+Tanzania Facility,2022-8,NA,high,2
+Tanzania Facility,2022-8,NA,low,5
+Tarime District Hospital,2018-10,no,low,1
+Tarime District Hospital,2018-10,yes,high,3
+Tarime District Hospital,2018-10,NA,low,1
+Tarime District Hospital,2018-12,yes,high,2
+Tarime District Hospital,2018-7,no,high,1
+Tarime District Hospital,2018-7,yes,high,2
+Tarime District Hospital,2018-8,yes,high,2
+Tarime District Hospital,2018-8,NA,low,1
+Tarime District Hospital,2018-9,yes,high,3
+Tarime District Hospital,2019-1,yes,high,2
+Tarime District Hospital,2019-2,yes,high,1
+Tarime District Hospital,2019-2,NA,low,1
+Tarime District Hospital,2019-4,NA,low,1
+Tarime District Hospital,2020-10,yes,high,1
+Tarime District Hospital,2020-11,yes,high,7
+Tarime District Hospital,2020-11,NA,low,6
+Tarime District Hospital,2020-12,yes,high,4
+Tarime District Hospital,2020-12,NA,low,6
+Tarime District Hospital,2020-8,yes,high,1
+Tarime District Hospital,2021-11,yes,high,2
+Tarime District Hospital,2021-12,yes,high,2
+Tarime District Hospital,2021-2,yes,high,2
+Tarime District Hospital,2021-3,yes,high,2
+Tarime District Hospital,2021-4,yes,high,2
+Tarime District Hospital,2021-6,yes,high,2
+Tarime District Hospital,2021-6,NA,low,3
+Tarime District Hospital,2021-7,yes,high,3
+Tarime District Hospital,2021-7,NA,low,4
+Tarime District Hospital,2021-8,yes,high,1
+Tarime District Hospital,2021-8,NA,low,4
+Tarime District Hospital,2022-3,yes,high,2
+Tarime District Hospital,2022-4,yes,high,5
+Tarime District Hospital,2022-5,yes,high,6
+Tarime District Hospital,2022-5,NA,low,1
+Tarime District Hospital,2022-6,yes,high,3
+Tarime District Hospital,2022-7,yes,high,5
+Tarime District Hospital,2022-7,yes,low,2
+Tarime District Hospital,2023-1,yes,high,2
+Tarime District Hospital,2023-2,yes,high,8
+Tarime District Hospital,2023-3,yes,high,3
+Tarime District Hospital,2023-4,yes,high,2
+Tarime District Hospital,2023-4,NA,high,1
+Tarime District Hospital,2023-6,yes,high,3
+Tarime District Hospital,2023-6,yes,low,2
+Tarime District Hospital,2023-7,yes,high,7
+Tarime District Hospital,2023-8,no,high,1
+Tarime District Hospital,2023-8,no,low,1
+Tarime District Hospital,2023-8,yes,high,7
+Uhuru Health Center,2019-11,yes,high,14
+Uhuru Health Center,2019-12,yes,high,9
+Uhuru Health Center,2019-2,yes,high,33
+Uhuru Health Center,2019-3,yes,high,11
+Uhuru Health Center,2019-3,yes,low,2
+Uhuru Health Center,2019-3,NA,high,1
+Uhuru Health Center,2019-3,NA,low,3
+Uhuru Health Center,2019-4,yes,high,10
+Uhuru Health Center,2019-4,yes,low,3
+Uhuru Health Center,2019-4,NA,low,1
+Uhuru Health Center,2019-5,no,low,1
+Uhuru Health Center,2019-5,yes,high,26
+Uhuru Health Center,2019-5,yes,low,3
+Uhuru Health Center,2019-5,NA,low,9
+Uhuru Health Center,2019-6,yes,high,42
+Uhuru Health Center,2019-7,yes,high,20
+Uhuru Health Center,2019-8,yes,high,14
+Uhuru Health Center,2020-1,yes,high,2
+Uhuru Health Center,2020-10,yes,high,9
+Uhuru Health Center,2020-11,yes,high,22
+Uhuru Health Center,2020-11,NA,low,3
+Uhuru Health Center,2020-12,yes,high,3
+Uhuru Health Center,2020-12,NA,high,1
+Uhuru Health Center,2020-12,NA,low,2
+Uhuru Health Center,2020-2,yes,high,7
+Uhuru Health Center,2020-3,yes,high,27
+Uhuru Health Center,2020-3,yes,low,8
+Uhuru Health Center,2020-3,NA,low,1
+Uhuru Health Center,2020-5,yes,high,7
+Uhuru Health Center,2020-6,yes,high,11
+Uhuru Health Center,2020-7,yes,high,5
+Uhuru Health Center,2020-8,no,low,1
+Uhuru Health Center,2020-8,yes,high,13
+Uhuru Health Center,2020-8,yes,low,1
+Uhuru Health Center,2020-8,NA,low,1
+Uhuru Health Center,2020-9,yes,high,17
+Uhuru Health Center,2020-9,yes,low,2
+Uhuru Health Center,2020-9,NA,low,6
+Uhuru Health Center,2021-1,yes,high,5
+Uhuru Health Center,2021-1,NA,low,3
+Uhuru Health Center,2021-10,yes,high,5
+Uhuru Health Center,2021-10,NA,high,14
+Uhuru Health Center,2021-10,NA,low,1
+Uhuru Health Center,2021-11,yes,high,23
+Uhuru Health Center,2021-11,yes,low,1
+Uhuru Health Center,2021-11,NA,high,11
+Uhuru Health Center,2021-11,NA,low,2
+Uhuru Health Center,2021-12,yes,high,16
+Uhuru Health Center,2021-12,NA,high,11
+Uhuru Health Center,2021-2,NA,low,8
+Uhuru Health Center,2021-3,yes,high,14
+Uhuru Health Center,2021-3,NA,high,1
+Uhuru Health Center,2021-4,yes,high,7
+Uhuru Health Center,2021-4,yes,low,1
+Uhuru Health Center,2021-4,NA,high,1
+Uhuru Health Center,2021-4,NA,low,7
+Uhuru Health Center,2021-5,yes,high,15
+Uhuru Health Center,2021-5,yes,low,1
+Uhuru Health Center,2021-5,NA,high,1
+Uhuru Health Center,2021-5,NA,low,3
+Uhuru Health Center,2021-6,yes,high,19
+Uhuru Health Center,2021-6,yes,low,1
+Uhuru Health Center,2021-6,NA,low,4
+Uhuru Health Center,2021-7,yes,high,7
+Uhuru Health Center,2021-8,yes,high,2
+Uhuru Health Center,2021-8,NA,low,1
+Uhuru Health Center,2021-9,yes,high,1
+Uhuru Health Center,2021-9,NA,high,1
+Uhuru Health Center,2022-1,yes,high,23
+Uhuru Health Center,2022-1,NA,high,19
+Uhuru Health Center,2022-10,yes,high,4
+Uhuru Health Center,2022-11,yes,high,3
+Uhuru Health Center,2022-2,yes,high,5
+Uhuru Health Center,2022-2,NA,high,6
+Uhuru Health Center,2022-3,yes,high,5
+Uhuru Health Center,2022-3,NA,high,6
+Uhuru Health Center,2022-4,yes,high,6
+Uhuru Health Center,2022-4,NA,low,1
+Uhuru Health Center,2022-5,no,low,1
+Uhuru Health Center,2022-5,yes,high,7
+Uhuru Health Center,2022-5,yes,low,2
+Uhuru Health Center,2022-5,NA,low,1
+Uhuru Health Center,2022-7,yes,high,2
+Uhuru Health Center,2022-7,yes,low,7
+Uhuru Health Center,2022-8,yes,high,6
+Uhuru Health Center,2023-2,yes,high,1
+Uhuru Health Center,2023-8,yes,low,3
+Ulanga District Hospital,2022-10,yes,high,6
+Ulanga District Hospital,2022-11,yes,high,10
+Ulanga District Hospital,2022-11,NA,high,1
+Ulanga District Hospital,2022-12,yes,high,12
+Ulanga District Hospital,2022-12,yes,low,1
+Ulanga District Hospital,2022-12,NA,low,1
+Ulanga District Hospital,2023-1,yes,high,4
+Ulanga District Hospital,2023-2,yes,high,2
+Ulanga District Hospital,2023-3,yes,high,4
+Ulanga District Hospital,2023-3,yes,low,8
+Ulanga District Hospital,2023-4,yes,high,6
+Ulanga District Hospital,2023-4,yes,low,1
+Ulanga District Hospital,2023-5,yes,high,2
+Ulanga District Hospital,2023-5,yes,low,1
+Ulanga District Hospital,2023-6,yes,high,5
+Utegi Health Center,2019-12,yes,high,1
+Utegi Health Center,2020-1,yes,high,2
+Utegi Health Center,2020-10,no,low,2
+Utegi Health Center,2020-10,NA,low,1
+Utegi Health Center,2020-7,yes,high,1
+Utegi Health Center,2020-8,yes,high,1
+Utegi Health Center,2021-6,no,low,2
+Utegi Health Center,2022-3,NA,low,1
+Utegi Health Center,2023-1,no,high,1
+Utegi Health Center,2023-6,NA,low,1
+Utegi Health Center,2023-7,no,low,1
+kisorya Health Center,2018-10,yes,low,1
+kisorya Health Center,2018-7,yes,low,1
+kisorya Health Center,2019-7,yes,low,1
+kisorya Health Center,2020-2,NA,high,1
+kisorya Health Center,2020-6,yes,high,1
+kisorya Health Center,2020-7,yes,high,1
+kisorya Health Center,2020-7,yes,low,1
+kisorya Health Center,2020-9,yes,high,1
+kisorya Health Center,2021-5,yes,high,2
+kisorya Health Center,2022-2,yes,high,1
+kisorya Health Center,2022-3,yes,high,1
+kisorya Health Center,2022-4,yes,high,2
+kisorya Health Center,2022-5,yes,high,2
+kisorya Health Center,2022-5,NA,low,2
+NA,2019-11,yes,high,2
+NA,2019-12,yes,high,5
+NA,2019-4,yes,high,1
+NA,2019-4,yes,low,2
+NA,2019-5,yes,high,2
+NA,2019-7,yes,low,1
+NA,2020-1,yes,high,15
+NA,2020-1,NA,high,1
+NA,2020-1,NA,low,1
+NA,2020-10,yes,low,1
+NA,2020-11,yes,high,10
+NA,2020-12,yes,high,1
+NA,2020-2,yes,high,12
+NA,2020-3,yes,high,8
+NA,2020-4,no,low,1
+NA,2020-4,yes,high,14
+NA,2020-4,NA,high,1
+NA,2020-4,NA,low,9
+NA,2020-5,no,low,1
+NA,2020-5,yes,high,13
+NA,2020-6,yes,high,29
+NA,2020-7,yes,low,2
+NA,2020-8,yes,high,5
+NA,2020-9,yes,high,2
+NA,2021-1,yes,high,9
+NA,2021-1,NA,low,3
+NA,2021-11,NA,low,1
+NA,2021-12,yes,high,1
+NA,2021-2,yes,high,1
+NA,2021-2,NA,low,12
+NA,2021-3,yes,high,2
+NA,2021-4,no,low,1
+NA,2021-4,yes,high,11
+NA,2021-5,yes,high,3
+NA,2021-5,NA,low,15
+NA,2021-7,yes,high,2
+NA,2021-7,yes,low,2
+NA,2021-8,yes,high,2
+NA,2021-8,NA,low,4
+NA,2021-9,yes,high,1
+NA,2021-9,NA,low,1
+NA,2022-1,no,high,1
+NA,2022-1,yes,high,19
+NA,2022-1,yes,low,1
+NA,2022-1,NA,low,1
+NA,2022-10,no,high,6
+NA,2022-10,no,low,7
+NA,2022-10,yes,high,17
+NA,2022-10,yes,low,80
+NA,2022-10,NA,low,19
+NA,2022-11,no,low,1
+NA,2022-11,yes,high,9
+NA,2022-11,yes,low,51
+NA,2022-11,NA,low,10
+NA,2022-12,no,low,2
+NA,2022-12,yes,high,7
+NA,2022-12,yes,low,32
+NA,2022-12,NA,low,9
+NA,2022-2,no,high,2
+NA,2022-2,yes,high,4
+NA,2022-2,yes,low,1
+NA,2022-3,no,low,4
+NA,2022-3,yes,high,3
+NA,2022-3,yes,low,1
+NA,2022-3,NA,low,1
+NA,2022-4,yes,high,1
+NA,2022-4,yes,low,1
+NA,2022-5,NA,low,2
+NA,2022-6,yes,high,9
+NA,2022-6,yes,low,2
+NA,2022-6,NA,low,1
+NA,2022-7,no,low,2
+NA,2022-7,yes,high,11
+NA,2022-7,yes,low,1
+NA,2022-7,NA,low,1
+NA,2022-8,no,low,1
+NA,2022-8,yes,high,13
+NA,2022-8,yes,low,10
+NA,2022-8,NA,high,1
+NA,2022-9,no,low,6
+NA,2022-9,yes,high,5
+NA,2022-9,yes,low,22
+NA,2022-9,NA,high,1
+NA,2022-9,NA,low,10
+NA,2023-1,yes,high,3
+NA,2023-1,yes,low,45
+NA,2023-1,NA,low,1
+NA,2023-2,yes,high,4
+NA,2023-2,yes,low,27
+NA,2023-3,no,low,1
+NA,2023-3,yes,high,1
+NA,2023-3,yes,low,23
+NA,2023-3,NA,low,11
+NA,2023-4,no,low,2
+NA,2023-4,yes,high,2
+NA,2023-4,yes,low,39
+NA,2023-4,NA,low,8
+NA,2023-5,yes,high,5
+NA,2023-5,yes,low,46
+NA,2023-5,NA,low,1
+NA,2023-6,yes,high,14
+NA,2023-6,yes,low,27
+NA,2023-6,NA,low,5
+NA,2023-7,yes,high,17
+NA,2023-7,yes,low,35
+NA,2023-7,NA,low,20
+NA,2023-8,no,high,1
+NA,2023-8,no,low,2
+NA,2023-8,yes,high,7
+NA,2023-8,yes,low,47
+NA,2023-8,NA,low,13
+NA,2023-9,yes,low,12

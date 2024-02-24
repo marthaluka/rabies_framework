@@ -18,7 +18,7 @@ source("./scripts/stochastic_decision_tree.R")
 parameters_df <- read.csv("./data/parameters.csv")
 
 # extract parameter values from csv
-run_decision_tree_from_csv <- function(scenario_name, parameters_df, pop=65000000, horizon = 7,base_vax_cov=0.05, N = 1000){
+run_decision_tree_from_csv <- function(scenario_name, parameters_df, pop=65000000, horizon = 1,base_vax_cov=0.05, N = 1000){
   scenario_parameters <- parameters_df[parameters_df$scenario == scenario_name, ]
   
   decision_tree(

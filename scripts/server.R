@@ -1,7 +1,7 @@
 server <- function(input, output) {
   
   output$dynamic_sidebar <- renderUI({
-    if (is.null(input$tab_selected) || input$tab_selected != "Simple calculator") {
+    if (is.null(input$tab_selected) || input$tab_selected != "Calculator") {
       return(list(
         selectInput(inputId="Country", label="Select a country:", choices = countries),
         sliderInput(inputId="horizon", label= "Horizon (years):", min=1, max=10, value=1, step = 1),
@@ -39,7 +39,7 @@ server <- function(input, output) {
   })
   
   output$dynamic_main <- renderUI({
-    if (input$tab_selected == "Simple calculator") {
+    if (input$tab_selected == "Calculator") {
       return(list(
         plotOutput("calc_plot"),
         verbatimTextOutput("rabid_dogs"),
@@ -50,6 +50,22 @@ server <- function(input, output) {
       return(NULL)
     }
   })
+  
+  output$table <- DT::renderDataTable({
+    # Get user inputs
+    variable <- input$variable
+    scenario_option1 <- input$scenarios
+    scenario_option2 <- input$PEP_admin
+    country <- input$Country
+
+    # Call the filter_and_transform_data function
+    data_to_display <- filter_and_transform_data(variable, scenario_option1, scenario_option2, country)
+
+    # Return 
+    return(data_to_display)
+  })
+  
+  
   
   # ... Other server-side logic goes here ...
   

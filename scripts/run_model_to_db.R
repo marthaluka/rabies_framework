@@ -3,15 +3,10 @@
 require(pacman)
 pacman::p_load(tidyverse, # cleaning, wrangling
                sf, # spatial manipulation
-               leaflet, # leaflet maps
-               shiny, # interactive web apps
-               shinycssloaders, # loading symbol for app
                RColorBrewer, # color palettes
-               htmltools,  # HTML generation and tools
                scales, # format numbers for aesthetics
                patchwork,  # multiple plots
-               data.table,# data tables for memory efficiency
-               DT   # rendering interactive tables on app
+               data.tableb# data tables for memory efficiency
 )
 
 # source model
@@ -19,16 +14,9 @@ source("./scripts/stochastic_decision_tree.R")
 
 # read shapefile #####
 east_africa_shp <- st_read(dsn="./shapefiles/", layer="ea_shapefile")
+east_africa_shp <- east_africa_shp[-c(135, 117, 153), ]
 east_africa_shp$Population <- as.numeric(east_africa_shp$Population) 
 east_africa_shp$county_id <- rownames(east_africa_shp)
-
-# countries in shapefile
-countries <- sort(unique(east_africa_shp$Country))
-
-# for app --to review this
-# variables for selection. Can add or reduce
-variables <- c("Population", "dog_population", "rabid_dogs", "total_rabid_bites", 
-               "total_people_PEP", "rabies_deaths", "lives_saved", "cost_per_life_saved")
 
 
 # Run the model across districts

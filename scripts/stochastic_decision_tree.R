@@ -3,16 +3,17 @@ rm(list=ls())
 
 # Decision tree model that can be applied to create different scenarios 
 
-decision_tree <- function(N, pop, HDR, horizon, discount,#LR_range, 
-                          mu, k, pSeek_healthy,pBite_healthy,
+decision_tree <- function(N, pop, HDR, horizon, discount, #LR_range, 
+                          mu, k, pSeek_healthy, pBite_healthy,
                           pStart_healthy, pComplete_healthy, pSeek_exposure,
                           pStart_exposure, pComplete_exposure, pDeath, pPrevent, 
-                          full_cost, partial_cost, campaign_cost, base_vax_cov,
-                          vaccinate_dog_cost, target_vax_cov, #campaign_budget
-                          pInvestigate, pFound,  pTestable, pFN
-                          ) {
+                          full_cost, partial_cost, mdv_campaign_budget = NULL, base_vax_cov,
+                          vaccinate_dog_cost, target_vax_cov = NULL, 
+                          pInvestigate, pFound,  pTestable, pFN) {
 
   # workaround predictions when horizon is 1
+         # Initialize only_a_single_year to a default value
+  only_a_single_year <- 'no'
   
   if (horizon == 1){
     horizon = 2
@@ -34,12 +35,27 @@ decision_tree <- function(N, pop, HDR, horizon, discount,#LR_range,
   }
   
   
-  # # Vaccination coverage either from target or budget
-  # vax_cov <- vax_coverage_over_x_years(0.05, 0.7, horizon)
-  # # Or
-  # vax_cov2 <- vax_coverage_from_budget(50000, 0.05, horizon, 20000, 2, discount)
-  
-  vax_cov <- vax_coverage_over_x_years(base_vax_cov, target_vax_cov, horizon)
+  # Vaccination coverage calculation based on input
+  if (!is.null(mdv_campaign_budget)) {
+    # Use the budget-based function to calculate vaccination coverage
+    vax_cov <- vax_coverage_from_budget(
+      mdv_campaign_budget = mdv_campaign_budget,
+      base_vax_cov = base_vax_cov,
+      vaccinate_dog_cost = vaccinate_dog_cost,  
+      dog_pop = dog_pop, 
+      horizon = horizon,
+      discount = discount
+    )
+    
+    # Notify user that budget overwrites target coverage
+    message("Overwriting target_vax_cov with budget approach. To use target_vax_cov, set budget as NULL")
+    
+  } else if (!is.null(target_vax_cov)) {
+    # Use target_vax_cov if budget is not provided
+    vax_cov <- vax_coverage_over_x_years(base_vax_cov, target_vax_cov, horizon)
+  } else {
+    stop("Either target_vax_cov or mdv_campaign_budget must be provided.")
+  }
   
   
   # dogs vaccinated
@@ -56,10 +72,19 @@ decision_tree <- function(N, pop, HDR, horizon, discount,#LR_range,
   
   
   # MDV campaign cost 
-    # Not necessary if input was a set budget
-  MDV_campaign_cost <- matrix(NA,nrow=N,ncol=horizon)
-  for (year in 1:horizon){
-    MDV_campaign_cost[,year] <- ts_dogs_vaccinated[,year] * (runif(n=N, min = vaccinate_dog_cost[1], max = vaccinate_dog_cost[2]))
+  MDV_campaign_cost <- matrix(NA, nrow=N, ncol=horizon)
+  
+  if (!is.null(mdv_campaign_budget)) {
+    # If budget is provided, assign it directly to each year
+    for (year in 1:horizon) {
+      MDV_campaign_cost[, year] <- mdv_campaign_budget
+    }
+  } else {
+    # If budget is not provided, calculate costs based on vaccinated dogs
+    for (year in 1:horizon) {
+      MDV_campaign_cost[, year] <- ts_dogs_vaccinated[, year] * 
+        runif(n=N, min=vaccinate_dog_cost[1], max=vaccinate_dog_cost[2])
+    }
   }
   
   
@@ -69,17 +94,15 @@ decision_tree <- function(N, pop, HDR, horizon, discount,#LR_range,
   # Rabid bites
   ## Exposures from times series of rabid dogs
   ts_exposures <- matrix(NA,nrow=N,ncol=horizon)
+  ts_rabid_biting_dogs <- matrix(NA,nrow=N,ncol=horizon)
+  
   for (year in seq(1,horizon)){
-    ts_exposures[,year] <- sapply(FUN = nBites, pBite = mu, pBiteK = k, X = ts_rabid_dogs[,year]) 
+    output <- sapply(FUN = nBitesBiters, pBite = mu, pBiteK = k, X = ts_rabid_dogs[,year]) 
+    ts_exposures[,year] <- unlist(output[1,])       # nBites
+    ts_rabid_biting_dogs[,year] <- unlist(output[2,])    # nBiters
   }
   
   ## IBCM
-  # Rabid biting dogs
-  ts_rabid_biting_dogs <- matrix(NA,nrow=N,ncol=horizon)
-  for (year in 1:horizon){
-    ts_rabid_biting_dogs[,year] <- sapply(FUN = nBiters, pBite = mu, pBiteK = k, X = ts_rabid_dogs[,year]) 
-  }
-  
   
   # Rabid biting dogs that are investigated
   ts_rabid_biting_investigated <- matrix(NA,nrow=N,ncol=horizon)
@@ -99,12 +122,6 @@ decision_tree <- function(N, pop, HDR, horizon, discount,#LR_range,
     ts_rabid_biting_testable[,year] <- rbinom(n=N,  size = ts_rabid_biting_found[,year], prob = pTestable)
   }
   
-  
-  
-  
-  # Create patient time series for a given population 
-  # consider using IBCM data and running for both low- and high-risk bite patient incidence 
-  # for range of bite incidence (high or low risk!) simulate bite patient time series 
   
   
   # Healthy bites #####
@@ -136,13 +153,12 @@ decision_tree <- function(N, pop, HDR, horizon, discount,#LR_range,
   
   
   # Healthy biting dogs ########
-      # to do # in this case are bites==biting dogs? Chat with Elaine
-  #ts_healthy_biting_dogs <- matrix(nrow = N, ncol = horizon)
-  # ts_healthy_biting_dogs <- ts_healthy_bites #(to be assigned outside the function)
-  # 
-  # # Healthy biting dogs that are investigated
-  # ts_healthy_biting_investigated <- ts_healthy_FP         # healthy animal bite is flagged as potentially suspicious (0.05) 
-          ##(to also be assigned outside the function)
+      # to do                     # Chat with Elaine
+
+  # Persons bitten by healthy dogs
+  # healthy_bites <- sim_patient_ts(pop, inc_range = LR_range, horizon)
+  # healthy_bites <- round(rgamma(N, shape=6.675, rate=2889.090)* dog_pop) 
+  
   
   # Healthy biting dogs that are found
   ts_healthy_biting_found <- matrix(NA,nrow=N,ncol=horizon)
@@ -150,21 +166,8 @@ decision_tree <- function(N, pop, HDR, horizon, discount,#LR_range,
     ts_healthy_biting_found[,year] <- rbinom(n=N,  size = ts_healthy_biting_investigated[,year], prob = pFound)
   }
   
-  # Rabid biting dogs that are testable
-  ts_healthy_biting_testable <- matrix(NA,nrow=N,ncol=horizon)
-  for (year in 1:horizon){
-    ts_healthy_biting_testable[,year] <- rbinom(n=N,  size = ts_healthy_biting_found[,year], prob = pTestable)
-  }
   
-  
-  
-  # Persons bitten by healthy dogs
-  # healthy_bites <- sim_patient_ts(pop, inc_range = LR_range, horizon)
-      # healthy_bites <- round(rgamma(N, shape=6.675, rate=2889.090)* dog_pop) 
-  
-  # pSEEK for rabid bites
-  # exposures_seek_care <- rbinom(n=N,  size = exposures, prob = pSeek_exposure)
-  # exposures_do_not_seek_care <- exposures - exposures_seek_care
+  # HEALTHCARE SEEKING 
   
   # time series ts_exposures_seek_care
   ts_exposures_seek_care <- matrix(nrow = N, ncol = horizon)
@@ -174,10 +177,6 @@ decision_tree <- function(N, pop, HDR, horizon, discount,#LR_range,
   
   # time series ts_exposures_do_not_seek_care
   ts_exposures_do_not_seek_care <- ts_exposures - ts_exposures_seek_care
-  
-  
-  # To do #######
-  # PEP USE: based on health seeking (probabilities depend on PEP policies e.g. if free or charged
   
   
   # Rabid bite victims:
@@ -191,12 +190,6 @@ decision_tree <- function(N, pop, HDR, horizon, discount,#LR_range,
     ts_exp_complete[,year] <- rbinom(n=N,  size = ts_exp_start[,year], prob = pComplete_exposure)
   }
   
-  # for (year in seq(1, horizon)){
-  #   # time series start PEP
-  #   ts_exp_start[,year] <- unlist(lapply(FUN = rbinom, n=N, prob = pStart_exposure, X = ts_exposures_seek_care[,year]))
-  #   # time series complete PEP
-  #   ts_exp_complete[,year] <- unlist(lapply(FUN = rbinom, n=N, prob = pComplete_exposure, X = ts_exp_start[,year]))
-  # }
   
   ts_exp_no_start <- (ts_exposures_seek_care - ts_exp_start) + ts_exposures_do_not_seek_care
   ts_exp_incomplete <- ts_exp_start - ts_exp_complete
@@ -221,7 +214,7 @@ decision_tree <- function(N, pop, HDR, horizon, discount,#LR_range,
   total_seek_care = ts_exposures_seek_care + ts_healthy_seek_care
   ts_total_seek_care_inc = (total_seek_care/pop)*1E5
   
-  ts_exposures_seek_care_inc = (ts_exposures_seek_care/pop)*1E5
+  ts_exposures_seek_care_inc = (ts_exposures_seek_care/pop)*1E5        # per 100k
   ts_healthy_seek_care_inc = (ts_healthy_seek_care/pop)*1E5
   
   # pStart
@@ -234,7 +227,7 @@ decision_tree <- function(N, pop, HDR, horizon, discount,#LR_range,
     ts_healthy_complete[,year] <- rbinom(n=N,  size = ts_healthy_start[,year], prob = pComplete_healthy)
   }
   
-  healthy_no_start <- (ts_healthy_seek_care - ts_healthy_start) + ts_healthy_do_not_seek_care
+  ts_healthy_no_start <- (ts_healthy_seek_care - ts_healthy_start) + ts_healthy_do_not_seek_care
   ts_healthy_incomplete <- ts_healthy_start - ts_healthy_complete
   
   
@@ -253,7 +246,7 @@ decision_tree <- function(N, pop, HDR, horizon, discount,#LR_range,
   ts_deaths <- ts_deaths_no_PEP + deaths_incomplete_PEP
   
   
-  # PEP IMPACTS (because we can see who got PEP!)
+  # PEP IMPACTS (because we can see who got PEP)
   
   deaths_averted_PEP_complete <- matrix(nrow = N, ncol = horizon)
   deaths_averted_PEP_incomplete <- matrix(nrow = N, ncol = horizon)
@@ -266,9 +259,43 @@ decision_tree <- function(N, pop, HDR, horizon, discount,#LR_range,
   
   ts_deaths_averted_PEP <-  deaths_averted_PEP_complete + deaths_averted_PEP_incomplete
   
-  # deaths_averted_PEP <- unlist(lapply(FUN = rbinom, n=N, prob = pDeath, X = ts_exp_complete[,1])) # pDeath ??
-  # deaths_averted_PEP_incomplete <- unlist(lapply(FUN = rbinom, n=N, prob = pPrevent * pDeath, X = exp_incomplete - deaths_incomplete_PEP))
-  # deaths_averted <-  deaths_averted_PEP + deaths_averted_PEP_incomplete
+  # MDV IMPACTS ()
+  ######
+  
+  # Run only if mdv_campaign_budget is provided (and non-zero) or target_vax_cov > base_vax_cov
+  if ((!is.null(mdv_campaign_budget) && mdv_campaign_budget != 0) || 
+      (target_vax_cov > base_vax_cov)) {
+
+    vax_cov_no_MDV <- vax_coverage_over_x_years(base_vax_cov, 0, horizon) # target coverage is 0 as there are no efforts
+    
+    # Predict rabid dogs without MDV
+    ts_rabid_dogs_no_MDV <- predict_cases(
+      nreps=N, 
+      vax_cov=vax_cov_no_MDV, 
+      horizon=horizon, 
+      dog_pop=dog_pop, 
+      rabies_inc=rabies_inc
+    )
+    
+    # Predict human exposures without MDV
+    ts_exposures_no_MDV <- matrix(NA, nrow=N, ncol=horizon)
+    for (year in seq(1, horizon)){
+      output_no_MDV <- sapply(FUN = nBitesBiters, pBite=mu, pBiteK=k, X=ts_rabid_dogs_no_MDV[,year]) 
+      ts_exposures_no_MDV[,year] <- unlist(output_no_MDV[1,])  # nBites
+    }
+    
+    # Deaths without PEP in no-MDV scenario
+    ts_deaths_no_MDV <- matrix(nrow=N, ncol=horizon)
+    for (year in seq(1, horizon)){
+      ts_deaths_no_MDV[,year] <- rbinom(n=N, size=ts_exposures_no_MDV[,year], prob=pDeath)
+    }
+    
+    # Deaths averted by MDV
+    ts_deaths_averted_MDV <- ts_deaths_no_MDV - ts_deaths
+    ts_deaths_averted_MDV <- pmax(ts_deaths_no_MDV - ts_deaths, 0) # forcing negatives to zero
+  }
+
+  ######
   
   
   # PEP DELIVERED
@@ -302,6 +329,23 @@ decision_tree <- function(N, pop, HDR, horizon, discount,#LR_range,
   return(out_matrices)
   
 }
+
+
+
+decision_tree(N=10, pop=1000000, HDR=c(10,20), horizon=7, discount=0.03,#LR_range, 
+              mu=0.38, k=0.14, pSeek_healthy=0.78,pBite_healthy=0.01,
+              pStart_healthy=0.2, pComplete_healthy=0.20, pSeek_exposure=0.75,
+              pStart_exposure=0.899, pComplete_exposure=0.542, pDeath=0.166, pPrevent=0.986, 
+              full_cost =45, partial_cost=25, mdv_campaign_budget=100000, base_vax_cov=0.05,
+              vaccinate_dog_cost=2, target_vax_cov=0.7, #campaign_budget
+              pInvestigate=0.9, pFound=0.6,  pTestable=0.7, pFN=0.05
+) 
+
+
+
+
+
+
 
 
 

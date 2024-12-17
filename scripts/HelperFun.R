@@ -31,14 +31,14 @@ vax_coverage_over_x_years <- function(base_vax_cov, target_vax_cov, horizon){
 
 
 # modifying this to take set budget as input- in place of target coverage 
-vax_coverage_from_budget <- function(campaign_budget, base_vax_cov, vaccinate_dog_cost, dog_pop, horizon, discount){
+vax_coverage_from_budget <- function(mdv_campaign_budget, base_vax_cov, vaccinate_dog_cost, dog_pop, horizon, discount){
   
   vax_coverage_list <- numeric(horizon) # initialize an empty numeric vector of length 'horizon'
   
   previous_coverage <- base_vax_cov
   for(year in 1:horizon){
     # Calculate the discounted budget for the current year
-    discounted_budget <- campaign_budget * (1 - discount)^(year - 1)
+    discounted_budget <- mdv_campaign_budget * (1 - discount)^(year - 1)
     
     # Calculate number of dogs that can be vaccinated with the discounted budget
     dogs_vaccinated <- floor(discounted_budget / vaccinate_dog_cost)
@@ -57,7 +57,7 @@ vax_coverage_from_budget <- function(campaign_budget, base_vax_cov, vaccinate_do
     previous_coverage <- vax_coverage_list[year]
   }
   
-  # Return random values between min(vax_coverage_list) and base_vax_cov if campaign_budget/ target vaccination is 0
+  # Return random values between min(vax_coverage_list) and base_vax_cov if mdv_campaign_budget/ target vaccination is 0
   if(max(vax_coverage_list) < base_vax_cov){
     return(runif(n = horizon, min = min(vax_coverage_list), max = base_vax_cov*1.2))
   } else {
@@ -112,18 +112,20 @@ predict_cases <- function(nreps=N, vax_cov, horizon, dog_pop, rabies_inc,
 
 # Rabid bites
 # Simulate expected exposures for a given number of rabid dogs (
-nBites <- function(dog_pop, pBite, pBiteK){
+nBitesBiters <- function(dog_pop, pBite, pBiteK){
   bites_by_dog <- rnbinom(n = dog_pop,  mu = pBite, size = pBiteK)
   nBites=sum(bites_by_dog)
-  return(nBites)
+  nBiters=length(which(bites_by_dog>0))
+  # Return as a named list
+  return(list(nBites = nBites, nBiters = nBiters))
 }
 
-# number of biting dogs
-nBiters <- function(dog_pop, pBite, pBiteK){
-  bites_by_dog <- rnbinom(n = dog_pop,  mu = pBite, size = pBiteK)
-  nBiters=length(which(bites_by_dog>0))
-  return(nBiters)
-}
+# # number of biting dogs
+# nBiters <- function(dog_pop, pBite, pBiteK){
+#   bites_by_dog <- rnbinom(n = dog_pop,  mu = pBite, size = pBiteK)
+#   nBiters=length(which(bites_by_dog>0))
+#   return(nBiters)
+# }
 
 
 horizon_CEA <- function(baseline_sum, comparator_sum){

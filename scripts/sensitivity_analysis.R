@@ -7,7 +7,8 @@ pacman::p_load(tidyverse, # cleaning, wrangling
                paletteer,  # cool color palettes
                viridis,    #colours
                patchwork,   # merge plots
-               plotly    # 3D plots
+               plotly,    # 3D plots
+               brms
 )
 
 # source model

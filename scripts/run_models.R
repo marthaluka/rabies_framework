@@ -5,7 +5,8 @@
 require(pacman)
 pacman::p_load(tidyverse, # cleaning, wrangling
                scales,    # display neat number values
-               paletteer  # cool color palettes
+               paletteer,  # cool color palettes
+               brms
                )
 
 # source model

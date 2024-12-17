@@ -10,7 +10,8 @@ pacman::p_load(rstantools,
                grid,  # multiple grobs
                gridGraphics,
                gridExtra, # multiple grobs
-               patchwork # multiple plots
+               patchwork, # multiple plots
+               sf
                )
 
 # Visualization 1 - Predicted cases given X vaccination coverage ####

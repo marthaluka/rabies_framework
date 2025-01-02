@@ -252,7 +252,7 @@ decision_tree <- function(N, pop, HDR, horizon, discount, #LR_range,
   deaths_averted_PEP_incomplete <- matrix(nrow = N, ncol = horizon)
   for (year in seq(1, horizon)){
     # deaths averted complete PEP
-    deaths_averted_PEP_complete[,year] <- rbinom(n=N,  size = ts_exp_complete[,year], prob = pDeath) 
+    deaths_averted_PEP_complete[,year] <- rbinom(n=N,  size = ts_exp_complete[,year], prob = pPrevent) 
     # deaths incomplete PEP
     deaths_averted_PEP_incomplete[,year] <- rbinom(n=N,  size = (ts_exp_incomplete[,year] - deaths_incomplete_PEP[,year]), prob = pPrevent * pDeath)
   }

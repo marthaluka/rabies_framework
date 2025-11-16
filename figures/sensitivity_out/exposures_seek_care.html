@@ -3,6 +3,26 @@
 <head>
 <meta charset="utf-8" />
 <style>body{background-color:white;}</style>
+<style type="text/css">@layer htmltools {
+.html-fill-container {
+display: flex;
+flex-direction: column;
+
+min-height: 0;
+min-width: 0;
+}
+.html-fill-container > .html-fill-item {
+
+flex: 1 1 auto;
+min-height: 0;
+min-width: 0;
+}
+.html-fill-container > :not(.html-fill-item) {
+
+flex: 0 0 auto;
+}
+}
+</style>
 <script>(function() {
   // If window.HTMLWidgets is already defined, then use it; otherwise create a
   // new object. This allows preceding code to set options that affect the
@@ -1428,15 +1448,17 @@ HTMLWidgets.widget({
       // communication between the widget and direct manipulation events
       if (x.selectize) {
         var selectizeID = Object.keys(x.selectize)[i];
-        var items = x.selectize[selectizeID].items;
+        var options = x.selectize[selectizeID];
         var first = [{value: "", label: "(All)"}];
-        var opts = {
-          options: first.concat(items),
-          searchField: "label",
-          valueField: "value",
-          labelField: "label",
-          maxItems: 50
-        };
+        var opts = $.extend({
+            options: first.concat(options.items),
+            searchField: "label",
+            valueField: "value",
+            labelField: "label",
+            maxItems: 50
+          }, 
+          options
+        );
         var select = $("#" + selectizeID).find("select")[0];
         var selectize = $(select).selectize(opts)[0].selectize;
         // NOTE: this callback is triggered when *directly* altering 
@@ -1931,9 +1953,9 @@ e.exports=function(t){return null!=t&&(n(t)||function(t){return"function"==typeo
 </head>
 <body>
 <div id="htmlwidget_container">
-  <div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-44b1ec2e7feab7c7082b" style="width:100%;height:400px;"></div>
+  <div class="plotly html-widget html-fill-item" id="htmlwidget-13275c95dc2ed1b5dcbf" style="width:100%;height:400px;"></div>
 </div>
-<script type="application/json" data-for="htmlwidget-44b1ec2e7feab7c7082b">{"x":{"visdat":{"27f934bb2d44":["function () ","plotlyVisDat"]},"cur_data":"27f934bb2d44","attrs":{"27f934bb2d44":{"x":{},"y":{},"z":{},"mode":"markers","marker":{"color":{},"cmin":27,"cmax":30388},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"mdv"},"yaxis":{"title":"hdr"},"zaxis":{"title":"Median"}},"title":"Cumulative Exposures seek care incidence","hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,10,10,10,10,10,10,10,10,10,10,10,10,10,100,100,100,100,100,100,100,100,100,100,100,100,100,100,20,20,20,20,20,20,20,20,20,20,20,20,20,20,30,30,30,30,30,30,30,30,30,30,30,30,30,30,40,40,40,40,40,40,40,40,40,40,40,40,40,40,50,50,50,50,50,50,50,50,50,50,50,50,50,50,60,60,60,60,60,60,60,60,60,60,60,60,60,60,70,70,70,70,70,70,70,70,70,70,70,70,70,70,80,80,80,80,80,80,80,80,80,80,80,80,80,80,90,90,90,90,90,90,90,90,90,90,90,90,90,90],"y":[10,100,20,200,30,300,40,400,50,500,60,70,80,90,10,100,20,200,30,300,40,400,50,500,60,70,80,90,10,100,20,200,30,300,40,400,50,500,60,70,80,90,10,100,20,200,30,300,40,400,50,500,60,70,80,90,10,100,20,200,30,300,40,400,50,500,60,70,80,90,10,100,20,200,30,300,40,400,50,500,60,70,80,90,10,100,20,200,30,300,40,400,50,500,60,70,80,90,10,100,20,200,30,300,40,400,50,500,60,70,80,90,10,100,20,200,30,300,40,400,50,500,60,70,80,90,10,100,20,200,30,300,40,400,50,500,60,70,80,90,10,100,20,200,30,300,40,400,50,500,60,70,80,90],"z":[24376.5,1485,9769.5,926.5,5637,559.5,4018,401.5,3111.5,308,2584.5,2196.5,1900,1656,25431,1480.5,9151,883.5,5578.5,549,4017,378.5,3097,298,2535,2175.5,1861.5,1659.5,5165.5,125,1506.5,75,810.5,49.5,455.5,31,292.5,27,298.5,226,169.5,169.5,25514.5,1470,9050.5,884.5,5341,516.5,3900,343,3090.5,226.5,2527,2132.5,1850.5,1624.5,25608,1418,8508.5,765.5,5371,344,3868,163,3044,115.5,2491.5,2103.5,1854.5,1579,30388,811.5,8708.5,447.5,5137,159.5,3658,105.5,2812.5,61,2016.5,1499.5,1143.5,1133,21451,496,7093,234.5,3621,111,2114.5,66.5,1674.5,52,1216.5,923.5,796,590.5,21905.5,274.5,4778.5,202.5,2517.5,85.5,1421.5,47,889,39,742.5,594.5,456,389.5,14880,268,2931,173.5,1466,58.5,932.5,43,569.5,33,452,402,386,249,8280,181.5,2019.5,104,1051,58,672.5,31,479,31,348.5,291,229,228,5531.5,178,1701.5,96,940,50.5,631.5,32.5,429,28,318.5,224.5,225,158.5],"mode":"markers","marker":{"color":[24376.5,1485,9769.5,926.5,5637,559.5,4018,401.5,3111.5,308,2584.5,2196.5,1900,1656,25431,1480.5,9151,883.5,5578.5,549,4017,378.5,3097,298,2535,2175.5,1861.5,1659.5,5165.5,125,1506.5,75,810.5,49.5,455.5,31,292.5,27,298.5,226,169.5,169.5,25514.5,1470,9050.5,884.5,5341,516.5,3900,343,3090.5,226.5,2527,2132.5,1850.5,1624.5,25608,1418,8508.5,765.5,5371,344,3868,163,3044,115.5,2491.5,2103.5,1854.5,1579,30388,811.5,8708.5,447.5,5137,159.5,3658,105.5,2812.5,61,2016.5,1499.5,1143.5,1133,21451,496,7093,234.5,3621,111,2114.5,66.5,1674.5,52,1216.5,923.5,796,590.5,21905.5,274.5,4778.5,202.5,2517.5,85.5,1421.5,47,889,39,742.5,594.5,456,389.5,14880,268,2931,173.5,1466,58.5,932.5,43,569.5,33,452,402,386,249,8280,181.5,2019.5,104,1051,58,672.5,31,479,31,348.5,291,229,228,5531.5,178,1701.5,96,940,50.5,631.5,32.5,429,28,318.5,224.5,225,158.5],"cmin":27,"cmax":30388,"line":{"color":"rgba(31,119,180,1)"}},"type":"scatter3d","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
-<script type="application/htmlwidget-sizing" data-for="htmlwidget-44b1ec2e7feab7c7082b">{"viewer":{"width":"100%","height":400,"padding":0,"fill":true},"browser":{"width":"100%","height":400,"padding":0,"fill":true}}</script>
+<script type="application/json" data-for="htmlwidget-13275c95dc2ed1b5dcbf">{"x":{"visdat":{"9437c9e7ab9":["function () ","plotlyVisDat"]},"cur_data":"9437c9e7ab9","attrs":{"9437c9e7ab9":{"x":{},"y":{},"z":{},"mode":"markers","marker":{"color":{},"cmin":17,"cmax":4310},"alpha_stroke":1,"sizes":[10,100],"spans":[1,20],"type":"scatter3d"}},"layout":{"margin":{"b":40,"l":60,"t":25,"r":10},"scene":{"xaxis":{"title":"mdv"},"yaxis":{"title":"hdr"},"zaxis":{"title":"Median"}},"title":"Cumulative Exposures seek care","hovermode":"closest","showlegend":false},"source":"A","config":{"modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"data":[{"x":[0,0,0,0,0,0,100,100,100,100,100,100,10,10,10,10,10,10,20,20,20,20,20,20,30,30,30,30,30,30,40,40,40,40,40,40,50,50,50,50,50,50,60,60,60,60,60,60,70,70,70,70,70,70,80,80,80,80,80,80,90,90,90,90,90,90],"y":[128,16,32,4,64,8,128,16,32,4,64,8,128,16,32,4,64,8,128,16,32,4,64,8,128,16,32,4,64,8,128,16,32,4,64,8,128,16,32,4,64,8,128,16,32,4,64,8,128,16,32,4,64,8,128,16,32,4,64,8,128,16,32,4,64,8],"z":[133.5,1102,559.5,4310,256.5,2195,17,161,76.5,626.5,39,321,126.5,1053,515,4163,255.5,2025,87,705,337.5,3149,189,1499,39,403.5,185.5,1572.5,93.5,817,28.5,262.5,119.5,963.5,61,545.5,23,219.5,112.5,968.5,54.5,388,21,193,94.5,747.5,45.5,380.5,22.5,187,82.5,701,39.5,350.5,17,160,81.5,677,38,329,18.5,156,79.5,653,39.5,320],"mode":"markers","marker":{"color":[133.5,1102,559.5,4310,256.5,2195,17,161,76.5,626.5,39,321,126.5,1053,515,4163,255.5,2025,87,705,337.5,3149,189,1499,39,403.5,185.5,1572.5,93.5,817,28.5,262.5,119.5,963.5,61,545.5,23,219.5,112.5,968.5,54.5,388,21,193,94.5,747.5,45.5,380.5,22.5,187,82.5,701,39.5,350.5,17,160,81.5,677,38,329,18.5,156,79.5,653,39.5,320],"cmin":17,"cmax":4310,"line":{"color":"rgba(31,119,180,1)"}},"type":"scatter3d","error_y":{"color":"rgba(31,119,180,1)"},"error_x":{"color":"rgba(31,119,180,1)"},"line":{"color":"rgba(31,119,180,1)"},"frame":null}],"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<script type="application/htmlwidget-sizing" data-for="htmlwidget-13275c95dc2ed1b5dcbf">{"viewer":{"width":"100%","height":400,"padding":0,"fill":true},"browser":{"width":"100%","height":400,"padding":0,"fill":true}}</script>
 </body>
 </html>

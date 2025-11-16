@@ -17,21 +17,21 @@ source("./scripts/stochastic_decision_tree.R")
 
 
 # extract parameter values from csv
-run_decision_tree_and_select_variables <- function(scenario_name, parameters_df, pop=60000000, horizon = 7, base_vax_cov=0.05, 
+run_decision_tree_and_select_variables <- function(scenario_name, parameters_df, pop=500000, horizon = 5, base_vax_cov=0.05, 
                                                    N = 1000, selected_vars=NULL){
   scenario_parameters <- parameters_df[parameters_df$scenario == scenario_name, ]
   
   result <- decision_tree(
     N = N,
     pop = pop,
-    horizon = horizon, 
-    base_vax_cov=base_vax_cov,
-    discount = scenario_parameters$discount,
-    target_vax_cov = scenario_parameters$target_vax_cov,
     HDR = c(scenario_parameters$HDR1, scenario_parameters$HDR2),
-    pBite_healthy = scenario_parameters$pBite_healthy,
+    horizon = horizon, 
     mu = scenario_parameters$mu,
     k = scenario_parameters$k,
+    base_vax_cov=base_vax_cov,
+    vaccinate_dog_cost = c(scenario_parameters$vaccinate_dog_cost1, scenario_parameters$vaccinate_dog_cost2),
+    target_vax_cov = scenario_parameters$target_vax_cov,
+    pBite_healthy = scenario_parameters$pBite_healthy,
     pSeek_healthy = scenario_parameters$pSeek_healthy,
     pStart_healthy = scenario_parameters$pStart_healthy,
     pComplete_healthy = scenario_parameters$pComplete_healthy,
@@ -42,12 +42,14 @@ run_decision_tree_and_select_variables <- function(scenario_name, parameters_df,
     pPrevent = scenario_parameters$pPrevent,
     full_cost = scenario_parameters$full_cost,
     partial_cost = scenario_parameters$partial_cost,
-    vaccinate_dog_cost = c(scenario_parameters$vaccinate_dog_cost1, scenario_parameters$vaccinate_dog_cost2),
+    mdv_campaign_budget = NULL ,
     pInvestigate = scenario_parameters$pInvestigate,
     pFound = scenario_parameters$pFound,
     pTestable = scenario_parameters$pTestable,
-    pFN = scenario_parameters$pFalseNeg
+    pFP = scenario_parameters$pFalseNeg
   )
+  
+  
   
   # If specific variables are provided, subset the output to only those variables
   if(!is.null(selected_vars) && is.vector(selected_vars)){
@@ -92,16 +94,16 @@ create_temporal_plot <- function(mydata, title, scenarios){
   # order scenarios to logic rather than alphanumeric
   mydata$scenario <- factor(mydata$scenario, levels = scenarios)
   #plot
-  ggplot(mydata, aes(x = year, y = Median, group = scenario, color = scenario, fill = scenario)) +
+  ggplot(mydata, aes(x = year, y = Median, group = scenario)) +
   geom_line() +
-  geom_ribbon(aes(ymin = LL, ymax = UL), alpha = 0.5) +
+  geom_ribbon(aes(ymin = LL, ymax = UL), fill= "#3357FF", alpha = 0.5, color = NA) +
   facet_wrap(~scenario) +
   labs(
     title = paste(title, "with 95% Confidence Intervals"),
     x = "Year",
     y = title
   ) +
-    theme_minimal()+ 
+    theme_bw()+ 
     scale_y_continuous(labels = scales::comma) +
     theme(
       legend.position = "none"
@@ -109,21 +111,19 @@ create_temporal_plot <- function(mydata, title, scenarios){
 }
 
 
+# Default color palette if none is provided
+if (is.null(palette)) {
+  palette <- c("#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e")  # Default 5 colors
+}
+custom_palette <- c("#FF5733", "#33FF57", "#3357FF", "#F333FF", "#33FFF5")
+
+
+
 ## Plot 2 ########
 create_timepoint_plot <-function(mydata, title, scenarios){
-  # Interested in time points 3, 5 and 7 years
-  filtered_data <- mydata[mydata$year %in% c(3, 5, 7), ]
 
   # Calculate the sum of UL, LL, and Median for "total"
   total_data <- aggregate(. ~ scenario, data = mydata, FUN = sum)
-  # rbind
-  plot_data <- rbind(filtered_data, total_data) %>%
-    dplyr::mutate(year = ifelse(year == 28, "total", as.character(year)))
-  # Manually specify the order of years
-  year_order <- c("total", "3", "5", "7")
-  
-  # order scenarios to logic rather than alphanumeric
-  plot_data$scenario <- factor(plot_data$scenario, levels = scenarios)
 
   # # Create the visualization
   total_data$scenario <- factor(total_data$scenario, levels = scenarios)
@@ -135,36 +135,44 @@ create_timepoint_plot <-function(mydata, title, scenarios){
         x = "Scenario",
         y = paste("Cumulative", title)
       ) +
-      theme_minimal() +
+      theme_bw() +
       scale_y_continuous(labels = scales::comma) +
       theme(axis.text.x = element_text(angle = 45, hjust = 1),
                   legend.position = "none"
                   )
 
-  # total, years 3,5 & 7 
-  # ggplot(plot_data, aes(x = factor(year, levels = year_order), y = Median, group = scenario, color = scenario)) +
-  #   geom_point() + 
-  #   geom_errorbar(aes(ymin = LL, ymax = UL), width = 0.2) +
-  #   labs(
-  #     title = paste("Rabies", title, "with 95% Confidence Intervals"),
-  #     x = "Year",
-  #     y = title
-  #   ) +
-  #   theme_minimal() +
-  #   scale_y_continuous(labels = scales::comma) +
-  #   facet_wrap(~scenario) +
-  #   scale_color_manual(values = viridis::viridis_pal()(length(scenarios)))+
-  #   theme(axis.text.x = element_text(angle = 45, hjust = 1),
-  #         legend.position = "none"
-  #         )
+
 }
 
+
+
+create_timepoint_plot2 <- function(mydata, title, scenarios) {
+  # Calculate the sum of UL, LL, and Median for "total"
+  total_data <- aggregate(. ~ scenario, data = mydata, FUN = sum)
+
+  # order scenarios to logic rather than alphanumeric
+  total_data$scenario <- factor(total_data$scenario, levels = scenarios)
+  
+  # Plot with geom_line and geom_ribbon
+  ggplot(total_data, aes(x = scenario, y = Median, group = 1)) +  # Group=1 ensures a connected line
+    geom_line(color = "purple", size = 1) +  # Line for Median values
+    geom_ribbon(aes(ymin = LL, ymax = UL), fill = "purple", alpha = 0.2) +  # Ribbon for confidence intervals
+    labs(
+      x = "Scenario",
+      y = paste("Cumulative", title)
+    ) +
+    theme_bw() +
+    scale_y_continuous(labels = scales::comma) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1),
+          legend.position = "none"
+    )
+}
 
 
 summarise_and_plot_2D <- function(mat_list, matrix_name, title, scenarios){
   mydata <- summarise_stochasticity2(mat_list, matrix_name)
   plot_a <- create_temporal_plot(mydata, title, scenarios)
-  plot_b <- create_timepoint_plot(mydata, title, scenarios)
+  plot_b <- create_timepoint_plot2(mydata, title, scenarios)
   
   out_plot <- plot_a + plot_b
   return(out_plot)
@@ -181,30 +189,26 @@ mdv_scenarios <- mdv_range$scenario
 mdv_output <- lapply(mdv_scenarios, run_decision_tree_and_select_variables, 
                      parameters_df=mdv_range, 
                      selected_vars = c('ts_rabid_dogs', 'ts_exposures', 'ts_healthy_bites', 'ts_deaths', 
-                                       'ts_exposures_seek_care_inc', 'ts_total_seek_care_inc')
+                                       'ts_deaths_averted_MDV')
                      )
 
 names(mdv_output) <- mdv_scenarios
 
-names(mdv_output)
+names(mdv_output$mdv0)
 
 mdv_output$mdv0$ts_rabid_dogs
 
-# # Summarise stochasticicty
-#   ## data frames
-# deaths_df <- summarise_stochasticity2(mdv_output, 'ts_deaths')
-# testable_df <- summarise_stochasticity2(mdv_output, 'ts_rabid_biting_testable')
-# 
-# # Plots
-# deaths_temporal_plot <- create_temporal_plot(deaths_df, "deaths", scenarios=mdv_scenarios) ; deaths_plot
-# deaths_tms_plot <- create_timepoint_plot(deaths_df, "deaths", scenarios = mdv_scenarios) ; deaths_tms_plot
+#####
+#mydata <- summarise_stochasticity2(mdv_output, 'ts_rabid_dogs')
 
 mdv1<- summarise_and_plot_2D(mdv_output, 'ts_rabid_dogs', 'Rabid dogs', mdv_scenarios) ; mdv1
 mdv2<- summarise_and_plot_2D(mdv_output, 'ts_exposures', 'Exposures', mdv_scenarios) ; mdv2
 mdv3<- summarise_and_plot_2D(mdv_output, 'ts_healthy_bites', 'Healthy bites', mdv_scenarios) ; mdv3
 mdv4<- summarise_and_plot_2D(mdv_output, 'ts_deaths', 'Deaths', mdv_scenarios) ; mdv4
-mdv5<- summarise_and_plot_2D(mdv_output, 'ts_exposures_seek_care_inc', 'Exposures seek care inc', mdv_scenarios) ; mdv5
-mdv6<- summarise_and_plot_2D(mdv_output, 'ts_total_seek_care_inc', 'All seek care inc', mdv_scenarios) ; mdv6
+mdv5<- summarise_and_plot_2D(mdv_output, 'ts_deaths_averted_MDV', 'Deaths averted MDV', mdv_scenarios) ; mdv5
+
+(mdv1)/(mdv2)
+
 
 # HDR sensistivity ######
     # Note: pop control may be useful at some point?
@@ -215,7 +219,7 @@ hdr_scenarios <- hdr_range$scenario
 
 hdr_output <- lapply(hdr_scenarios, run_decision_tree_and_select_variables, 
                      parameters_df=hdr_range, 
-                     selected_vars = c('ts_rabid_dogs', 'ts_exposures', 'ts_healthy_bites', 'ts_deaths', 'ts_total_seek_care_inc')
+                     selected_vars = c('ts_rabid_dogs', 'ts_exposures', 'ts_healthy_bites', 'ts_deaths')
                      )
 names(hdr_output) <- hdr_scenarios
 
@@ -224,11 +228,9 @@ hdr1<- summarise_and_plot_2D(hdr_output, 'ts_rabid_dogs', 'Rabid dogs', hdr_scen
 hdr2<- summarise_and_plot_2D(hdr_output, 'ts_exposures', 'Exposures', hdr_scenarios) ; hdr2
 hdr3<- summarise_and_plot_2D(hdr_output, 'ts_healthy_bites', 'Healthy bites', hdr_scenarios) ; hdr3
 hdr4<- summarise_and_plot_2D(hdr_output, 'ts_deaths', 'Deaths', hdr_scenarios) ; hdr4
-hdr5<- summarise_and_plot_2D(hdr_output, 'ts_total_seek_care_inc', 'All seek care inc', hdr_scenarios) ; hdr5
 
 hdr3/hdr4
-
-(hdr1 + hdr2)/ (hdr4 + hdr5)
+hdr1/hdr2
 
 # MDV HDR Sensitivity ##########
     # Note: cost of mdv may be too high at some point (extremely high dog pop)!?
@@ -243,7 +245,7 @@ mdvHDR_scenarios <- mdvHDR_range$scenario
 mdvHDR_output <- lapply(mdvHDR_scenarios, run_decision_tree_and_select_variables, 
                      parameters_df=mdvHDR_range, N = 100,
                      selected_vars = c('ts_rabid_dogs', 'ts_exposures', 'ts_deaths', 
-                                       'ts_exposures_seek_care_inc', 'ts_total_seek_care_inc')
+                                       'ts_exp_seek_care', 'ts_healthy_bites', 'ts_MDV_campaign_cost')
                      )
 
 names(mdvHDR_output) <- mdvHDR_scenarios
@@ -307,13 +309,25 @@ process_and_plot_3D <- function(mat_list, mat_name, col1, col2, z = 'Median', ti
 
 
 # plot
-mdvHDR1<- process_and_plot_3D(mat_list=mdvHDR_output, mat_name=ts_rabid_dogs, col1='mdv', col2='hdr', z = 'Median', title="Rabid dogs"); mdvHDR1
-mdvHDR2<- process_and_plot_3D(mat_list=mdvHDR_output, mat_name=ts_exposures, col1='mdv', col2='hdr', z = 'Median', title="Exposures"); mdvHDR2
-mdvHDR3<- process_and_plot_3D(mat_list=mdvHDR_output, mat_name=ts_healthy_bites, col1='mdv', col2='hdr', z = 'Median', title="Healthy bites"); mdvHDR3
-mdvHDR4<- process_and_plot_3D(mat_list=mdvHDR_output, mat_name=ts_deaths, col1='mdv', col2='hdr', z = 'Median', title="Deaths"); mdvHDR4
-mdvHDR5<- process_and_plot_3D(mat_list=mdvHDR_output, mat_name=ts_exposures_seek_care_inc, col1='mdv', col2='hdr', z = 'Median', title="Exposures seek care incidence"); mdvHDR5
-mdvHDR6<- process_and_plot_3D(mat_list=mdvHDR_output, mat_name=ts_total_seek_care_inc, col1='mdv', col2='hdr', z = 'Median', title="Total seek care"); mdvHDR6
-mdvHDR7<- process_and_plot_3D(mat_list=mdvHDR_output, mat_name=ts_MDV_campaign_cost, col1='mdv', col2='hdr', z = 'Median', title="MDV campaign cost"); mdvHDR7
+mdvHDR1<- process_and_plot_3D(mat_list=mdvHDR_output, mat_name='ts_rabid_dogs', col1='mdv', col2='hdr', z = 'Median', title="Rabid dogs"); mdvHDR1
+mdvHDR2<- process_and_plot_3D(mat_list=mdvHDR_output, mat_name='ts_exposures', col1='mdv', col2='hdr', z = 'Median', title="Exposures"); mdvHDR2
+mdvHDR3<- process_and_plot_3D(mat_list=mdvHDR_output, mat_name='ts_healthy_bites', col1='mdv', col2='hdr', z = 'Median', title="Healthy bites"); mdvHDR3
+mdvHDR4<- process_and_plot_3D(mat_list=mdvHDR_output, mat_name='ts_deaths', col1='mdv', col2='hdr', z = 'Median', title="Deaths"); mdvHDR4
+mdvHDR5<- process_and_plot_3D(mat_list=mdvHDR_output, mat_name='ts_exp_seek_care', col1='mdv', col2='hdr', z = 'Median', title="Exposures seek care"); mdvHDR5
+mdvHDR6<- process_and_plot_3D(mat_list=mdvHDR_output, mat_name='ts_MDV_campaign_cost', col1='mdv', col2='hdr', z = 'Median', title="MDV campaign cost"); mdvHDR6
+
+
+
+a<-process_data(mat_list=mdvHDR_output, mat_name='ts_exposures', col1='mdv', col2='hdr')
+
+ggplot(a, aes(x = mdv, y = as.factor(hdr), fill = Median)) +
+  geom_tile() +  # Creates a heatmap-like visualization
+  scale_fill_gradient(low = "white", high = "red") +  # Color scale
+  labs(title = "Total exposures",
+       x = "MDV",
+       y = "HDR",
+       fill = "Median") +
+  theme_bw()
 
 
 
@@ -328,12 +342,12 @@ pSeek_scenarios <- pSeek_range$scenario
 
 pSeek_output <- lapply(pSeek_scenarios, run_decision_tree_and_select_variables, 
                      parameters_df=pSeek_range, 
-                     selected_vars = c('ts_exposures_seek_care', 'ts_deaths_averted_PEP',  'ts_deaths')
+                     selected_vars = c('ts_exp_seek_care', 'ts_deaths_averted_PEP',  'ts_deaths')
                      )
 names(pSeek_output) <- pSeek_scenarios
 
 #plot
-pSeek1<- summarise_and_plot_2D(pSeek_output, 'ts_exposures_seek_care', 'Exposures seek care', pSeek_scenarios) ; pSeek1
+pSeek1<- summarise_and_plot_2D(pSeek_output, 'ts_exp_seek_care', 'Exposures seek care', pSeek_scenarios) ; pSeek1
 pSeek2<- summarise_and_plot_2D(pSeek_output, 'ts_deaths_averted_PEP', 'Deaths averted PEP', pSeek_scenarios) ; pSeek2
 pSeek3<- summarise_and_plot_2D(pSeek_output, 'ts_deaths', 'Deaths', pSeek_scenarios) ; pSeek3
 
@@ -412,22 +426,22 @@ process_data_4D <- function(mat_list, mat_name, col1, col2,col3) {
   return(total_data)
 }
 
-mydata<-process_data_4D(mat_list=health_seeking_output, mat_name='ts_deaths_averted_PEP', col1='pStart', col2='pComplete', col3='pSeek')
+mydata_hs<-process_data_4D(mat_list=health_seeking_output, mat_name='ts_deaths', 
+                           col1='pStart', col2='pComplete', col3='pSeek')
 
-mydata2 <- mydata %>%
-  dplyr::filter(pComplete==1)
 
-# plot
-create_3d_scatter_plot(data=mydata2, x='pStart', y='pSeek', z='Median', title='ts_deaths_averted_PEP')
-
-# View the plots
-plots
 
 # All?? ##########
 
 
-
-
+ggplot(mydata_hs, aes(x = pSeek, y = pStart, fill = Median)) +
+  geom_tile() +  # Creates a heatmap-like visualization
+  scale_fill_gradient(low = "white", high = "red") +  # Color scale
+  labs(title = "Total deaths",
+       x = "pSeek",
+       y = "pStart",
+       fill = "Median") +
+  theme_bw()
 
 
 

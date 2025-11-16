@@ -1,351 +1,372 @@
 
-rm(list=ls())
 
-# Decision tree model that can be applied to create different scenarios 
+require(pacman)
+pacman::p_load(tidyverse,   # cleaning, wrangling
+               brms,      # models
+               rlang,
+               lubridate
+               )
 
-decision_tree <- function(N, pop, HDR, horizon, discount, #LR_range, 
-                          mu, k, pSeek_healthy, pBite_healthy,
-                          pStart_healthy, pComplete_healthy, pSeek_exposure,
-                          pStart_exposure, pComplete_exposure, pDeath, pPrevent, 
-                          full_cost, partial_cost, mdv_campaign_budget = NULL, base_vax_cov,
-                          vaccinate_dog_cost, target_vax_cov = NULL, 
-                          pInvestigate, pFound,  pTestable, pFN) {
 
-  # workaround predictions when horizon is 1
-         # Initialize only_a_single_year to a default value
-  only_a_single_year <- 'no'
-  
-  if (horizon == 1){
-    horizon = 2
-    only_a_single_year = 'yes'
-  }
-  
-    
-  # source helper functions  
-  source("./scripts/HelperFun.R")
-  
-  # SIMULATE TIMESERIES
-  
-  # Estimate dog population
-  HDR <- runif(n=N, min = HDR[1], max = HDR[2])  # Explore uncertainty in HDR - uniform distribution w/ upper & lower limits 
-  
-  dog_pop <- matrix(NA,nrow=N,ncol=horizon)
-  for (year in 1:horizon){
-    dog_pop[,year] <- pop/HDR 
-  }
-  
-  
-  # Vaccination coverage calculation based on input
-  if (!is.null(mdv_campaign_budget)) {
-    # Use the budget-based function to calculate vaccination coverage
-    vax_cov <- vax_coverage_from_budget(
-      mdv_campaign_budget = mdv_campaign_budget,
-      base_vax_cov = base_vax_cov,
-      vaccinate_dog_cost = vaccinate_dog_cost,  
-      dog_pop = dog_pop, 
-      horizon = horizon,
-      discount = discount
-    )
-    
-    # Notify user that budget overwrites target coverage
-    message("Overwriting target_vax_cov with budget approach. To use target_vax_cov, set budget as NULL")
-    
-  } else if (!is.null(target_vax_cov)) {
-    # Use target_vax_cov if budget is not provided
-    vax_cov <- vax_coverage_over_x_years(base_vax_cov, target_vax_cov, horizon)
-  } else {
-    stop("Either target_vax_cov or mdv_campaign_budget must be provided.")
-  }
-  
-  
-  # dogs vaccinated
-  ts_dogs_vaccinated <- matrix(NA,nrow=N,ncol=horizon)
-  for (year in 1:horizon){
-    ts_dogs_vaccinated[,year] <- dog_pop[,year] * vax_cov[[year]]
-  }
-  
-  # susceptible dogs  
-  sus_dogs <- matrix(NA,nrow=N,ncol=horizon)
-  for (year in 1:horizon){
-    sus_dogs[,year] <- dog_pop[,year] - ts_dogs_vaccinated[,year]
-  }
-  
-  
-  # MDV campaign cost 
-  MDV_campaign_cost <- matrix(NA, nrow=N, ncol=horizon)
-  
-  if (!is.null(mdv_campaign_budget)) {
-    # If budget is provided, assign it directly to each year
-    for (year in 1:horizon) {
-      MDV_campaign_cost[, year] <- mdv_campaign_budget
-    }
-  } else {
-    # If budget is not provided, calculate costs based on vaccinated dogs
-    for (year in 1:horizon) {
-      MDV_campaign_cost[, year] <- ts_dogs_vaccinated[, year] * 
-        runif(n=N, min=vaccinate_dog_cost[1], max=vaccinate_dog_cost[2])
-    }
-  }
-  
-  
-  ts_rabid_dogs<- predict_cases(nreps=N, vax_cov = vax_cov, horizon = horizon, dog_pop= dog_pop, rabies_inc=rabies_inc)
-  
-  
-  # Rabid bites
-  ## Exposures from times series of rabid dogs
-  ts_exposures <- matrix(NA,nrow=N,ncol=horizon)
-  ts_rabid_biting_dogs <- matrix(NA,nrow=N,ncol=horizon)
-  
-  for (year in seq(1,horizon)){
-    output <- sapply(FUN = nBitesBiters, pBite = mu, pBiteK = k, X = ts_rabid_dogs[,year]) 
-    ts_exposures[,year] <- unlist(output[1,])       # nBites
-    ts_rabid_biting_dogs[,year] <- unlist(output[2,])    # nBiters
-  }
-  
-  ## IBCM
-  
-  # Rabid biting dogs that are investigated
-  ts_rabid_biting_investigated <- matrix(NA,nrow=N,ncol=horizon)
-  for (year in 1:horizon){
-    ts_rabid_biting_investigated[,year] <- rbinom(n=N,  size = ts_rabid_biting_dogs[,year], prob = pInvestigate)
-  }
-  
-  # Rabid biting dogs that are found
-  ts_rabid_biting_found <- matrix(NA,nrow=N,ncol=horizon)
-  for (year in 1:horizon){
-    ts_rabid_biting_found[,year] <- rbinom(n=N,  size = ts_rabid_biting_investigated[,year], prob = pFound)
-  }
-  
-  # Rabid biting dogs that are testable
-  ts_rabid_biting_testable <- matrix(NA,nrow=N,ncol=horizon)
-  for (year in 1:horizon){
-    ts_rabid_biting_testable[,year] <- rbinom(n=N,  size = ts_rabid_biting_found[,year], prob = pTestable)
-  }
-  
-  
-  
-  # Healthy bites #####
-    # Using LR_range --to review if still in use for IBCM
-  # sim_patient_ts = function(pop, inc_range, horizon){
-  #   inc <- runif(horizon, min = inc_range[1], max = inc_range[2]) # select incidence each year over time horizon
-  #   # open matrix for output
-  #   ts_healthy_bites <- matrix(nrow = N, ncol = horizon)
-  #   #loop through years
-  #   for (year in seq(1, horizon)){
-  #     ts_healthy_bites[,year] <- unlist(lapply(FUN = rpois, n=N, X = inc[year]/100000 * pop)) # convert incidence into bite patients per year for population
-  #   }
-  #   return(ts_healthy_bites) 
-  # }
-  
-  ts_healthy_bites <- matrix(nrow = N, ncol = horizon)
-  for (year in seq(1, horizon)){
-    ts_healthy_bites[,year] <- rbinom(n=N,  size = round(dog_pop), prob = pBite_healthy)
-  }
-  
-  # Add probability that a healthy animal bite is flagged as potentially suspicious (0.05)
-  # false positives         #to do
-  # not sure if the denominator should be ts_rabid_biting_investigated (I now think this should be ts_healthy_biting_dogs)# Chat with Elaine
-  ts_healthy_biting_investigated <- matrix(NA,nrow=N,ncol=horizon)
-  for (year in 1:horizon){
-    ts_healthy_biting_investigated[,year] <- rbinom(n=N,  size = ts_healthy_bites[,year], prob = pFN)
-  }
-  
-  
-  
-  # Healthy biting dogs ########
-      # to do                     # Chat with Elaine
 
-  # Persons bitten by healthy dogs
-  # healthy_bites <- sim_patient_ts(pop, inc_range = LR_range, horizon)
-  # healthy_bites <- round(rgamma(N, shape=6.675, rate=2889.090)* dog_pop) 
-  
-  
-  # Healthy biting dogs that are found
-  ts_healthy_biting_found <- matrix(NA,nrow=N,ncol=horizon)
-  for (year in 1:horizon){
-    ts_healthy_biting_found[,year] <- rbinom(n=N,  size = ts_healthy_biting_investigated[,year], prob = pFound)
-  }
-  
-  
-  # HEALTHCARE SEEKING 
-  
-  # time series ts_exposures_seek_care
-  ts_exposures_seek_care <- matrix(nrow = N, ncol = horizon)
-  for (year in seq(1, horizon)){
-    ts_exposures_seek_care[,year] <- rbinom(n=N,  size = ts_exposures[,year], prob = pSeek_exposure)
-  }
-  
-  # time series ts_exposures_do_not_seek_care
-  ts_exposures_do_not_seek_care <- ts_exposures - ts_exposures_seek_care
-  
-  
-  # Rabid bite victims:
-  
-  ts_exp_start <- matrix(nrow = N, ncol = horizon)
-  ts_exp_complete <- matrix(nrow = N, ncol = horizon)
-  for (year in seq(1, horizon)){
-    # time series start PEP
-    ts_exp_start[,year] <- rbinom(n=N,  size = ts_exposures_seek_care[,year], prob = pStart_exposure)
-    # time series complete PEP
-    ts_exp_complete[,year] <- rbinom(n=N,  size = ts_exp_start[,year], prob = pComplete_exposure)
-  }
-  
-  
-  ts_exp_no_start <- (ts_exposures_seek_care - ts_exp_start) + ts_exposures_do_not_seek_care
-  ts_exp_incomplete <- ts_exp_start - ts_exp_complete
-  
-  
-  # Healthy bites
-  
-  # pSEEK for healthy bites
-  
-  # time series ts_exposures_seek_care
-  ts_healthy_seek_care <- matrix(nrow = N, ncol = horizon)
-  for (year in seq(1, horizon)){
-    ts_healthy_seek_care[,year] <- rbinom(n=N,  size = ts_healthy_bites[,year], prob = pSeek_healthy)
-  }
-  
-  # time series ts_exposures_do_not_seek_care
-  ts_healthy_do_not_seek_care <- ts_healthy_bites - ts_healthy_seek_care
-  
-  
-  # IBCM ######
-  # Total bite victims seeking care
-  total_seek_care = ts_exposures_seek_care + ts_healthy_seek_care
-  ts_total_seek_care_inc = (total_seek_care/pop)*1E5
-  
-  ts_exposures_seek_care_inc = (ts_exposures_seek_care/pop)*1E5        # per 100k
-  ts_healthy_seek_care_inc = (ts_healthy_seek_care/pop)*1E5
-  
-  # pStart
-  ts_healthy_start <- matrix(nrow = N, ncol = horizon)
-  ts_healthy_complete <- matrix(nrow = N, ncol = horizon)
-  for (year in seq(1, horizon)){
-    # time series start PEP
-    ts_healthy_start[,year] <- rbinom(n=N,  size = ts_healthy_seek_care[,year], prob = pStart_healthy)
-    # time series complete PEP
-    ts_healthy_complete[,year] <- rbinom(n=N,  size = ts_healthy_start[,year], prob = pComplete_healthy)
-  }
-  
-  ts_healthy_no_start <- (ts_healthy_seek_care - ts_healthy_start) + ts_healthy_do_not_seek_care
-  ts_healthy_incomplete <- ts_healthy_start - ts_healthy_complete
-  
-  
-  # DEATHS
-  
-  # pDeath
-  ts_deaths_no_PEP <- matrix(nrow = N, ncol = horizon)
-  deaths_incomplete_PEP <- matrix(nrow = N, ncol = horizon)
-  for (year in seq(1, horizon)){
-    # deaths no PEP
-    ts_deaths_no_PEP[,year] <- rbinom(n=N,  size = ts_exp_no_start[,year], prob = pDeath)
-    # deaths incomplete PEP
-    deaths_incomplete_PEP[,year] <- rbinom(n=N,  size = ts_exp_incomplete[,year], prob = 1-pPrevent)
-  }
-  
-  ts_deaths <- ts_deaths_no_PEP + deaths_incomplete_PEP
-  
-  
-  # PEP IMPACTS (because we can see who got PEP)
-  
-  deaths_averted_PEP_complete <- matrix(nrow = N, ncol = horizon)
-  deaths_averted_PEP_incomplete <- matrix(nrow = N, ncol = horizon)
-  for (year in seq(1, horizon)){
-    # deaths averted complete PEP
-    deaths_averted_PEP_complete[,year] <- rbinom(n=N,  size = ts_exp_complete[,year], prob = pPrevent) 
-    # deaths incomplete PEP
-    deaths_averted_PEP_incomplete[,year] <- rbinom(n=N,  size = (ts_exp_incomplete[,year] - deaths_incomplete_PEP[,year]), prob = pPrevent * pDeath)
-  }
-  
-  ts_deaths_averted_PEP <-  deaths_averted_PEP_complete + deaths_averted_PEP_incomplete
-  
-  # MDV IMPACTS ()
-  ######
-  
-  # Run only if mdv_campaign_budget is provided (and non-zero) or target_vax_cov > base_vax_cov
-  if ((!is.null(mdv_campaign_budget) && mdv_campaign_budget != 0) || 
-      (target_vax_cov > base_vax_cov)) {
+source("./scripts/HelperFun.R")
 
-    vax_cov_no_MDV <- vax_coverage_over_x_years(base_vax_cov, 0, horizon) # target coverage is 0 as there are no efforts
-    
-    # Predict rabid dogs without MDV
-    ts_rabid_dogs_no_MDV <- predict_cases(
-      nreps=N, 
-      vax_cov=vax_cov_no_MDV, 
-      horizon=horizon, 
-      dog_pop=dog_pop, 
-      rabies_inc=rabies_inc
-    )
-    
-    # Predict human exposures without MDV
-    ts_exposures_no_MDV <- matrix(NA, nrow=N, ncol=horizon)
-    for (year in seq(1, horizon)){
-      output_no_MDV <- sapply(FUN = nBitesBiters, pBite=mu, pBiteK=k, X=ts_rabid_dogs_no_MDV[,year]) 
-      ts_exposures_no_MDV[,year] <- unlist(output_no_MDV[1,])  # nBites
-    }
-    
-    # Deaths without PEP in no-MDV scenario
-    ts_deaths_no_MDV <- matrix(nrow=N, ncol=horizon)
-    for (year in seq(1, horizon)){
-      ts_deaths_no_MDV[,year] <- rbinom(n=N, size=ts_exposures_no_MDV[,year], prob=pDeath)
-    }
-    
-    # Deaths averted by MDV
-    ts_deaths_averted_MDV <- ts_deaths_no_MDV - ts_deaths
-    ts_deaths_averted_MDV <- pmax(ts_deaths_no_MDV - ts_deaths, 0) # forcing negatives to zero
-  }
 
-  ######
+
+
+#########
+# run
+
+decision_tree <- function(N = 10, pop = 100000, HDR = c(10,20), horizon = 5, discount = 0.03, mu = 0.38, k = 0.14, 
+                          pSeek_healthy = 0.2, pBite_healthy = 0.2, pStart_healthy = 0.1, pComplete_healthy = 0.1, 
+                          pSeek_exposure = 0.78, pStart_exposure = 0.7, pComplete_exposure = 0.6, pDeath = 0.16, 
+                          pPrevent = 0.99, full_cost = 45, partial_cost = 25, mdv_campaign_budget = NULL , 
+                          base_vax_cov = 0.05, vaccinate_dog_cost = c(1,3), target_vax_cov = 0.4 , pInvestigate = 0.5, 
+                          pFound = 0.4, pTestable = 0.2, pFP = 0.05, rabies_inc= c(0.0075,0.0125)){
+  
+  # Step 1: Initialize horizon settings
+  only_a_single_year <- initialize(horizon)
+
+  # Step 2: Estimate dog population
+  dog_pop <- estimate_dog_population(N, pop, HDR, horizon)
+  
+  # Step 3: Calculate vaccination coverage
+  vax_cov <- calc_vax_coverage(base_vax_cov = base_vax_cov, target_vax_cov = target_vax_cov, 
+                               mdv_campaign_budget = mdv_campaign_budget, vaccinate_dog_cost= vaccinate_dog_cost, 
+                               dog_pop=dog_pop, horizon= horizon, discount=discount)
+  
+   #vax_cov <- c(0.15, 0.15, 0.2, 0.25, 0.6, 0.6, 0.3, 0, 0, 0.5, 0.5)
+  # vax_cov <- c(0.1, 0.15, 0.25, 0.25, 0.5, 0.2, 0.1, 0.5, 0.4, 0.5, 0.5)
+
+  
+  # Step 4: Calculate vaccinated and susceptible dog populations
+  vax_results <- calculate_vaccinated_and_susceptible(N, horizon, dog_pop, vax_cov)
+  
+  # Step 5: Calculate MDV campaign costs
+  MDV_campaign_cost <- calculate_campaign_cost(N, horizon, mdv_campaign_budget, vax_results$ts_dogs_vaccinated, vaccinate_dog_cost)
+  
+  # Step 6A: Predict rabid dogs and human exposures
+  rabies_results <- predict_rabies(N, horizon, vax_cov, dog_pop, rabies_inc, mu, k)
   
   
-  # PEP DELIVERED
-  ts_complete_PEP <- ts_exp_complete + ts_healthy_complete
-  ts_incomplete_PEP <- ts_exp_incomplete + ts_healthy_incomplete
-  
-  # Economics #####
-    ## Discount costs
-  future <- (1:horizon)-1
-  ts_cost_PEP_per_year <- ((ts_complete_PEP * full_cost) + (ts_incomplete_PEP * partial_cost)) * exp(-discount*future)
-  ts_MDV_campaign_cost <- MDV_campaign_cost * exp(-discount*future)
-  
-    ## Add
-  ts_cost_per_year <- ts_cost_PEP_per_year + ts_MDV_campaign_cost 
+  # Step 6B:  Healthy bites
+  ts_healthy_bites <- calculate_healthy_bites(N, horizon, dog_pop, pBite_healthy)
+   
+
+  # Step 7: Investigate rabid and healthy bites
+  bite_investigation_results <- investigate_bites(N, horizon, rabies_results$ts_rabid_biting_dogs, 
+                                                  pInvestigate, pFound, pTestable)
   
   
-  # list all ts outputs
-  my_list<- ls(pattern="ts_")
   
-  if (only_a_single_year == 'yes'){
-    # get the matrices 
-    out_matrices <- lapply(my_list, function(mat) get(mat)[, 1, drop = FALSE])
-  }else{
-    out_matrices <- lapply(my_list, function(mat) get(mat))
+  # Step 8: Calculate healthcare-seeking behavior
+  healthcare_results <- calculate_healthcare(N, horizon, rabies_results$ts_exposures, ts_healthy_bites, 
+                                             pSeek_exposure, pStart_exposure, pComplete_exposure, 
+                                             pSeek_healthy, pStart_healthy, pComplete_healthy)
+  
+  ts_start_PEP <- healthcare_results$ts_exp_start + healthcare_results$ts_healthy_start
+
+  
+  # Step 9: Predict deaths
+    # some calcs first
+  ts_exp_no_start = rabies_results$ts_exposures - healthcare_results$ts_exp_start
+  ts_exp_incomplete = healthcare_results$ts_exp_start - healthcare_results$ts_exp_complete
+  
+    #  function
+  deaths_PEP <- predict_deaths_and_deathsaverted_PEP(N, horizon, rabies_results$ts_exposures, ts_exp_no_start, 
+                                                     healthcare_results$ts_exp_complete, ts_exp_incomplete, pDeath, pPrevent)
+  
+  # Step 10:  deaths averted by MDV
+  ts_deaths_averted_MDV <- compute_deaths_averted_MDV(N, horizon, mdv_campaign_budget, target_vax_cov, base_vax_cov, 
+                                                      dog_pop, rabies_inc, mu, k, pDeath, rabies_results$ts_exposures)
+  
+  # Step 11: deaths averted PEP (all exposures that start PEP*pDeath)
+  exp_start <- healthcare_results$ts_exp_start 
+  
+  ts_deaths_averted_PEP <- matrix(
+    rbinom(
+      n     = length(exp_start),      # number of draws
+      size  = as.vector(exp_start),   # number of trials
+      prob  = pDeath                  # probability
+    ),
+    nrow = N,
+    byrow = FALSE
+  )
+  
+  ts_deaths_averted <- ts_deaths_averted_MDV + ts_deaths_averted_PEP
+  
+  
+  # Step 12: Collect all variables starting with "ts_"
+  
+  #my_list<- ls(pattern="ts_")
+  
+  all_results <- c(vax_results, rabies_results, bite_investigation_results, healthcare_results, 
+                   deaths_PEP, 
+                   list(
+                     ts_deaths_averted_MDV = ts_deaths_averted_MDV, 
+                     ts_deaths_averted_PEP = ts_deaths_averted_PEP, 
+                     ts_deaths_averted = ts_deaths_averted,
+                     ts_start_PEP = ts_start_PEP,
+                     ts_MDV_campaign_cost = MDV_campaign_cost,
+                     ts_healthy_bites = ts_healthy_bites))
+  
+  
+  # If only a single year was requested, extract the first column of each matrix
+  if (only_a_single_year == 'yes') {
+    all_results <- lapply(all_results, function(mat) mat[, 1, drop = FALSE])
   }
   
-  # name
-  names(out_matrices) <- my_list
   
   # output
-  return(out_matrices)
+  return(all_results)
   
 }
 
 
+# #pep ########
 
-decision_tree(N=10, pop=1000000, HDR=c(10,20), horizon=7, discount=0.03,#LR_range, 
-              mu=0.38, k=0.14, pSeek_healthy=0.78,pBite_healthy=0.01,
-              pStart_healthy=0.2, pComplete_healthy=0.20, pSeek_exposure=0.75,
-              pStart_exposure=0.899, pComplete_exposure=0.542, pDeath=0.166, pPrevent=0.986, 
-              full_cost =45, partial_cost=25, mdv_campaign_budget=100000, base_vax_cov=0.05,
-              vaccinate_dog_cost=2, target_vax_cov=0.7, #campaign_budget
-              pInvestigate=0.9, pFound=0.6,  pTestable=0.7, pFN=0.05
-) 
+# 
+# 
+# plot_ribbon <- function(mydata, x_axis, y_axis, xlab, ylab, palette = NULL) {
+#   
+#   #  color palette if none is provided
+#   if (is.null(palette)) {
+#     palette <- c("#8195b2", "#648c67", "orange2", "turquoise1") 
+#   }
+#   
+#   ggplot(mydata, aes(x = {{ x_axis }}, y = {{ y_axis }}, group = scenario, color = scenario, fill = scenario)) +  
+#     geom_line(size = 1) +  
+#     geom_ribbon(aes(ymin = LL, ymax = UL), alpha = 0.6, color = NA) +
+#     labs(x = xlab, y = ylab) +
+#     theme_bw() +
+#     scale_y_continuous(labels = scales::comma) +
+#     scale_color_manual(values = palette) +  # Apply custom colors
+#     scale_fill_manual(values = palette) +   # Apply custom fill colors
+#     theme(axis.text.x = element_text(angle = 0, hjust = 1))
+# }
+# 
+# 
+# 
+# 
+# # Ph #########
+# 
+status_quo_ph <- decision_tree(N = 10, pop = 500000, HDR = c(3,6), horizon = 5, mu = 0.38, k = 0.14,
+                            pBite_healthy = 0.01, pSeek_healthy = 0.75,pStart_healthy = 1, pComplete_healthy = 0.9,
+                            pSeek_exposure = 0.75, pStart_exposure = 1, pComplete_exposure = 0.9, pDeath = 0.17,
+                            pPrevent = 0.986, full_cost = 45, partial_cost = 25, mdv_campaign_budget = NULL ,
+                            base_vax_cov = 0.2, vaccinate_dog_cost = c(2,4), target_vax_cov = 0.2, pInvestigate = 0.5,
+                            pFound = 0.4, pTestable = 0.2, pFP = 0.05)
+# 
+# 
+# oh_ph <- decision_tree(N = 1000, pop = 500000, HDR = c(3,6), horizon = 5, mu = 0.38, k = 0.14, 
+#                      pBite_healthy = 0.01, pSeek_healthy = 0.75,pStart_healthy = 1, pComplete_healthy = 0.9, 
+#                      pSeek_exposure = 0.9, pStart_exposure = 1, pComplete_exposure = 0.9, pDeath = 0.17, 
+#                      pPrevent = 0.986, full_cost = 45, partial_cost = 25, mdv_campaign_budget = NULL , 
+#                      base_vax_cov = 0.2, vaccinate_dog_cost = c(2,4), target_vax_cov = 0.7, pInvestigate = 0.5, 
+#                      pFound = 0.4, pTestable = 0.2, pFP = 0.05)
+# 
+# 
+# mydata_sq_ph <-summarise_stochasticity(status_quo_ph$ts_exposures, "Status quo")
+# mydata_oh_ph <- summarise_stochasticity(oh_ph$ts_exposures, "One Health" )
+# 
+# mydata_cbd_ph <- rbind(mydata_sq_ph, mydata_oh_ph)
+# 
+# plot_ribbon(mydata = mydata_cbd_ph, x_axis = year, y_axis = Median, xlab= "Year", ylab = "Exposures")
+# 
+# 
+# # Plot with geom_line and geom_ribbon
+# ggplot(mydata_cbd_ph, aes(x = year, y = Median, group = scenario, color = scenario, fill = scenario)) +  
+#   geom_line(size = 1) +  # Line for Median values
+#   geom_ribbon(aes(ymin = LL, ymax = UL), alpha = 0.4, color = NA) +  # Confidence Interval ribbon
+#   labs(
+#     x = "Year",
+#     y = "Exposures",
+#   ) +
+#   theme_bw() +
+#   scale_y_continuous(labels = scales::comma) +
+#   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+# 
+# 
+# 
+# # Ulanga ######
+# # running as philippines temporarily
+# 
+# ulanga_sq <- decision_tree(N = 1000, pop = 250000, HDR = c(6, 15), horizon = 5, mu = 0.38, k = 0.14,
+#                        pBite_healthy = 0.01, pSeek_healthy = 0.6,pStart_healthy = 0.2, pComplete_healthy = 0.2,
+#                        pSeek_exposure = 0.7, pStart_exposure = 0.666667, pComplete_exposure = 0.3968, pDeath = 0.17,
+#                        pPrevent = 0.986, full_cost = 45, partial_cost = 25, mdv_campaign_budget = NULL ,
+#                        base_vax_cov = 0.05, vaccinate_dog_cost = c(2,4), target_vax_cov = 0, pInvestigate = 0.5,
+#                        pFound = 0.4, pTestable = 0.2, pFP = 0.05)
+# 
+# ulanga_mdv <- decision_tree(N = 1000, pop = 250000, HDR = c(6, 15), horizon = 5, mu = 0.38, k = 0.14,
+#                            pBite_healthy = 0.01, pSeek_healthy = 0.6,pStart_healthy = 0.2, pComplete_healthy = 0.2,
+#                            pSeek_exposure = 0.7, pStart_exposure = 0.666667, pComplete_exposure = 0.3968, pDeath = 0.17,
+#                            pPrevent = 0.986, full_cost = 45, partial_cost = 25, mdv_campaign_budget = NULL ,
+#                            base_vax_cov = 0.05, vaccinate_dog_cost = c(2,4), target_vax_cov = 0.7, pInvestigate = 0.5,
+#                            pFound = 0.4, pTestable = 0.2, pFP = 0.05)
+# 
+# 
+# ulanga_free_pep <- decision_tree(N = 1000, pop = 250000, HDR = c(6, 15), horizon = 5, mu = 0.38, k = 0.14,
+#                             pBite_healthy = 0.01, pSeek_healthy = 0.78, pStart_healthy = 0.2, pComplete_healthy = 0.2, 
+#                             pSeek_exposure = 0.75, pStart_exposure = 0.899, pComplete_exposure = 0.542, pDeath = 0.17, 
+#                             pPrevent = 0.986, full_cost = 15, partial_cost = 8.3, mdv_campaign_budget = NULL , 
+#                             base_vax_cov = 0.05, vaccinate_dog_cost = c(2,4), target_vax_cov = 0, pInvestigate = 0.5, 
+#                             pFound = 0.4, pTestable = 0.2, pFP = 0.05)
+# 
+# 
+# ulanga_mdv_pep <- decision_tree(N = 1000, pop = 250000, HDR = c(6, 15), horizon = 5, mu = 0.38, k = 0.14,
+#                                 pBite_healthy = 0.01, pSeek_healthy = 0.78, pStart_healthy = 0.2, pComplete_healthy = 0.2, 
+#                                 pSeek_exposure = 0.75, pStart_exposure = 0.899, pComplete_exposure = 0.542, pDeath = 0.17, 
+#                                 pPrevent = 0.986, full_cost = 15, partial_cost = 8.3, mdv_campaign_budget = NULL , 
+#                                 base_vax_cov = 0.05, vaccinate_dog_cost = c(2,4), target_vax_cov = 0.7, pInvestigate = 0.5, 
+#                                 pFound = 0.4, pTestable = 0.2, pFP = 0.05)
+# 
+# 
+# # Define specific colors for each category
+# color_mapping <- c(
+#   "Status quo" = "grey63",   # 
+#   "free PEP"   = "hotpink",   # 
+#   "MDV"        = "#bc80bd",   # 
+#   "One Health" = "#ffed6f"    # 
+# )
+# 
+# 
+# ulanga_sq_df <- summarise_stochasticity(ulanga_sq$ts_deaths, "Status quo")
+# ulanga_fp_df <- summarise_stochasticity(ulanga_free_pep$ts_deaths, "free PEP" )
+# ulanga_mdv_df <- summarise_stochasticity(ulanga_mdv$ts_deaths, "MDV")
+# ulanga_oh <- summarise_stochasticity(ulanga_mdv_pep$ts_deaths, "One Health")
+# 
+# ulanga_cbd1 <- rbind(ulanga_sq_df, ulanga_fp_df)
+# ulanga_cbd2 <- rbind(ulanga_sq_df, ulanga_mdv_df)
+# ulanga_cbd3 <- rbind(ulanga_oh, ulanga_mdv_df)
+# 
+# 
+# plot_ribbon(mydata = ulanga_sq_df, 
+#             x_axis = year, 
+#             y_axis = Median, 
+#             xlab= "Year", 
+#             ylab = "Deaths")+
+#   scale_color_manual(values = color_mapping) +
+#   scale_fill_manual(values = color_mapping) 
+# 
+# 
+# a<- plot_ribbon(mydata = ulanga_cbd1, 
+#             x_axis = year, 
+#             y_axis = Median, 
+#             xlab= "Year", 
+#             ylab = "Deaths")+
+#   scale_color_manual(values = color_mapping) +
+#   scale_fill_manual(values = color_mapping) 
+# 
+# b<- plot_ribbon(mydata = ulanga_cbd2, 
+#             x_axis = year, 
+#             y_axis = Median, 
+#             xlab= "Year", 
+#             ylab = "Deaths")+
+#   scale_color_manual(values = color_mapping) +
+#   scale_fill_manual(values = color_mapping) 
+# 
+# c<- plot_ribbon(mydata = ulanga_cbd3, 
+#             x_axis = year, 
+#             y_axis = Median, 
+#             xlab= "Year", 
+#             ylab = "Deaths")+
+#   scale_color_manual(values = color_mapping) +
+#   scale_fill_manual(values = color_mapping) 
+# 
+# a/b/c + 
+#   plot_annotation(tag_levels = 'A') 
+# 
+# # judicious use of resources
+# ulanga_fp_df2 <- summarise_stochasticity(ulanga_sq$ts_exposures, "free PEP" )
+# 
+# 
+# # Kitui ########
+# 
+# kitui_sq <- decision_tree(N = 1000, pop = 1250000, HDR = c(4,10), horizon = 5, mu = 0.38, k = 0.14,
+#                            pBite_healthy = 0.01, pSeek_healthy = 0.6,pStart_healthy = 0.2, pComplete_healthy = 0.2,
+#                            pSeek_exposure = 0.7, pStart_exposure = 0.666667, pComplete_exposure = 0.3968, pDeath = 0.17,
+#                            pPrevent = 0.986, full_cost = 45, partial_cost = 25, mdv_campaign_budget = NULL ,
+#                            base_vax_cov = 0.05, vaccinate_dog_cost = c(2,4), target_vax_cov = 0, pInvestigate = 0.5,
+#                            pFound = 0.4, pTestable = 0.2, pFP = 0.05)
+# 
+# kitui_sq1 <- summarise_stochasticity(kitui_sq$ts_rabid_dogs, "Rabid dogs" )
+# kitui_sq2 <- summarise_stochasticity(kitui_sq$ts_rabid_biting_dogs, "Rabid biting dogs" )
+# 
+# kitui_sq <- rbind(kitui_sq1, kitui_sq2)
+# 
+# plot_ribbon(kitui_sq, x_axis=year, y_axis=Median, xlab="Year", ylab="Value", palette = NULL) 
+# 
+# 
+# # Pemba #####
+# 
+# pemba <- decision_tree(N = 100, pop = 540000, HDR = c(90, 110), horizon = 11, mu = 0.38, k = 0.14,
+#                        pBite_healthy = 0.01, pSeek_healthy = 0.6,pStart_healthy = 0.2, pComplete_healthy = 0.2,
+#                        pSeek_exposure = 0.7, pStart_exposure = 0.666667, pComplete_exposure = 0.3968, pDeath = 0.17,
+#                        pPrevent = 0.986, full_cost = 45, partial_cost = 25, mdv_campaign_budget = NULL ,
+#                        base_vax_cov = 0.05, vaccinate_dog_cost = c(2,4), target_vax_cov = 0.8, pInvestigate = 0.5,
+#                        pFound = 0.4, pTestable = 0.2, pFP = 0.05)
+# 
+# 
+# pemba_df<-summarise_stochasticity(pemba$ts_rabid_dogs, "Pemba")
+# 
+# 
+# ggplot(pemba_df, aes(x = as.factor(year), y = Median, group = scenario, color = scenario, fill = scenario)) +
+#   geom_line(size = 1) +  # Line for Median values
+#   geom_ribbon(aes(ymin = LL, ymax = UL), alpha = 0.2, color = NA) +  # Confidence Interval ribbon
+#   labs(
+#     x = "Year",
+#     y = "Rabid dogs",
+#   ) +
+#   theme_bw() +
+#   scale_y_continuous(labels = scales::comma) +
+#   theme(axis.text.x = element_text(angle = 0, hjust = 1))
+# 
 
-
-
-
-
-
+# pemba_df$vax_cov <- c(0.15, 0.15, 0.2, 0.25, 0.6, 0.6, 0.3, 0, 0, 0.5, 0.5)
+# max_dogs    <- max(pemba_df$UL, na.rm = TRUE)
+# scaleFactor <- max_dogs
+# 
+# ggplot() +
+#   # ribbon
+#   geom_ribbon(
+#     data = pemba_df,
+#     aes(x = factor(year), ymin = LL, ymax = UL, group = scenario),
+#     fill = "grey80", alpha = 0.3
+#   ) +
+#   # rabid dogs
+#   geom_line(
+#     data = pemba_df,
+#     aes(x = factor(year), y = Median, color = "Rabid dogs", group = scenario),
+#     size = 1
+#   ) +
+#   # coverage (with group=1!)
+#   geom_line(
+#     data = pemba_df,
+#     aes(x = factor(year), y = vax_cov * scaleFactor,
+#         color = "Vax coverage", group = 1),
+#     size = 1, linetype = "dashed"
+#   ) +
+#   scale_y_continuous(
+#     name    = "Rabid dogs",
+#     labels  = scales::comma,
+#     sec.axis = sec_axis(~ . / scaleFactor,
+#                         name   = "Vaccination coverage",
+#                         labels = scales::percent_format(accuracy = 1))
+#   ) +
+#   scale_color_manual(
+#     name   = NULL,
+#     values = c(
+#       "Rabid dogs"   = "steelblue",
+#       "Vax coverage" = "darkorange"
+#     )
+#   ) +
+#   labs(x = "Year") +
+#   theme_bw() +
+#   theme(
+#     axis.text.x     = element_text(hjust = 0.5),
+#     legend.position = "top"
+#   )
 
 
 

@@ -514,7 +514,46 @@ summarise_stochasticity <- function(mat=status_quo$ts_deaths_averted_PEP, scenar
 }
 
 
+plot_ribbon <- function(mydata, x_axis, y_axis, xlab, ylab, palette = NULL) {
 
+  #  color palette if none is provided
+  if (is.null(palette)) {
+    palette <- c("#8195b2", "#648c67", "orange2", "turquoise1")
+  }
+
+  ggplot(mydata, aes(x = {{ x_axis }}, y = {{ y_axis }}, group = scenario, color = scenario, fill = scenario)) +
+    geom_line(size = 1) +
+    geom_ribbon(aes(ymin = LL, ymax = UL), alpha = 0.6, color = NA) +
+    labs(x = xlab, y = ylab) +
+    theme_bw() +
+    scale_y_continuous(labels = scales::comma) +
+    scale_color_manual(values = palette) +  # Apply custom colors
+    scale_fill_manual(values = palette) +   # Apply custom fill colors
+    theme(axis.text.x = element_text(angle = 0, hjust = 1))
+}
+
+create_temporal_plot <- function(mydata, title, scenarios){
+  
+  # Order scenarios
+  mydata$scenario <- factor(mydata$scenario, levels = scenarios)
+  
+  ggplot(mydata, aes(x = year, y = Median)) +
+    geom_ribbon(aes(ymin = LL, ymax = UL),
+                fill = "orchid4", alpha = 0.5) +      # purple ribbon 
+    geom_line(color = "orchid4", linewidth = 0.7) +    # purple line
+    facet_wrap(~scenario) +
+    labs(
+      title = paste(title, "with 95% Confidence Intervals"),
+      x = "Year",
+      y = title
+    ) +
+    theme_bw() +
+    scale_y_continuous(labels = scales::comma) +
+    theme(
+      legend.position = "none",
+      strip.background = element_blank()
+    )
+}
 
 
 

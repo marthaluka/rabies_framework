@@ -1,0 +1,6 @@
+﻿scenarios,Country ,Population,HDR,horizon,mu,k,pBite_healthy,pSeek_healthy,pStart_healthy,pComplete_healthy,pSeek_exposure,pStart_exposure,pComplete_exposure,pDeath,pPrevent,full_cost,partial_cost,mdv_campaign_budget,base_vax_cov,vaccinate_dog_cost,target_vax_cov,pInvestigate,pFound,pTestable,pFP
+SQ,Tanzania,67500000,15,5,0.38,0.72,0.01,0.2,1,0.9,0.75,1,0.9,0.17,0.986,45,25,NULL,0.1,2.5,0.05,0.01,0.25,0.75,0.025
+imp_access_ID,Tanzania,67500000,15,5,0.38,0.72,0.01,0.4,1,0.8,0.9,1,0.95,0.17,0.986,45,25,NULL,0.1,2.5,0.05,0.1,0.25,0.75,0.025
+imp_access_IM,Tanzania,67500000,15,5,0.38,0.72,0.01,0.4,1,0.8,0.9,1,0.95,0.17,0.986,45,25,NULL,0.1,2.5,0.05,0.1,0.25,0.75,0.025
+imp_access_modMDV,Tanzania,67500000,15,5,0.38,0.72,0.01,0.4,1,0.8,0.9,1,0.95,0.17,0.986,45,25,NULL,0.1,2.5,0.3,0.1,0.25,0.75,0.025
+imp_access_MDV,Tanzania,67500000,15,5,0.38,0.72,0.01,0.4,1,0.8,0.9,1,0.95,0.17,0.986,45,25,NULL,0.1,2.5,0.7,0.1,0.25,0.75,0.025

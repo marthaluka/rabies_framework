@@ -97,7 +97,7 @@ decision_tree <- function(N = 10, pop = 35e6, HDR = c(16,17), unowned_prop = 0.6
   # ---------------------------------------------------------------------------#
   ##  2B: Healthy bites (human horizon only)   #######
   # ---------------------------------------------------------------------------#
-  ts_recorded_bites <- matrix(rbinom(N * horizon, pop, bpi / 1000), N, horizon)
+  ts_total_bite_presentations <- matrix(rbinom(N * horizon, pop, bpi / 1000), N, horizon)
   
   # ---------------------------------------------------------------------------#
   #  3: Hospital ######
@@ -107,10 +107,9 @@ decision_tree <- function(N = 10, pop = 35e6, HDR = c(16,17), unowned_prop = 0.6
 
   ts_exp_seek_care   <- matrix(rbinom(N * horizon, as.vector(rabies_results$ts_exposures),   pSeek_exposure), N, horizon)
   
-  ts_exp_do_not_seek_care <- matrix(rbinom(N * horizon, as.vector(rabies_results$ts_exposures), 1 - pSeek_exposure), N, horizon)
-  # sutract?
+  ts_exp_do_not_seek_care <- rabies_results$ts_exposures - ts_exp_seek_care
   
-  ts_healthy_seek_care        <- ts_recorded_bites - ts_exp_seek_care
+  ts_healthy_seek_care        <- pmax(ts_total_bite_presentations - ts_exp_seek_care, 0)
   # we do not have healthy do not seek care (hard to truly know)
   
   # ---------------------------------------------------------------------------#
@@ -125,7 +124,7 @@ decision_tree <- function(N = 10, pop = 35e6, HDR = c(16,17), unowned_prop = 0.6
   ts_exp_incomplete <- ts_exp_start - ts_exp_complete
 
   ## Healthy bites 
-  ts_healthy_start       <- matrix(rbinom(N * horizon, as.vector(ts_recorded_bites),   pStart_healthy),    N, horizon)
+  ts_healthy_start       <- matrix(rbinom(N * horizon, as.vector(ts_healthy_seek_care),   pStart_healthy),    N, horizon)
   ts_healthy_second_dose <- matrix(rbinom(N * horizon, as.vector(ts_healthy_start),       pCompliance_healthy),N, horizon)
   ts_healthy_complete    <- matrix(rbinom(N * horizon, as.vector(ts_healthy_second_dose), pCompliance_healthy),N, horizon)
   ts_healthy_incomplete  <- ts_healthy_start - ts_healthy_complete
@@ -139,8 +138,7 @@ decision_tree <- function(N = 10, pop = 35e6, HDR = c(16,17), unowned_prop = 0.6
   # ---------------------------------------------------------------------------#
   bites_by_each_rabid_biting_dog <- rabies_results$bites_by_dog
   
-  #: biters_sought_care — avoid rep() inside loop by pre-expanding once
-  #          per cell; still O(N*horizon) iterations but the body is leaner.
+  
   n_cells <- N * horizon
   biters_sought_care <- vector("list", n_cells)
   exp_seek_vec       <- as.integer(ts_exp_seek_care)
@@ -185,8 +183,8 @@ decision_tree <- function(N = 10, pop = 35e6, HDR = c(16,17), unowned_prop = 0.6
     rbinom(N * horizon, as.vector(ts_healthy_seek_care), pFS), N, horizon)
   
   # ---------------------------------------------------------------------------#
-  # 7: Outcomes 
-  ## 7A: deaths ########
+  # 5: Outcomes  ########
+  ## 5A: deaths ########
   # ---------------------------------------------------------------------------#
 
   ts_deaths_no_PEP <- matrix(
@@ -199,7 +197,7 @@ decision_tree <- function(N = 10, pop = 35e6, HDR = c(16,17), unowned_prop = 0.6
   
   ts_deaths <- ts_deaths_no_PEP + deaths_incomplete_PEP + deaths_complete_PEP
   
-  ## 7B: Deaths averted  ########
+  ## 5B: Deaths averted  ########
   ### PEP
   deaths_averted_PEP_complete   <- matrix(
     rbinom(N * horizon, as.vector(ts_exp_complete),   pPrevent_complete   * pDeath), N, horizon)
@@ -246,12 +244,13 @@ decision_tree <- function(N = 10, pop = 35e6, HDR = c(16,17), unowned_prop = 0.6
   
   
   # ---------------------------------------------------------------------------#
-  #  8: Economics  ########
+  #  6: Economics  ########
   # ---------------------------------------------------------------------------#
   ts_complete_PEP   <- ts_exp_complete  + ts_healthy_complete
   ts_incomplete_PEP <- ts_exp_incomplete + ts_healthy_incomplete
   
   ts_PEP_vials    <- (ts_exp_start + ts_healthy_start) * PEP_vials_per_pt
+
 
   # discount costs
   disc <- (1 + discount)^(-(0:(horizon - 1)))
@@ -261,7 +260,7 @@ decision_tree <- function(N = 10, pop = 35e6, HDR = c(16,17), unowned_prop = 0.6
   ts_cost_per_year     <- ts_MDV_campaign_cost + ts_cost_PEP_per_year + ts_RIG_cost_per_year
   
   # ---------------------------------------------------------------------------#
-  # 9: Collate & return  #######
+  # Collate & return  #######
   # ---------------------------------------------------------------------------#
   
   # All `ts_` objects from the local environment

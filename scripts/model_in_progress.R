@@ -192,40 +192,51 @@ decision_tree <- function(N = 10, pop = 35e6, HDR = c(16,17), unowned_prop = 0.6
     rbinom(N * horizon, as.vector(ts_exp_seek_care), pInvestigate), N, horizon)
   
   n_cells <- N * horizon
-  biters_sought_care_investigated <- vector("list", n_cells)
-  n_investigate_vec <- as.integer(ts_rabid_bites_investigated)
+  biters_sought_care <- vector("list", n_cells)
+  exp_seek_vec       <- as.integer(ts_exp_seek_care)
   
   for (x in seq_len(n_cells)) {
     b <- bites_by_each_rabid_biting_dog[[x]]
     if (length(b) == 0L) {
-      biters_sought_care_investigated[[x]] <- integer(0L)
+      biters_sought_care[[x]] <- integer(0L)
     } else {
       # rep(dog_id, n_bites) then sample — keep original semantics
-      biters_sought_care_investigated[[x]] <- sample(
+      biters_sought_care[[x]] <- sample(
         rep.int(seq_along(b), b),
-        n_investigate_vec[x]
+        exp_seek_vec[x]
       )
     }
   }
   
-  # 
-  # #: investigated biters — same loop structure, slightly tightened
-  # biters_sought_care_investigated <- vector("list", n_cells)
-  # n_investigate_vec <- as.integer(ts_rabid_bites_investigated)
-  # for (x in seq_len(n_cells)) {
-  #   b <- biters_sought_care[[x]]
-  #   ni <- n_investigate_vec[x]
-  #   if (length(b) == 0L || is.na(ni) || ni <= 0L) {
-  #     biters_sought_care_investigated[[x]] <- integer(0L)
-  #   } else {
-  #     biters_sought_care_investigated[[x]] <- b[sample.int(length(b), min(ni, length(b)))]
-  #   }
-  # }
-  # 
+
+  #: investigated biters — same loop structure, slightly tightened
+  biters_sought_care_investigated <- vector("list", n_cells)
+  n_investigate_vec <- as.integer(ts_rabid_bites_investigated)
+  for (x in seq_len(n_cells)) {
+    b <- biters_sought_care[[x]]
+    ni <- n_investigate_vec[x]
+    if (length(b) == 0L || is.na(ni) || ni <= 0L) {
+      biters_sought_care_investigated[[x]] <- integer(0L)
+    } else {
+      biters_sought_care_investigated[[x]] <- b[sample.int(length(b), min(ni, length(b)))]
+    }
+  }
+
   #dogs investigated via ibcm
   ts_rabid_biting_investigated <- matrix(
     vapply(biters_sought_care_investigated, function(x) length(unique(x)), 1L), nrow = N)
   
+  # Extra bites that could potentially be identified through IBCM (if there's some kind of contact tracing element)
+  total_bites_missed_by_biters_investigated <- matrix(sapply(1:n_cells,
+                                                             function(x){sum(bites_by_each_rabid_biting_dog[[x]][unique(biters_sought_care_investigated[[x]])]) -
+                                                                 length(which(biters_sought_care[[x]]%in%biters_sought_care_investigated[[x]]))}), nrow = N)
+  ## EF: Can then decide which of these seek care, receive PEP, etc. based on
+  ## IBCM efficiency - maybe 1) add a proportion of them to ts_exp_seek_care,
+  ## 2)subtract the same from ts_exp_do_not_seek_care, 3) move this code segment
+  ## to before code section 3b, so these new care-seekers are included in those
+  ## calcs (Note: assumes these people aren't any less likely to receive PEP and
+  ## survive, despite the delay in health-seeking)
+
   ts_rabid_biting_found    <- matrix(rbinom(N * horizon, as.vector(ts_rabid_biting_investigated), pFound),    N, horizon)
   ts_rabid_biting_testable <- matrix(rbinom(N * horizon, as.vector(ts_rabid_biting_found),        pTestable), N, horizon)
   

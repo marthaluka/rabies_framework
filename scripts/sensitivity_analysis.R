@@ -1,447 +1,878 @@
 
-
-# libraries
-require(pacman)
-pacman::p_load(tidyverse, # cleaning, wrangling
-               scales,    # display neat number values
-               paletteer,  # cool color palettes
-               viridis,    #colours
-               patchwork,   # merge plots
-               plotly,    # 3D plots
-               brms
-)
+# One-way sensitivity analysis
 
 # source model
-source("./scripts/stochastic_decision_tree.R")
+source("./scripts/decision_tree_wrapper.R")
+
+# Parallel-processing configuration
+future::plan(future::multisession, workers = 8)
 
 
+# 1. Fixed model arguments ########
+# -----------------------------------------------------------------------------
 
-# extract parameter values from csv
-run_decision_tree_and_select_variables <- function(scenario_name, parameters_df, pop=500000, horizon = 5, base_vax_cov=0.05, 
-                                                   N = 1000, selected_vars=NULL){
-  scenario_parameters <- parameters_df[parameters_df$scenario == scenario_name, ]
+fixed_args <- list(
+  N = 100,
+  horizon = 10,
+  discount = 0,
   
-  result <- decision_tree(
-    N = N,
-    pop = pop,
-    HDR = c(scenario_parameters$HDR1, scenario_parameters$HDR2),
-    horizon = horizon, 
-    mu = scenario_parameters$mu,
-    k = scenario_parameters$k,
-    base_vax_cov=base_vax_cov,
-    vaccinate_dog_cost = c(scenario_parameters$vaccinate_dog_cost1, scenario_parameters$vaccinate_dog_cost2),
-    target_vax_cov = scenario_parameters$target_vax_cov,
-    pBite_healthy = scenario_parameters$pBite_healthy,
-    pSeek_healthy = scenario_parameters$pSeek_healthy,
-    pStart_healthy = scenario_parameters$pStart_healthy,
-    pComplete_healthy = scenario_parameters$pComplete_healthy,
-    pSeek_exposure = scenario_parameters$pSeek_exposure,
-    pStart_exposure = scenario_parameters$pStart_exposure,
-    pComplete_exposure = scenario_parameters$pComplete_exposure,
-    pDeath = scenario_parameters$pDeath,
-    pPrevent = scenario_parameters$pPrevent,
-    full_cost = scenario_parameters$full_cost,
-    partial_cost = scenario_parameters$partial_cost,
-    mdv_campaign_budget = NULL ,
-    pInvestigate = scenario_parameters$pInvestigate,
-    pFound = scenario_parameters$pFound,
-    pTestable = scenario_parameters$pTestable,
-    pFP = scenario_parameters$pFalseNeg
-  )
+  mu = 0.38,
+  k = 0.72,
+  rabies_inc = c(0.0075, 0.0125),
   
+  pDeath = 0.17,
+  pPrevent_complete = 0.999,
+  pPrevent_incomplete = 0.986,
   
+  mdv_unowned_budget = NULL,
+  mdv_owned_budget = NULL,
+  years_to_target = 3,
   
-  # If specific variables are provided, subset the output to only those variables
-  if(!is.null(selected_vars) && is.vector(selected_vars)){
-    result <- result[selected_vars]
+  seed = 123,
+  dog_burnin = 1,
+  
+  ibcm_increase_exposure_care_seeking = TRUE,
+  ibcm_increase_exposure_compliance = TRUE,
+  ibcm_decrease_healthy_compliance = TRUE,
+  ibcm_reactive_vaccination = TRUE,
+  
+  .standardise_outputs = TRUE,
+  .quiet = TRUE
+)
+
+# 
+# default_selected_vars <- c(
+#   "ts_deaths",
+#   "ts_deaths_averted",
+#   "ts_rabid_dogs",
+#   "ts_exposures",
+#   "ts_cost_per_year"
+# )
+
+
+# 2. Reusable functions ##########
+# -----------------------------------------------------------------------------
+
+
+# Convert one CSV row into model arguments
+row_to_model_args <- function(
+    row,
+    fixed_args,
+    vector_columns = list()
+) {
+  row <- as.list(row)
+  
+  # Reconstruct vector-valued model arguments
+  for (arg in names(vector_columns)) {
+    cols <- vector_columns[[arg]]
+    
+    row[[arg]] <- as.numeric(
+      unlist(row[cols], use.names = FALSE)
+    )
+    
+    row[cols] <- NULL
   }
   
-  return(result)
+  # Remove scenario metadata
+  row$scenario <- NULL
+  
+  # Standardise wrapper input
+  row$ibcm <- tolower(as.character(row$ibcm))
+  
+  # Convert IBCM switches to logical values
+  logical_args <- intersect(
+    c(
+      "ibcm_increase_exposure_care_seeking",
+      "ibcm_increase_exposure_compliance",
+      "ibcm_decrease_healthy_compliance",
+      "ibcm_reactive_vaccination"
+    ),
+    names(row)
+  )
+  
+  row[logical_args] <- lapply(
+    row[logical_args],
+    as.logical
+  )
+  
+  # CSV values override fixed values
+  utils::modifyList(fixed_args, row)
 }
 
 
-# find upper limit, median and lower limit from list of length N
-summarise_stochasticity2 <-  function(mat_list, matrix_name){
-  # Check if input is a list
-  if(!is.list(mat_list)) stop("Input should be a list of matrices")
+# Run one scenario and summarise only selected outputs
+run_one_scenario <- function(
+    row,
+    fixed_args,
+    selected_vars,
+    vector_columns = list()
+) {
   
-  results_list <- lapply(seq_along(mat_list), function(idx) {
-    sublist <- mat_list[[idx]]
-    scenario_name <- names(mat_list)[idx]  # extract the scenario name (e.g., 'mdv_0')
-    # Check if the sublist contains the specified matrix
-    if(!is.null(sublist[[matrix_name]])) {
-      mat <- sublist[[matrix_name]]
-      out <- apply(mat, 2, quantile, c(0.025, 0.5, 0.975), na.rm=TRUE)
-      df <- as.data.frame(t(out))
-      names(df) <- c('LL', 'Median', 'UL')
-      df$year <- 1:dim(mat)[2]   # assign the column number to "year"
-      df$scenario <- scenario_name  # add the scenario name column
-      return(df)
+  scenario <- as.character(row$scenario)
+  
+  model_args <- row_to_model_args(
+    row = row,
+    fixed_args = fixed_args,
+    vector_columns = vector_columns
+  )
+  
+  output <- do.call(
+    decision_tree_wrapper,
+    model_args
+  )
+  
+  cumulative <- purrr::map_dfr(
+    selected_vars,
+    \(var) {
+      summarise_across_horizon(output[[var]]) |>
+        dplyr::mutate(
+          scenario = scenario,
+          outcome = var,
+          .before = 1
+        )
     }
-    return(NULL)
-  })
+  )
   
-  # Filter out NULLs and combine the results into a single dataframe
-  results_list <- Filter(Negate(is.null), results_list)
-  combined_results <- do.call(rbind, results_list)
-  return(combined_results)
+  annual <- purrr::map_dfr(
+    selected_vars,
+    \(var) {
+      summarise_stochasticity(
+        mat = output[[var]],
+        scenario = scenario
+      ) |>
+        dplyr::mutate(
+          outcome = var,
+          .before = 1
+        )
+    }
+  )
+  
+  list(
+    cumulative = cumulative,
+    annual = annual
+  )
+}
+
+# Run every row of a sensitivity parameter table in parallel
+run_sensitivity_parallel <- function(
+    parameters,
+    fixed_args,
+    selected_vars = default_selected_vars,
+    vector_columns = list()
+) {
+  
+  parameter_rows <- split(
+    parameters,
+    seq_len(nrow(parameters))
+  )
+  
+  results <- furrr::future_map(
+    parameter_rows,
+    \(row) {
+      
+      load_rabies_models()
+      
+      run_one_scenario(
+        row = row,
+        fixed_args = fixed_args,
+        selected_vars = selected_vars,
+        vector_columns = vector_columns
+      )
+    },
+    .options = furrr::furrr_options(
+      seed = TRUE,
+      scheduling = Inf
+    ),
+    .progress = TRUE
+  )
+  
+  list(
+    cumulative = purrr::map_dfr(results, "cumulative"),
+    annual = purrr::map_dfr(results, "annual")
+  )
 }
 
 
-# Plots ########
-## Plot 1 ########
-create_temporal_plot <- function(mydata, title, scenarios){
-  # order scenarios to logic rather than alphanumeric
-  mydata$scenario <- factor(mydata$scenario, levels = scenarios)
-  #plot
-  ggplot(mydata, aes(x = year, y = Median, group = scenario)) +
-  geom_line() +
-  geom_ribbon(aes(ymin = LL, ymax = UL), fill= "#3357FF", alpha = 0.5, color = NA) +
-  facet_wrap(~scenario) +
-  labs(
-    title = paste(title, "with 95% Confidence Intervals"),
-    x = "Year",
-    y = title
-  ) +
-    theme_bw()+ 
-    scale_y_continuous(labels = scales::comma) +
-    theme(
-      legend.position = "none"
+vector_columns <- list(
+  HDR = c(
+    "HDR1",
+    "HDR2"
+  ),
+  
+  vaccinate_owned_dog_cost = c(
+    "vaccinate_owned_dog_cost1",
+    "vaccinate_owned_dog_cost2"
+  ),
+  
+  vaccinate_unowned_dog_cost = c(
+    "vaccinate_unowned_dog_cost1",
+    "vaccinate_unowned_dog_cost2"
+  )
+)
+
+# 3. HDR sensitivity #######
+# -----------------------------------------------------------------------------
+
+hdr_parameters <- read.csv(
+  "./data/sensitivity_params/01_hdr_sensitivity.csv",
+  stringsAsFactors = FALSE,
+  check.names = FALSE
+)
+
+hdr_selected_vars <- c(
+  "ts_deaths",
+  "ts_deaths_averted",
+  "ts_deaths_averted_MDV",
+  "ts_rabid_dogs",
+  "ts_exposures",
+  "ts_cost_per_year"
+)
+
+hdr_results <- run_sensitivity_parallel(
+  parameters = hdr_parameters,
+  fixed_args = fixed_args,
+  selected_vars = hdr_selected_vars,
+  vector_columns = vector_columns
+)
+
+
+names(hdr_results)
+
+hdr_results$annual %>%
+  dplyr::filter(outcome == "ts_deaths")
+
+hdr_results$cumulative %>%
+  dplyr::filter(outcome == "ts_deaths")
+
+saveRDS(hdr_results, file = "./output/sensitivity_analysis/hdr_results.rds")
+
+# 4. MDV sensitivity #######
+# -----------------------------------------------------------------------------
+
+mdv_parameters <- read.csv(
+  "./data/sensitivity_params/02_mdv_sensitivity.csv",
+  stringsAsFactors = FALSE,
+  check.names = FALSE
+)
+
+mdv_selected_vars <- c(
+  "ts_deaths",
+  "ts_deaths_averted",
+  "ts_deaths_averted_MDV",
+  "ts_rabid_dogs",
+  "ts_exposures",
+  "ts_cost_per_year"
+)
+
+mdv_results <- run_sensitivity_parallel(
+  parameters = mdv_parameters,
+  fixed_args = fixed_args,
+  selected_vars = mdv_selected_vars,
+  vector_columns = vector_columns
+)
+
+
+names(mdv_results)
+
+mdv_results$annual %>%
+  dplyr::filter(outcome == "ts_deaths")
+
+mdv_results$cumulative %>%
+  dplyr::filter(outcome == "ts_deaths")
+
+saveRDS(mdv_results, file = "./output/sensitivity_analysis/mdv_results.rds")
+
+
+
+# 5. pSeek sensitivity #######
+# -----------------------------------------------------------------------------
+
+
+pSeek_parameters <- read.csv(
+  "./data/sensitivity_params/03_pSeek_sensitivity.csv",
+  stringsAsFactors = FALSE,
+  check.names = FALSE
+)
+
+# Outcomes most relevant to care seeking
+pSeek_selected_vars <- c(
+  "ts_exp_seek_care",
+  "ts_exposures",
+  "ts_deaths_averted_PEP",
+  "ts_deaths",
+  "ts_deaths_averted",
+  "ts_cost_PEP_per_year"
+)
+
+pSeek_results <- run_sensitivity_parallel(
+  parameters = pSeek_parameters,
+  fixed_args = fixed_args,
+  selected_vars = pSeek_selected_vars,
+  vector_columns = vector_columns
+)
+
+names(pSeek_results)
+
+pSeek_results$cumulative
+pSeek_results$annual
+
+saveRDS(pSeek_results, file = "./output/sensitivity_analysis/pSeek_results.rds")
+
+
+# 6. pStart sensitivity #######
+# -----------------------------------------------------------------------------
+
+
+pStart_parameters <- read.csv(
+  "./data/sensitivity_params/04_pStart_sensitivity.csv",
+  stringsAsFactors = FALSE,
+  check.names = FALSE
+)
+
+# Outcomes most relevant to care seeking
+pStart_selected_vars <- c(
+  "ts_exp_start",
+  "ts_exposures",
+  "ts_deaths_averted_PEP",
+  "ts_deaths",
+  "ts_deaths_averted",
+  "ts_cost_PEP_per_year"
+)
+
+pStart_results <- run_sensitivity_parallel(
+  parameters = pStart_parameters,
+  fixed_args = fixed_args,
+  selected_vars = pStart_selected_vars,
+  vector_columns = vector_columns
+)
+
+names(pStart_results)
+
+pStart_results$cumulative
+pStart_results$annual
+
+saveRDS(pStart_results, file = "./output/sensitivity_analysis/pStart_results.rds")
+
+
+# 7. pCompliance sensitivity #######
+# -----------------------------------------------------------------------------
+
+
+pComplete_parameters <- read.csv(
+  "./data/sensitivity_params/05_pCompliance_sensitivity.csv",
+  stringsAsFactors = FALSE,
+  check.names = FALSE
+)
+
+# Outcomes most relevant to care seeking
+pComplete_selected_vars <- c(
+  "ts_exp_complete",
+  "ts_exposures",
+  "ts_deaths_averted_PEP",
+  "ts_deaths",
+  "ts_deaths_averted",
+  "ts_cost_PEP_per_year"
+)
+
+pComplete_results <- run_sensitivity_parallel(
+  parameters = pComplete_parameters,
+  fixed_args = fixed_args,
+  selected_vars = pComplete_selected_vars,
+  vector_columns = vector_columns
+)
+
+names(pComplete_results)
+
+pComplete_results$cumulative
+pComplete_results$annual
+
+saveRDS(pComplete_results, file = "./output/sensitivity_analysis/pComplete_results.rds")
+
+# 8. IBCM sensitivity #######
+
+  # pSeek exp
+  # pComplete healthy
+  # pComplete exposure
+  # reactive vaccination
+  # dog testing
+
+
+## 8A. pInvestigate sensitivity  #######
+pInvestigate_parameters <- read.csv(
+  "./data/sensitivity_params/06_pInvestigate_sensitivity.csv",
+  stringsAsFactors = FALSE,
+  check.names = FALSE
+)
+
+# Outcomes most relevant to care seeking
+pInvestigate_selected_vars <- c(
+  "ts_exp_seek_care",
+  "ts_exp_complete",
+  "ts_healthy_complete",
+  "ts_bites_reached_by_ibcm",
+  "ts_rabid_biting_found",
+  "ts_dogs_reactive_vaccinated",
+  "ts_dogs_tested",
+  "ts_deaths",
+  "ts_deaths_averted",
+  "ts_cost_PEP_per_year",
+  "ts_ibcm_costs"
+)
+
+pInvestigate_results <- run_sensitivity_parallel(
+  parameters = pInvestigate_parameters,
+  fixed_args = fixed_args,
+  selected_vars = pInvestigate_selected_vars,
+  vector_columns = vector_columns
+)
+
+names(pInvestigate_results)
+
+pInvestigate_results$cumulative
+pInvestigate_results$annual
+
+saveRDS(pInvestigate_results, file = "./output/sensitivity_analysis/pInvestigate_results.rds")
+
+
+
+## 8B. pFound sensitivity  #######
+
+
+pFound_parameters <- read.csv(
+  "./data/sensitivity_params/07_pFound_sensitivity.csv",
+  stringsAsFactors = FALSE,
+  check.names = FALSE
+)
+
+# Outcomes most relevant to care seeking
+pFound_selected_vars <- c(
+  "ts_exp_seek_care",
+  "ts_exp_complete",
+  "ts_healthy_complete",
+  "ts_bites_reached_by_ibcm",
+  "ts_rabid_biting_found",
+  "ts_rabid_biting_testable",
+  "ts_dogs_reactive_vaccinated",
+  "ts_dogs_tested",
+  "ts_deaths",
+  "ts_deaths_averted",
+  "ts_cost_PEP_per_year",
+  "ts_ibcm_costs"
+)
+
+pFound_results <- run_sensitivity_parallel(
+  parameters = pFound_parameters,
+  fixed_args = fixed_args,
+  selected_vars = pFound_selected_vars,
+  vector_columns = vector_columns
+)
+
+names(pFound_results)
+
+pFound_results$cumulative
+pFound_results$annual
+
+saveRDS(pFound_results, file = "./output/sensitivity_analysis/pFound_results.rds")
+
+
+
+## 8C. pTestable sensitivity  #######
+
+
+pTestable_parameters <- read.csv(
+  "./data/sensitivity_params/08_pTestable_sensitivity.csv",
+  stringsAsFactors = FALSE,
+  check.names = FALSE
+)
+
+# Outcomes most relevant to care seeking
+pTestable_selected_vars <- c(
+  "ts_exp_seek_care",
+  "ts_exp_complete",
+  "ts_healthy_complete",
+  "ts_bites_reached_by_ibcm",
+  "ts_rabid_biting_testable",
+  "ts_dogs_reactive_vaccinated",
+  "ts_dogs_tested",
+  "ts_deaths",
+  "ts_cost_PEP_per_year",
+  "ts_deaths_averted",
+  "ts_ibcm_costs"
+  )
+
+
+
+pTestable_results <- run_sensitivity_parallel(
+  parameters = pTestable_parameters,
+  fixed_args = fixed_args,
+  selected_vars = pTestable_selected_vars,
+  vector_columns = vector_columns
+)
+
+names(pTestable_results)
+
+pTestable_results$cumulative
+pTestable_results$annual
+
+saveRDS(pTestable_results, file = "./output/sensitivity_analysis/pTestable_results.rds")
+
+
+
+
+# To Do 
+
+# Review ibcm model to reduce redundancy
+
+    ## ts_dogs_tested vs ts_rabid_biting_testable
+    ## ts_bites_reached_by_ibcm vs ts_bites_by_biters_investigated_noSeek
+    ## Avoid the n_missed, n_found etc variables -- adds unnecessary weight to running model
+
+
+# 9. Visualize ########
+
+pacman::p_load(
+  tidyverse, patchwork, cowplot
+)
+
+# Read data
+hdr_results <- readRDS("./output/sensitivity_analysis/hdr_results.rds")
+mdv_results <- readRDS("./output/sensitivity_analysis/mdv_results.rds")
+pSeek_results <- readRDS("./output/sensitivity_analysis/pSeek_results.rds")
+pStart_results <- readRDS( "./output/sensitivity_analysis/pStart_results.rds")
+pComplete_results <- readRDS("./output/sensitivity_analysis/pComplete_results.rds")
+pComplete_results <- readRDS("./output/sensitivity_analysis/pComplete_results.rds")
+pInvestigate_results <- readRDS("./output/sensitivity_analysis/pInvestigate_results.rds")
+pFound_results <- readRDS("./output/sensitivity_analysis/pFound_results.rds")
+pTestable_results <- readRDS("./output/sensitivity_analysis/pTestable_results.rds")
+
+
+
+names(hdr_results)
+
+hdr_results$annual
+hdr_results$cumulative
+
+# plot function: both annual and cumulative
+# Plot annual and cumulative sensitivity-analysis results --------------------
+
+plot_sensitivity_output <- function(
+    results,
+    outcome,
+    title,
+    scenarios = NULL,
+    facet_ncol = 3
+) {
+  
+  annual <- results$annual[
+    results$annual$outcome == outcome,
+  ]
+  
+  cumulative <- results$cumulative[
+    results$cumulative$outcome == outcome,
+  ]
+  
+  # Optional scenario order; otherwise retain the order in the results.
+  if (is.null(scenarios)) {
+    scenarios <- unique(annual$scenario)
+  }
+  
+  annual$scenario <- factor(annual$scenario, levels = scenarios)
+  cumulative$scenario <- factor(cumulative$scenario, levels = scenarios)
+  
+  temporal_plot <- ggplot(
+    annual,
+    aes(
+      x = year,
+      y = Median,
+      group = scenario,
+      colour = scenario,
+      fill = scenario
     )
-}
-
-
-# Default color palette if none is provided
-if (is.null(palette)) {
-  palette <- c("#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e")  # Default 5 colors
-}
-custom_palette <- c("#FF5733", "#33FF57", "#3357FF", "#F333FF", "#33FFF5")
-
-
-
-## Plot 2 ########
-create_timepoint_plot <-function(mydata, title, scenarios){
-
-  # Calculate the sum of UL, LL, and Median for "total"
-  total_data <- aggregate(. ~ scenario, data = mydata, FUN = sum)
-
-  # # Create the visualization
-  total_data$scenario <- factor(total_data$scenario, levels = scenarios)
-  ggplot(total_data, aes(x = scenario, y = Median, group = scenario, color = scenario)) +
-      geom_point() +
-      geom_errorbar(aes(ymin = LL, ymax = UL), width = 0.2) +
-      labs(
-        #title = paste("Rabies", title, "with 95% Confidence Intervals"),
-        x = "Scenario",
-        y = paste("Cumulative", title)
-      ) +
-      theme_bw() +
-      scale_y_continuous(labels = scales::comma) +
-      theme(axis.text.x = element_text(angle = 45, hjust = 1),
-                  legend.position = "none"
-                  )
-
-
-}
-
-
-
-create_timepoint_plot2 <- function(mydata, title, scenarios) {
-  # Calculate the sum of UL, LL, and Median for "total"
-  total_data <- aggregate(. ~ scenario, data = mydata, FUN = sum)
-
-  # order scenarios to logic rather than alphanumeric
-  total_data$scenario <- factor(total_data$scenario, levels = scenarios)
+  ) +
+    geom_ribbon(
+      aes(ymin = LL, ymax = UL),
+      alpha = 0.25,
+      colour = NA
+    ) +
+    geom_line(linewidth = 0.7) +
+    facet_wrap(~scenario, ncol = facet_ncol) +
+    labs(
+      title = paste(title, "with 95% uncertainty intervals"),
+      x = "Year",
+      y = title
+    ) +
+    scale_y_continuous(labels = scales::comma) +
+    theme_bw() +
+    theme(legend.position = "none")
   
-  # Plot with geom_line and geom_ribbon
-  ggplot(total_data, aes(x = scenario, y = Median, group = 1)) +  # Group=1 ensures a connected line
-    geom_line(color = "purple", size = 1) +  # Line for Median values
-    geom_ribbon(aes(ymin = LL, ymax = UL), fill = "purple", alpha = 0.2) +  # Ribbon for confidence intervals
+  cumulative_plot <- ggplot(
+    cumulative,
+    aes(x = scenario, y = Median, colour = scenario)
+  ) +
+    geom_point(size = 2) +
+    geom_errorbar(
+      aes(ymin = LL, ymax = UL),
+      width = 0.15
+    ) +
     labs(
       x = "Scenario",
       y = paste("Cumulative", title)
     ) +
-    theme_bw() +
     scale_y_continuous(labels = scales::comma) +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1),
-          legend.position = "none"
+    theme_bw() +
+    theme(
+      axis.text.x = element_text(angle = 45, hjust = 1),
+      legend.position = "none"
     )
+  
+  temporal_plot + cumulative_plot
 }
 
 
-summarise_and_plot_2D <- function(mat_list, matrix_name, title, scenarios){
-  mydata <- summarise_stochasticity2(mat_list, matrix_name)
-  plot_a <- create_temporal_plot(mydata, title, scenarios)
-  plot_b <- create_timepoint_plot2(mydata, title, scenarios)
-  
-  out_plot <- plot_a + plot_b
-  return(out_plot)
-}
-  
-
-#  MDV Sensitivity######
-## read file
-mdv_range <- read.csv("./data/sensitivity_params/mdv_sensitivity.csv")
-
-## run scenarios
-mdv_scenarios <- mdv_range$scenario
-
-mdv_output <- lapply(mdv_scenarios, run_decision_tree_and_select_variables, 
-                     parameters_df=mdv_range, 
-                     selected_vars = c('ts_rabid_dogs', 'ts_exposures', 'ts_healthy_bites', 'ts_deaths', 
-                                       'ts_deaths_averted_MDV')
-                     )
-
-names(mdv_output) <- mdv_scenarios
-
-names(mdv_output$mdv0)
-
-mdv_output$mdv0$ts_rabid_dogs
-
-#####
-#mydata <- summarise_stochasticity2(mdv_output, 'ts_rabid_dogs')
-
-mdv1<- summarise_and_plot_2D(mdv_output, 'ts_rabid_dogs', 'Rabid dogs', mdv_scenarios) ; mdv1
-mdv2<- summarise_and_plot_2D(mdv_output, 'ts_exposures', 'Exposures', mdv_scenarios) ; mdv2
-mdv3<- summarise_and_plot_2D(mdv_output, 'ts_healthy_bites', 'Healthy bites', mdv_scenarios) ; mdv3
-mdv4<- summarise_and_plot_2D(mdv_output, 'ts_deaths', 'Deaths', mdv_scenarios) ; mdv4
-mdv5<- summarise_and_plot_2D(mdv_output, 'ts_deaths_averted_MDV', 'Deaths averted MDV', mdv_scenarios) ; mdv5
-
-(mdv1)/(mdv2)
-
-
-# HDR sensistivity ######
-    # Note: pop control may be useful at some point?
-hdr_range <- read.csv("./data/sensitivity_params/hdr_sensitivity.csv")
-
-## run scenarios
-hdr_scenarios <- hdr_range$scenario
-
-hdr_output <- lapply(hdr_scenarios, run_decision_tree_and_select_variables, 
-                     parameters_df=hdr_range, 
-                     selected_vars = c('ts_rabid_dogs', 'ts_exposures', 'ts_healthy_bites', 'ts_deaths')
-                     )
-names(hdr_output) <- hdr_scenarios
-
-#plot
-hdr1<- summarise_and_plot_2D(hdr_output, 'ts_rabid_dogs', 'Rabid dogs', hdr_scenarios) ; hdr1
-hdr2<- summarise_and_plot_2D(hdr_output, 'ts_exposures', 'Exposures', hdr_scenarios) ; hdr2
-hdr3<- summarise_and_plot_2D(hdr_output, 'ts_healthy_bites', 'Healthy bites', hdr_scenarios) ; hdr3
-hdr4<- summarise_and_plot_2D(hdr_output, 'ts_deaths', 'Deaths', hdr_scenarios) ; hdr4
-
-hdr3/hdr4
-hdr1/hdr2
-
-# MDV HDR Sensitivity ##########
-    # Note: cost of mdv may be too high at some point (extremely high dog pop)!?
-        #Even with 100% vax cov, there will be incursions
-
-## read file
-mdvHDR_range <- read.csv("./data/sensitivity_params/mdv_hdr_sensitivity.csv")
-
-## run scenarios
-mdvHDR_scenarios <- mdvHDR_range$scenario
-
-mdvHDR_output <- lapply(mdvHDR_scenarios, run_decision_tree_and_select_variables, 
-                     parameters_df=mdvHDR_range, N = 100,
-                     selected_vars = c('ts_rabid_dogs', 'ts_exposures', 'ts_deaths', 
-                                       'ts_exp_seek_care', 'ts_healthy_bites', 'ts_MDV_campaign_cost')
-                     )
-
-names(mdvHDR_output) <- mdvHDR_scenarios
-
-
-process_data <- function(mat_list, mat_name, col1, col2) {
-  # Separate the 'scenario' column into 'mdv' and 'hdr'
-  data <- summarise_stochasticity2(mat_list, mat_name) 
-  
-  # Calculate the sum of UL, LL, and Median for "total"
-  total_data <- data %>%
-    group_by(scenario) %>%
-    dplyr::summarise(across(where(is.numeric), sum)) %>%
-    separate(scenario, into = c(col1, col2), sep = "_", remove = FALSE) %>%
-    dplyr::select(-c(year))
-  
-  total_data[[col1]] <- as.numeric(gsub(col1, "", total_data[[col1]]))
-  total_data[[col2]] <- as.numeric(gsub(col2, "", total_data[[col2]]))
-  
-  return(total_data)
-}
-
-a<-process_data(mat_list=mdvHDR_output, mat_name='ts_exposures', col1='mdv', col2='hdr')
-
-# Create a 3D  plot
-create_3d_scatter_plot <- function(data, x, y, z, title) {
-  plot_ly(
-    data = data,
-    x = ~data[[x]],
-    y = ~data[[y]],
-    z = ~data[[z]],
-    type = "scatter3d",
-    mode = "markers",
-    marker = list(
-      color = ~data[[z]],
-      #colorscale = c("blue", "green", "red"),
-      cmin = min(data[[z]]),
-      cmax = max(data[[z]])
-    )
-  ) %>%
-    layout(
-      scene = list(
-        xaxis = list(title = x),
-        yaxis = list(title = y),
-        zaxis = list(title = z)
-      ),
-      title = paste("Cumulative", title)
-    )
-}
-
-create_3d_scatter_plot(a, 'hdr', 'mdv', 'Median', "Exposures")
-
-process_and_plot_3D <- function(mat_list, mat_name, col1, col2, z = 'Median', title){
-  
-  mydata<-process_data(mat_list=mat_list, mat_name=mat_name, col1=col1, col2=col2)
-  myplot <- create_3d_scatter_plot(data = mydata, x=col1, y=col2, z=z, title=title)
-  
-  return(myplot)
-  
-}
-
-
-# plot
-mdvHDR1<- process_and_plot_3D(mat_list=mdvHDR_output, mat_name='ts_rabid_dogs', col1='mdv', col2='hdr', z = 'Median', title="Rabid dogs"); mdvHDR1
-mdvHDR2<- process_and_plot_3D(mat_list=mdvHDR_output, mat_name='ts_exposures', col1='mdv', col2='hdr', z = 'Median', title="Exposures"); mdvHDR2
-mdvHDR3<- process_and_plot_3D(mat_list=mdvHDR_output, mat_name='ts_healthy_bites', col1='mdv', col2='hdr', z = 'Median', title="Healthy bites"); mdvHDR3
-mdvHDR4<- process_and_plot_3D(mat_list=mdvHDR_output, mat_name='ts_deaths', col1='mdv', col2='hdr', z = 'Median', title="Deaths"); mdvHDR4
-mdvHDR5<- process_and_plot_3D(mat_list=mdvHDR_output, mat_name='ts_exp_seek_care', col1='mdv', col2='hdr', z = 'Median', title="Exposures seek care"); mdvHDR5
-mdvHDR6<- process_and_plot_3D(mat_list=mdvHDR_output, mat_name='ts_MDV_campaign_cost', col1='mdv', col2='hdr', z = 'Median', title="MDV campaign cost"); mdvHDR6
-
-
-
-a<-process_data(mat_list=mdvHDR_output, mat_name='ts_exposures', col1='mdv', col2='hdr')
-
-ggplot(a, aes(x = mdv, y = as.factor(hdr), fill = Median)) +
-  geom_tile() +  # Creates a heatmap-like visualization
-  scale_fill_gradient(low = "white", high = "red") +  # Color scale
-  labs(title = "Total exposures",
-       x = "MDV",
-       y = "HDR",
-       fill = "Median") +
-  theme_bw()
 
 
 
 
 
-# Health seeking #######
-## pSeek exposures ######
-pSeek_range <- read.csv("./data/sensitivity_params/pSeek_exposures.csv")
 
-## run scenarios
-pSeek_scenarios <- pSeek_range$scenario
 
-pSeek_output <- lapply(pSeek_scenarios, run_decision_tree_and_select_variables, 
-                     parameters_df=pSeek_range, 
-                     selected_vars = c('ts_exp_seek_care', 'ts_deaths_averted_PEP',  'ts_deaths')
-                     )
-names(pSeek_output) <- pSeek_scenarios
 
-#plot
-pSeek1<- summarise_and_plot_2D(pSeek_output, 'ts_exp_seek_care', 'Exposures seek care', pSeek_scenarios) ; pSeek1
-pSeek2<- summarise_and_plot_2D(pSeek_output, 'ts_deaths_averted_PEP', 'Deaths averted PEP', pSeek_scenarios) ; pSeek2
-pSeek3<- summarise_and_plot_2D(pSeek_output, 'ts_deaths', 'Deaths', pSeek_scenarios) ; pSeek3
 
-pSeek1/pSeek2/pSeek3
 
-## pStart exposures ######
-pStart_range <- read.csv("./data/sensitivity_params/pStart_exposures.csv")
 
-## run scenarios
-pStart_scenarios <- pStart_range$scenario
 
-pStart_output <- lapply(pStart_scenarios, run_decision_tree_and_select_variables, 
-                       parameters_df=pStart_range, 
-                       selected_vars = c('ts_exp_start', 'ts_deaths_averted_PEP',  'ts_deaths')
+
+
+
+
+
+
+
+## 1. HDR #########
+plot_sensitivity_output(
+  results = hdr_results,
+  outcome = "ts_deaths",
+  title = "Deaths",
 )
-names(pStart_output) <- pStart_scenarios
 
-#plot
-pStart1<- summarise_and_plot_2D(pStart_output, 'ts_exp_start', 'Exposures start PEP', pStart_scenarios) ; pStart1
-pStart2<- summarise_and_plot_2D(pStart_output, 'ts_deaths_averted_PEP', 'Deaths averted PEP', pStart_scenarios) ; pStart2
-pStart3<- summarise_and_plot_2D(pStart_output, 'ts_deaths', 'Deaths', pStart_scenarios) ; pStart3
- 
+plot_sensitivity_output(
+  results = hdr_results,
+  outcome = "ts_rabid_dogs",
+  title = "Rabid dogs",
+)
 
-pStart1/pStart2/pStart3   
+plot_sensitivity_output(
+  results = hdr_results,
+  outcome = "ts_deaths_averted_MDV",
+  title = "Deaths averted MDV",
+)
 
-## pComplete exposures ######
-    # Note: other factors not in model may affect pStart
-pComplete_range <- read.csv("./data/sensitivity_params/pComplete_exposures.csv")
+plot_sensitivity_output(
+  results = hdr_results,
+  outcome = "ts_cost_per_year",
+  title = "Costs",
+)
 
-## run scenarios
-pComplete_scenarios <- pComplete_range$scenario
+## 2. MDV #########
+plot_sensitivity_output(
+  results = mdv_results,
+  outcome = "ts_deaths",
+  title = "Deaths",
+)
 
-pComplete_output <- lapply(pComplete_scenarios, run_decision_tree_and_select_variables, 
-                        parameters_df=pComplete_range, 
-                        selected_vars = c('ts_exp_complete', 'ts_deaths_averted_PEP',  'ts_deaths')
-                        )
-names(pComplete_output) <- pComplete_scenarios
+plot_sensitivity_output(
+  results = mdv_results,
+  outcome = "ts_rabid_dogs",
+  title = "Rabid dogs",
+)
 
-#plot
-pComplete1<- summarise_and_plot_2D(pComplete_output, 'ts_exp_complete', 'Exposures complete PEP', pComplete_scenarios) ; pComplete1
-pComplete2<- summarise_and_plot_2D(pComplete_output, 'ts_deaths_averted_PEP', 'Deaths averted PEP', pComplete_scenarios) ; pComplete2
-pComplete3<- summarise_and_plot_2D(pComplete_output, 'ts_deaths', 'Deaths', pComplete_scenarios) ; pComplete3
+plot_sensitivity_output(
+  results = mdv_results,
+  outcome = "ts_deaths_averted_MDV",
+  title = "Deaths averted MDV",
+)
 
-pComplete1/pComplete2/pComplete3
+plot_sensitivity_output(
+  results = mdv_results,
+  outcome = "ts_cost_per_year",
+  title = "Costs",
+)
 
-# Health seeking exposures combined #######
+## 3. pSeek #########
+plot_sensitivity_output(
+  results = pSeek_results,
+  outcome = "ts_exp_seek_care",
+  title = "Exp seek care",
+)
 
-health_seeking_range <- read.csv("./data/sensitivity_params/healthSeeking_combined_ed.csv")
+plot_sensitivity_output(
+  results = pSeek_results,
+  outcome = "ts_deaths_averted_PEP",
+  title = "Deaths averted PEP",
+)
 
-## run scenarios
-health_seeking_scenarios <- health_seeking_range$scenario
-
-health_seeking_output <- lapply(health_seeking_scenarios, run_decision_tree_and_select_variables, 
-                        parameters_df=health_seeking_range, N=100,
-                        selected_vars = c('ts_exp_complete', 'ts_deaths', 'ts_deaths_averted_PEP')
-                        )
-
-names(health_seeking_output) <- health_seeking_scenarios
-
-# process_data_4D
-process_data_4D <- function(mat_list, mat_name, col1, col2,col3) {
-  # Separate the 'scenario' column into 'mdv' and 'hdr'
-  data <- summarise_stochasticity2(mat_list, mat_name) 
-  
-  # Calculate the sum of UL, LL, and Median for "total"
-  total_data <- data %>%
-    group_by(scenario) %>%
-    dplyr::summarise(across(where(is.numeric), sum)) %>%
-    separate(scenario, into = c(col1, col2, col3), sep = "_", remove = FALSE) %>%
-    dplyr::select(-c(year))
-  
-  total_data[[col1]] <- as.numeric(gsub(col1, "", total_data[[col1]]))
-  total_data[[col2]] <- as.numeric(gsub(col2, "", total_data[[col2]]))
-  total_data[[col3]] <- as.numeric(gsub(col3, "", total_data[[col3]]))
-  
-  return(total_data)
-}
-
-mydata_hs<-process_data_4D(mat_list=health_seeking_output, mat_name='ts_deaths', 
-                           col1='pStart', col2='pComplete', col3='pSeek')
+plot_sensitivity_output(
+  results = pSeek_results,
+  outcome = "ts_cost_PEP_per_year",
+  title = "PEP costs",
+)
 
 
+plot_sensitivity_output(
+  results = pSeek_results,
+  outcome = "ts_deaths",
+  title = "Deaths",
+)
 
-# All?? ##########
 
 
-ggplot(mydata_hs, aes(x = pSeek, y = pStart, fill = Median)) +
-  geom_tile() +  # Creates a heatmap-like visualization
-  scale_fill_gradient(low = "white", high = "red") +  # Color scale
-  labs(title = "Total deaths",
-       x = "pSeek",
-       y = "pStart",
-       fill = "Median") +
-  theme_bw()
+## 4. pStart #########
+plot_sensitivity_output(
+  results = pStart_results,
+  outcome = "ts_exp_start",
+  title = "Exp start care",
+)
+
+plot_sensitivity_output(
+  results = pStart_results,
+  outcome = "ts_deaths_averted_PEP",
+  title = "Deaths averted PEP",
+)
+
+plot_sensitivity_output(
+  results = pStart_results,
+  outcome = "ts_cost_PEP_per_year",
+  title = "PEP costs",
+)
+
+plot_sensitivity_output(
+  results = pStart_results,
+  outcome = "ts_deaths",
+  title = "Deaths",
+)
+
+## 5. pCompliance #########
+plot_sensitivity_output(
+  results = pComplete_results,
+  outcome = "ts_exp_complete",
+  title = "Exp start complete",
+)
+
+plot_sensitivity_output(
+  results = pComplete_results,
+  outcome = "ts_deaths_averted_PEP",
+  title = "Deaths averted PEP",
+)
+
+plot_sensitivity_output(
+  results = pComplete_results,
+  outcome = "ts_cost_PEP_per_year",
+  title = "PEP costs",
+)
+
+plot_sensitivity_output(
+  results = pComplete_results,
+  outcome = "ts_deaths",
+  title = "Deaths",
+)
+
+
+## 6. pInvestigate #########
+plot_sensitivity_output(
+  results = pInvestigate_results,
+  outcome = "ts_healthy_complete",
+  title = "Healthy complete PEP",
+)
+
+plot_sensitivity_output(
+  results = pInvestigate_results,
+  outcome = "ts_bites_reached_by_ibcm",
+  title = "Additional victims sought out",
+)
+
+plot_sensitivity_output(
+  results = pInvestigate_results,
+  outcome = "ts_ibcm_costs",
+  title = "IBCM costs",
+)
+
+
+plot_sensitivity_output(
+  results = pInvestigate_results,
+  outcome = "ts_dogs_tested",
+  title = "Dogs tested",
+)
+
+plot_sensitivity_output(
+  results = pInvestigate_results,
+  outcome = "ts_deaths",
+  title = "Deaths",
+)
+
+## 7. pFound #########
+plot_sensitivity_output(
+  results = pFound_results,
+  outcome = "ts_healthy_complete",
+  title = "Healthy complete PEP",
+)
+
+plot_sensitivity_output(
+  results = pFound_results,
+  outcome = "ts_bites_reached_by_ibcm",
+  title = "Additional victims sought out",
+)
+
+plot_sensitivity_output(
+  results = pFound_results,
+  outcome = "ts_ibcm_costs",
+  title = "IBCM costs",
+)
+
+
+plot_sensitivity_output(
+  results = pFound_results,
+  outcome = "ts_dogs_tested",
+  title = "Dogs tested",
+)
+
+
+## 8. pTestable #########
+plot_sensitivity_output(
+  results = pTestable_results,
+  outcome = "ts_healthy_complete",
+  title = "Healthy complete PEP",
+)
+
+plot_sensitivity_output(
+  results = pTestable_results,
+  outcome = "ts_bites_reached_by_ibcm",
+  title = "Additional victims sought out",
+)
+
+plot_sensitivity_output(
+  results = pTestable_results,
+  outcome = "ts_cost_PEP_per_year",
+  title = "PEP costs",
+)
+
+
+plot_sensitivity_output(
+  results = pTestable_results,
+  outcome = "ts_deaths",
+  title = "Deaths",
+)
+
+plot_sensitivity_output(
+  results = pTestable_results,
+  outcome = "ts_ibcm_costs",
+  title = "IBCM costs",
+)
+
+plot_sensitivity_output(
+  results = pTestable_results,
+  outcome = "ts_dogs_tested",
+  title = "Dogs tested",
+)
 
 
 

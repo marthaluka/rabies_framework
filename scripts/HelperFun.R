@@ -10,8 +10,8 @@
 .rabies_model_cache <- new.env(parent = emptyenv())
 
 load_rabies_models <- function(
-    vax_model_path      = "./data/cases_from_vax_model.rds",
-    vax_case_model_path = "./data/cases_from_vax+cases_model.rds"
+    vax_model_path      = "./data/dog_incidence_model/cases_from_vax_model.rds",
+    vax_case_model_path = "./data/dog_incidence_model/cases_from_vax+cases_model.rds"
 ) {
   vax_model      <- readRDS(vax_model_path)
   vax_case_model <- readRDS(vax_case_model_path)
@@ -19,91 +19,6 @@ load_rabies_models <- function(
   .rabies_model_cache$vax_case_samples <- posterior_samples(vax_case_model)[, 1:4]
   invisible(NULL)
 }
-
-
-# ---------------------------------------------------------------------------#
-# 0: IBCM switch ON/OFF   #######
-# ---------------------------------------------------------------------------#
-
-apply_ibcm_effects <- function(
-    rabies_inc, mu, ibcm, pSeek_exposure, pCompliance_exp, pCompliance_healthy,
-    dog_vax_cov, dog_pop, pInvestigate, pFound, pTestable, 
-    dogs_per_reactive_vax = 20, max_pSeek_exposure = 0.95, max_pCompliance_exp = 0.99,
-    min_pCompliance_healthy = 0.05, max_dog_vax_cov = 0.8
-) {
-  
-  if (!ibcm %in% c("yes", "no")) {
-    stop("ibcm must be either 'yes' or 'no'")
-  }
-  
-  
-  if (ibcm == "no") {
-    return(list(
-      pInvestigate = 0, pFound = 0, pTestable = 0, ibcm_efficiency = 0, 
-      reactive_vax_cov = 0,
-      pSeek_exposure = pSeek_exposure, pCompliance_exp = pCompliance_exp,
-      pCompliance_healthy = pCompliance_healthy, dog_vax_cov = dog_vax_cov
-    ))
-  }
-  
-  ibcm_efficiency <- pInvestigate * pFound * pTestable
-  
-  # A. IBCM increases care-seeking among true rabies exposures
-  missed_care <- 1 - pSeek_exposure
-  
-  # only bites by same dog
-  pSeek_exposure_new <- pmin((pSeek_exposure + (pInvestigate * missed_care)), max_pSeek_exposure)
-  
-  # B. IBCM improves completion among true exposures
-  # Total completion = pCompliance_exp^2 because the model has two compliance steps (3 doses total).
-  exp_incomplete <- 1 - pCompliance_exp^2
-  
-  target_exp_completion <- pmin(
-    pCompliance_exp^2 + ibcm_efficiency * exp_incomplete,
-    max_pCompliance_exp^2
-  )
-  
-  pCompliance_exp_new <- sqrt(target_exp_completion)
-  
-  # C. IBCM reduces unnecessary completion among healthy bite patients
-  healthy_completion <- pCompliance_healthy^2
-  
-  target_healthy_completion <- pmax(
-    healthy_completion * (1 - ibcm_efficiency),
-    min_pCompliance_healthy^2
-  )
-  
-  pCompliance_healthy_new <- sqrt(target_healthy_completion)
-  
-  # D. IBCM-triggered reactive vaccination
-  # Approximation: expected test-triggered responses increase
-  # effective dog vaccination coverage before rabies prediction.
-  
-  # Simplified steps: 
-  # expected_tests <- dog_pop * rabies_inc * mu * pSeek_exposure * ibcm_efficiency
-  # reactive_dogs_vaccinated <- expected_tests * dogs_per_reactive_vax
-  # Set annual upper limit? 
-  # reactive_vax_cov <- reactive_dogs_vaccinated / dog_pop
-  
-  rabies_inc_mean <- mean(rabies_inc)
-  reactive_vax_cov <- rabies_inc_mean * mu * pSeek_exposure_new * ibcm_efficiency * dogs_per_reactive_vax
-  # rabid biting dogs 'seeking care'  (rabies_inc * mu * pSeek_exposure_new)
-  
-  dog_vax_cov_new <- pmin(dog_vax_cov + reactive_vax_cov, max_dog_vax_cov)
-  
-  list(
-    pInvestigate = pInvestigate,
-    pFound = pFound,
-    pTestable = pTestable,
-    ibcm_efficiency = ibcm_efficiency,
-    reactive_vax_cov = reactive_vax_cov,
-    pSeek_exposure = pSeek_exposure_new,
-    pCompliance_exp = pCompliance_exp_new,
-    pCompliance_healthy = pCompliance_healthy_new,
-    dog_vax_cov = dog_vax_cov_new
-  )
-}
-
 
 
 # Estimate dog population
@@ -301,7 +216,7 @@ predict_dograbies_split <- function(N, horizon, vax_cov, dog_pop, rabies_inc,
                      first = dog_pop[1, 1],
                      mean  = mean(dog_pop, na.rm = TRUE))
   
-  n_splits       <- max(100L, ceiling(ref_dogs / pop_serengeti))
+  n_splits       <- min(100L, ceiling(ref_dogs / pop_serengeti))
   dog_pop_splits <- split_dog_population(dog_pop, n_splits)
   
   split_results <- lapply(seq_len(n_splits), function(i) {
@@ -349,7 +264,7 @@ summarise_stochasticity <- function(mat=status_quo$ts_deaths_averted_PEP, scenar
 
 summarise_across_horizon <- function(
     mat,
-    probs = c(0.025, 0.5, 0.95),
+    probs = c(0.025, 0.5, 0.975),
     na.rm = TRUE
 ) {
   

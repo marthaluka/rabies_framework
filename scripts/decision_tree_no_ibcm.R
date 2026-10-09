@@ -17,32 +17,26 @@ pacman::p_load(tidyverse,   # cleaning, wrangling
 
 
 
+# Model no IBCM
+
+
 # Decision tree model that can be applied to create different scenarios 
 
 # source helper functions  
 source("./scripts/HelperFun.R")
 
 
-decision_tree <- function(N = 10, pop = 35e6, HDR = c(16,17), unowned_prop = 0.633, horizon = 5, 
-                          discount = 0.03, mu = 0.38, k = 0.72, bpi = 15.3, pStart_healthy = 0.9684211,
-                          pCompliance_healthy = 0.9654, pSeek_exposure = 0.9, pStart_exposure = 0.9684211,
-                          pCompliance_exp = 0.9654, pDeath = 0.17,pPrevent_complete = 0.999, 
-                          pPrevent_incomplete = 0.986, rabies_inc = c(0.0075, 0.0125), mdv_unowned_budget = NULL, 
-                          mdv_owned_budget = NULL,vaccinate_owned_dog_cost = c(0.5, 1), 
-                          vaccinate_unowned_dog_cost = c(3.5, 4.5), base_vax_cov_owned = 0.5,   
-                          target_vax_cov_owned = 0.5, base_vax_cov_unowned = 0.03, target_vax_cov_unowned = 0.03,
-                          years_to_target = 3, pInvestigate = 0.5, pFound = 0.4, pTestable = 0.2,
-                          pFS = 0.05, RIG_cov = 0.38, PEP_vials_per_pt = 0.66,
-                          human_vaccine_cost_per_vial = 5, RIG_cost = 12, seed = 123, ibcm = "no", dog_burnin = 1,
-                          dogs_per_reactive_vax = 20,
-                          max_pSeek_exposure = 0.95,
-                          max_pCompliance_exp = 0.99,
-                          min_pCompliance_healthy = 0.05,
-                          max_dog_vax_cov = 0.8
-                          ) {
-  
-  
-  
+decision_tree_no_ibcm <- function(N = 10, pop = 35e6, HDR = c(16,17), unowned_prop = 0, horizon = 5, 
+                                  discount = 0.03, mu = 0.38, k = 0.72, bpi = 1530, pStart_healthy = 0.9684211,
+                                  pCompliance_healthy = 0.9654, pSeek_exposure = 0.9, pStart_exposure = 0.9684211,
+                                  pCompliance_exp = 0.9654, pDeath = 0.17,pPrevent_complete = 0.999, 
+                                  pPrevent_incomplete = 0.986, rabies_inc = c(0.0075, 0.0125), mdv_unowned_budget = NULL, 
+                                  mdv_owned_budget = NULL,vaccinate_owned_dog_cost = c(0.5, 1), 
+                                  vaccinate_unowned_dog_cost = c(3.5, 4.5), base_vax_cov_owned = 0.5,   
+                                  target_vax_cov_owned = 0.5, base_vax_cov_unowned = 0.03, target_vax_cov_unowned = 0.03,
+                                  years_to_target = 3, RIG_cov = 0.38, PEP_vials_per_pt = 0.66,
+                                  human_vaccine_cost_per_vial = 5, RIG_cost = 12, seed = 123, dog_burnin = 1
+                                  ) {
   
   
   total_horizon <- horizon + dog_burnin
@@ -71,45 +65,7 @@ decision_tree <- function(N = 10, pop = 35e6, HDR = c(16,17), unowned_prop = 0.6
   dog_vax_cov <- (vax_cov_unowned * unowned_prop) + (vax_cov_owned * owned_prop)
   
   
-  # Place IBCM here:
-  
-  ibcm_adj <- apply_ibcm_effects(
-    ibcm = ibcm,
-    pSeek_exposure = pSeek_exposure,
-    pCompliance_exp = pCompliance_exp,
-    pCompliance_healthy = pCompliance_healthy,
-    dog_vax_cov = dog_vax_cov,
-    rabies_inc = rabies_inc,
-    mu = mu,
-    pInvestigate = pInvestigate,
-    pFound = pFound,
-    pTestable = pTestable,
-    dogs_per_reactive_vax = dogs_per_reactive_vax,
-    max_pSeek_exposure = max_pSeek_exposure,
-    max_pCompliance_exp = max_pCompliance_exp,
-    min_pCompliance_healthy = min_pCompliance_healthy,
-    max_dog_vax_cov = max_dog_vax_cov
-  )
-  
-  pInvestigate <- ibcm_adj$pInvestigate
-  pFound <- ibcm_adj$pFound
-  pTestable <- ibcm_adj$pTestable
-  
-  pSeek_exposure <- ibcm_adj$pSeek_exposure
-  pCompliance_exp <- ibcm_adj$pCompliance_exp
-  pCompliance_healthy <- ibcm_adj$pCompliance_healthy
-  
-  dog_vax_cov <- ibcm_adj$dog_vax_cov
-  ts_reactive_vax_cov <- matrix(
-    ibcm_adj$reactive_vax_cov,
-    nrow = N,
-    ncol = total_horizon
-  )
-  
-  
-  
-
-  # continue with dog dynamics
+  # dog dynamics
   
   vax_results        <- calculate_vaccinated_and_susceptible(N, total_horizon, dog_pop, dog_vax_cov)
   vaccinated_unowned <- calculate_vaccinated_and_susceptible(N, total_horizon, unowned_dogs, vax_cov_unowned)$ts_dogs_vaccinated
@@ -120,7 +76,7 @@ decision_tree <- function(N = 10, pop = 35e6, HDR = c(16,17), unowned_prop = 0.6
     calculate_campaign_cost(N, total_horizon, mdv_owned_budget,   vaccinated_owned,   vaccinate_owned_dog_cost)
   
   # ---------------------------------------------------------------------------#
-  # 2: Dogs and human bites: exposures & healthy
+  # 2: Dogs and human bites: exposures & healthy    #######
   ## 2A: Dog rabies & human exposures — strip burn-in immediately   #######
   # ---------------------------------------------------------------------------#
   rabies_results_full <- predict_dograbies_split(
@@ -131,7 +87,7 @@ decision_tree <- function(N = 10, pop = 35e6, HDR = c(16,17), unowned_prop = 0.6
   keep_cols   <- (dog_burnin + 1):total_horizon
   strip_burnin <- function(mat) mat[, keep_cols, drop = FALSE]
   
-  # ### OPT: bites_by_dog flat-list stripping (column-major: year = ceiling(idx/N))
+  #. bites_by_dog flat-list stripping (column-major: year = ceiling(idx/N))
   bites_keep_idx <- which(ceiling(seq_along(rabies_results_full$bites_by_dog) / N) > dog_burnin)
   
   rabies_results <- list(
@@ -144,23 +100,33 @@ decision_tree <- function(N = 10, pop = 35e6, HDR = c(16,17), unowned_prop = 0.6
   vax_results$sus_dogs           <- strip_burnin(vax_results$sus_dogs)
   MDV_campaign_cost              <- strip_burnin(MDV_campaign_cost)
   
+  # Expose baseline/effective coverage using the same output names as the
+  # IBCM model. Without reactive vaccination the two matrices are identical.
+  if (is.matrix(dog_vax_cov)) {
+    ts_dog_vax_cov_baseline <- strip_burnin(dog_vax_cov)
+  } else {
+    ts_dog_vax_cov_baseline <- matrix(
+      rep(dog_vax_cov[keep_cols], each = N), nrow = N, ncol = horizon
+    )
+  }
+  ts_dog_vax_cov_effective <- ts_dog_vax_cov_baseline
+  
   # ---------------------------------------------------------------------------#
   ##  2B: Healthy bites (human horizon only)   #######
   # ---------------------------------------------------------------------------#
-  ts_total_bite_presentations <- matrix(rbinom(N * horizon, pop, bpi / 1000), N, horizon)
+  ts_total_bite_presentations <- matrix(rbinom(N * horizon, pop, bpi / 100000), N, horizon)
   
   # ---------------------------------------------------------------------------#
   #  3: Hospital ######
   ##  3A: Healthcare seeking #######
   # ---------------------------------------------------------------------------#
-  #ts_exp  <- rabies_results$ts_exposures
-
+  
   ts_exp_seek_care   <- matrix(rbinom(N * horizon, as.vector(rabies_results$ts_exposures),   pSeek_exposure), N, horizon)
   
   ts_exp_do_not_seek_care <- rabies_results$ts_exposures - ts_exp_seek_care
   
   ts_healthy_seek_care        <- pmax(ts_total_bite_presentations - ts_exp_seek_care, 0)
-  # we do not have healthy do not seek care (hard to truly know)
+  # we do not have healthy bites & healthy do not seek care (hard to truly know)
   
   # ---------------------------------------------------------------------------#
   ##  3B: Biologicals start & compliance ######
@@ -172,7 +138,7 @@ decision_tree <- function(N = 10, pop = 35e6, HDR = c(16,17), unowned_prop = 0.6
   ts_exp_second_dose <- matrix(rbinom(N * horizon, as.vector(ts_exp_start),      pCompliance_exp), N, horizon)
   ts_exp_complete <- matrix(rbinom(N * horizon, as.vector(ts_exp_second_dose),pCompliance_exp), N, horizon)
   ts_exp_incomplete <- ts_exp_start - ts_exp_complete
-
+  
   ## Healthy bites 
   ts_healthy_start       <- matrix(rbinom(N * horizon, as.vector(ts_healthy_seek_care),   pStart_healthy),    N, horizon)
   ts_healthy_second_dose <- matrix(rbinom(N * horizon, as.vector(ts_healthy_start),       pCompliance_healthy),N, horizon)
@@ -180,74 +146,25 @@ decision_tree <- function(N = 10, pop = 35e6, HDR = c(16,17), unowned_prop = 0.6
   ts_healthy_incomplete  <- ts_healthy_start - ts_healthy_complete
   
   ## RIG
-  tmp    <- if (ibcm == "no") ts_exp_start + ts_healthy_start else ts_exp_start
-  ts_RIG <- matrix(rbinom(N * horizon, as.vector(tmp), RIG_cov), N, horizon)
+  # Without IBCM, RIG administered to both true exposures and
+  # healthy-bite patients because the biting animal has not been classified.
+  RIG_eligible <- ts_exp_start + ts_healthy_start
+  ts_RIG <- matrix(
+    rbinom(N * horizon, as.vector(RIG_eligible), RIG_cov), N, horizon
+  )
   
-  # ---------------------------------------------------------------------------#
-  # 4: IBCM  ######
-  # ---------------------------------------------------------------------------#
-  bites_by_each_rabid_biting_dog <- rabies_results$bites_by_dog
+  # # ---------------------------------------------------------------------------#
+  # # 4: IBCM  ######
   
-  ts_rabid_bites_investigated <- matrix(
-    rbinom(N * horizon, as.vector(ts_exp_seek_care), pInvestigate), N, horizon)
+  ## This section is now incorporated in a different model version (for my Compos mentis!)
+  ### "./scripts/decision_tree_ibcm.R 
   
-  n_cells <- N * horizon
-  biters_sought_care <- vector("list", n_cells)
-  exp_seek_vec       <- as.integer(ts_exp_seek_care)
-  
-  for (x in seq_len(n_cells)) {
-    b <- bites_by_each_rabid_biting_dog[[x]]
-    if (length(b) == 0L) {
-      biters_sought_care[[x]] <- integer(0L)
-    } else {
-      # rep(dog_id, n_bites) then sample — keep original semantics
-      biters_sought_care[[x]] <- sample(
-        rep.int(seq_along(b), b),
-        exp_seek_vec[x]
-      )
-    }
-  }
-  
-
-  #: investigated biters — same loop structure, slightly tightened
-  biters_sought_care_investigated <- vector("list", n_cells)
-  n_investigate_vec <- as.integer(ts_rabid_bites_investigated)
-  for (x in seq_len(n_cells)) {
-    b <- biters_sought_care[[x]]
-    ni <- n_investigate_vec[x]
-    if (length(b) == 0L || is.na(ni) || ni <= 0L) {
-      biters_sought_care_investigated[[x]] <- integer(0L)
-    } else {
-      biters_sought_care_investigated[[x]] <- b[sample.int(length(b), min(ni, length(b)))]
-    }
-  }
-
-  #dogs investigated via ibcm
-  ts_rabid_biting_investigated <- matrix(
-    vapply(biters_sought_care_investigated, function(x) length(unique(x)), 1L), nrow = N)
-  
-  # Extra bites that could potentially be identified through IBCM (if there's some kind of contact tracing element)
-  total_bites_missed_by_biters_investigated <- matrix(sapply(1:n_cells,
-                                                             function(x){sum(bites_by_each_rabid_biting_dog[[x]][unique(biters_sought_care_investigated[[x]])]) -
-                                                                 length(which(biters_sought_care[[x]]%in%biters_sought_care_investigated[[x]]))}), nrow = N)
-  ## EF: Can then decide which of these seek care, receive PEP, etc. based on
-  ## IBCM efficiency - maybe 1) add a proportion of them to ts_exp_seek_care,
-  ## 2)subtract the same from ts_exp_do_not_seek_care, 3) move this code segment
-  ## to before code section 3b, so these new care-seekers are included in those
-  ## calcs (Note: assumes these people aren't any less likely to receive PEP and
-  ## survive, despite the delay in health-seeking)
-
-  ts_rabid_biting_found    <- matrix(rbinom(N * horizon, as.vector(ts_rabid_biting_investigated), pFound),    N, horizon)
-  ts_rabid_biting_testable <- matrix(rbinom(N * horizon, as.vector(ts_rabid_biting_found),        pTestable), N, horizon)
-  
-  ts_healthy_biting_investigated <- matrix(
-    rbinom(N * horizon, as.vector(ts_healthy_seek_care), pFS), N, horizon)
   
   # ---------------------------------------------------------------------------#
   # 5: Outcomes  ########
   ## 5A: deaths ########
   # ---------------------------------------------------------------------------#
-
+  
   ts_deaths_no_PEP <- matrix(
     rbinom(N * horizon, as.vector(ts_exp_nostartPEP), pDeath), N, horizon)
   
@@ -269,7 +186,7 @@ decision_tree <- function(N = 10, pop = 35e6, HDR = c(16,17), unowned_prop = 0.6
   
   ### IBCM ??? --- No because it works by either increasing MDV or PEP uptake....
   
-
+  
   # ---------------------------------------------------------------------------#
   # MDV counterfactual — ### OPT: reuse dog_pop; only recompute what changes
   # ---------------------------------------------------------------------------#
@@ -307,12 +224,12 @@ decision_tree <- function(N = 10, pop = 35e6, HDR = c(16,17), unowned_prop = 0.6
   # ---------------------------------------------------------------------------#
   #  6: Economics  ########
   # ---------------------------------------------------------------------------#
-  ts_complete_PEP   <- ts_exp_complete  + ts_healthy_complete
-  ts_incomplete_PEP <- ts_exp_incomplete + ts_healthy_incomplete
+  # ts_complete_PEP   <- ts_exp_complete  + ts_healthy_complete
+  # ts_incomplete_PEP <- ts_exp_incomplete + ts_healthy_incomplete
   
   ts_PEP_vials    <- (ts_exp_start + ts_healthy_start) * PEP_vials_per_pt
-
-
+  
+  
   # discount costs
   disc <- (1 + discount)^(-(0:(horizon - 1)))
   ts_RIG_cost_per_year <- sweep(ts_RIG        * RIG_cost,                    2, disc, `*`)
@@ -332,35 +249,15 @@ decision_tree <- function(N = 10, pop = 35e6, HDR = c(16,17), unowned_prop = 0.6
   rabies_ts <- rabies_results[grep("^ts_", names(rabies_results))]
   dogs_ts   <- vax_results[grep("^ts_", names(vax_results))]
   
-  # CHANGE: burn-in already stripped, so NO second stripping here
-  out_matrices <- c(out_matrices, rabies_ts, dogs_ts)
+  repeated_names <- union(names(rabies_ts), names(dogs_ts))
+  out_matrices <- c(
+    out_matrices[setdiff(names(out_matrices), repeated_names)],
+    rabies_ts,
+    dogs_ts
+  )
   
   return(out_matrices)
 }
 
 
-# ── Single-session example ───────────────────────────────────────────────────
 
-load_rabies_models()   # <-- call once; cached for the whole session
-
-tmp <- decision_tree(
-  N = 10, pop = 35e6, HDR = c(16,17), unowned_prop = 0.633, horizon = 5, 
-  discount = 0.03, mu = 0.38, k = 0.72, bpi = 15.3, pStart_healthy = 0.9684211,
-  pCompliance_healthy = 0.9654, pSeek_exposure = 0.9, pStart_exposure = 0.9684211,
-  pCompliance_exp = 0.9654, pDeath = 0.17,pPrevent_complete = 0.999, 
-  pPrevent_incomplete = 0.986, rabies_inc = c(0.0075, 0.0125), mdv_unowned_budget = NULL, 
-  mdv_owned_budget = NULL,vaccinate_owned_dog_cost = c(0.5, 1), 
-  vaccinate_unowned_dog_cost = c(3.5, 4.5), base_vax_cov_owned = 0.5,   
-  target_vax_cov_owned = 0.5, base_vax_cov_unowned = 0.03, target_vax_cov_unowned = 0.03,
-  years_to_target = 3, pInvestigate = 0.5, pFound = 0.4, pTestable = 0.2,
-  pFS = 0.05, RIG_cov = 0.38, PEP_vials_per_pt = 0.66,
-  human_vaccine_cost_per_vial = 5, RIG_cost = 12, seed = 123, ibcm = "yes", dog_burnin = 1,
-  dogs_per_reactive_vax = 20,
-  max_pSeek_exposure = 0.95,
-  max_pCompliance_exp = 0.99,
-  min_pCompliance_healthy = 0.05,
-  max_dog_vax_cov = 0.8
-)
-
-tmp$ts_exp_seek_care
-tmp$ts_rabid_dogs

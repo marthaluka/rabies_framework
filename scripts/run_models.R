@@ -10,63 +10,148 @@ pacman::p_load(tidyverse, # cleaning, wrangling
                )
 
 # source model
-source("./scripts/stochastic_decision_tree.R")
+source("./scripts/decision_tree_wrapper.R")
 
-
-# scenarios
 
 ## read parameters file
-parameters_df <- read.csv("./data/parameters.csv")
-
-# extract parameter values from csv
-run_decision_tree_from_csv <- function(scenario_name, parameters_df, pop=65000000, horizon = 1,base_vax_cov=0.05, N = 1000){
-  scenario_parameters <- parameters_df[parameters_df$scenario == scenario_name, ]
-  
-  decision_tree(
-    N = N,
-    pop = pop,
-    horizon = horizon, 
-    base_vax_cov=base_vax_cov,
-    discount = scenario_parameters$discount,
-    target_vax_cov = scenario_parameters$target_vax_cov,
-    # epidemiological status quo
-    #LR_range = c(scenario_parameters$LR_range1, scenario_parameters$LR_range1),
-    HDR = c(scenario_parameters$HDR1, scenario_parameters$HDR2),
-    pBite_healthy = scenario_parameters$pBite_healthy,
-    
-    mu = scenario_parameters$mu,
-    k = scenario_parameters$k,
-    # health seeking - healthy bites
-    pSeek_healthy = scenario_parameters$pSeek_healthy,
-    pStart_healthy = scenario_parameters$pStart_healthy,
-    pComplete_healthy = scenario_parameters$pComplete_healthy,
-    # health seeking - rabid bites
-    pSeek_exposure = scenario_parameters$pSeek_exposure,
-    pStart_exposure = scenario_parameters$pStart_exposure,
-    pComplete_exposure = scenario_parameters$pComplete_exposure,
-    # biological params
-    pDeath = scenario_parameters$pDeath,
-    pPrevent = scenario_parameters$pPrevent,
-    # economics
-    full_cost = scenario_parameters$full_cost,
-    partial_cost = scenario_parameters$partial_cost,
-    vaccinate_dog_cost = c(scenario_parameters$vaccinate_dog_cost1, scenario_parameters$vaccinate_dog_cost2),
-    # campaign cost
-    #IBCM
-    pInvestigate = scenario_parameters$pInvestigate,
-    pFound = scenario_parameters$pFound,
-    pTestable = scenario_parameters$pTestable,
-    pFN = scenario_parameters$pFalseNeg
+parameters_df <- read.csv("./data/country_params_MLedited.csv") %>%
+  dplyr::mutate(
+    pop = readr::parse_number(as.character(pop)),
+    bpi_per100k = readr::parse_number(as.character(bpi_per100k))
   )
+
+parameters_df %>%
+  dplyr::select(country, Administrative_unit, scenario)
+
+
+
+# Common params
+common_params <- list(
+    baseline_surveillance = 0.01,
+    N = 1000, horizon = 10, discount = 0.03, seed = 123,
+    mu = 0.38, k = 0.72, rabies_inc = c(0.0075, 0.0125),
+    pDeath = 0.17, pPrevent_complete = 0.999, pPrevent_incomplete = 0.986,
+    mdv_unowned_budget = NULL, mdv_owned_budget = NULL, years_to_target = 3, dog_burnin = 3,
+    ibcm_increase_exposure_care_seeking = TRUE, ibcm_increase_exposure_compliance = TRUE,
+    ibcm_reactive_vaccination = TRUE #ibcm_decrease_healthy_compliance = TRUE, 
+)
+
+
+# Convert CSV to model arguments
+make_model_args <- function(pars, common_params) {
+  
+  stopifnot(nrow(pars) == 1)
+  
+  # Parameters taken from CSV
+  csv_params <- list(
+    pop = pars$pop, 
+    HDR = c(pars$HDR1, pars$HDR2),
+    unowned_prop = pars$unowned_prop, 
+    bpi = pars$bpi_per100k,
+    pStart_healthy = pars$pStart_healthy,
+    pCompliance_healthy = pars$pCompliance_healthy,
+    pSeek_exposure = pars$pSeek_exposure,
+    pStart_exposure = pars$pStart_exposure,
+    pCompliance_exp = pars$pCompliance_exp,
+    vaccinate_owned_dog_cost = c(pars$vaccinate_owned_dog_cost1, pars$vaccinate_owned_dog_cost2),
+    vaccinate_unowned_dog_cost = c(pars$vaccinate_unowned_dog_cost1,pars$vaccinate_unowned_dog_cost2),
+    base_vax_cov_owned = pars$base_vax_cov_owned,
+    target_vax_cov_owned = pars$target_vax_cov_owned,
+    base_vax_cov_unowned = pars$base_vax_cov_unowned,
+    target_vax_cov_unowned = pars$target_vax_cov_unowned,
+    RIG_cov = pars$RIG_cov,
+    PEP_vials_per_pt = pars$PEP_vials_per_pt,
+    human_vaccine_cost_per_vial = pars$human_vaccine_cost_per_vial,
+    RIG_cost = pars$RIG_cost,
+    ibcm = pars$ibcm,
+    pInvestigate = pars$pInvestigate,
+    pFound = pars$pFound,
+    pTestable = pars$pTestable,
+    pFS = pars$pFS,
+    dogs_per_reactive_vax = pars$dogs_per_reactive_vax,
+    max_pSeek_exposure = pars$max_pSeek_exposure,
+    max_pCompliance_exp = pars$max_pCompliance_exp,
+    #min_pCompliance_healthy = pars$min_pCompliance_healthy,
+    max_dog_vax_cov = pars$max_dog_vax_cov,
+    max_reactive_vaccinations = pars$max_reactive_vaccinations,
+    reactive_vax_cost_per_dog = pars$reactive_vax_cost_per_dog,
+    investigation_cost_per_dog = pars$investigation_cost_per_dog,
+    dog_test_cost_per_dog = pars$dog_test_cost_per_dog
+  )
+  
+  # CSV parameters override common parameters
+  args <- utils::modifyList(common_params,csv_params)
+  
+  return(args)
 }
 
-# scenarios on a given population 
-no_interventions <- run_decision_tree_from_csv("no_interventions", parameters_df)
-PEP_IM_free_only <- run_decision_tree_from_csv("PEP_IM_free_only", parameters_df)
-PEP_ID_free_only <- run_decision_tree_from_csv("PEP_ID_free_only", parameters_df)
-MDV_only <- run_decision_tree_from_csv("MDV_only", parameters_df)
-MDV_PEP_IM_free <- run_decision_tree_from_csv("MDV_PEP_IM_free", parameters_df)
-MDV_PEP_ID_free <- run_decision_tree_from_csv("MDV_PEP_ID_free", parameters_df)
+
+args <- make_model_args(pars = parameters_df[1, ],common_params = common_params)
+
+names(args)
+
+# Run one country × scenario
+run_model <- function(pars) {
+  
+  args <- make_model_args(
+    pars = pars,
+    common_params = common_params
+  )
+  
+  do.call(decision_tree_wrapper, args)
+}
+
+# Parallel setup 
+future::plan(
+  future::multisession,
+  workers = 8
+)
+
+# Run all country × scenario combinations 
+# Always load the models 
+load_rabies_models()
+
+
+# Name the results to match parameter table
+
+run_names <- with(
+  parameters_df,
+  paste(country, Administrative_unit, scenario, sep = "_")
+)
+
+results <- furrr::future_map(
+  seq_len(nrow(parameters_df)),
+  function(i) {
+    run_model(parameters_df[i, , drop = FALSE])
+  },
+  .options = furrr::furrr_options(seed = TRUE),
+  .progress = TRUE
+) %>%
+  set_names(run_names)
+
+
+
+# Save rds
+
+saveRDS(results, "output/country_results.rds")
+
+
+
+
+# results <- readRDS("output/country_results.rds")
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -86,7 +171,7 @@ select_variable <- function(variable, scenario){
   return(df)
 }
 
-names(no_interventions)
+
 
 # return time series values 
 df <- select_variable(variable='ts_rabid_dogs', scenario=MDV_only)

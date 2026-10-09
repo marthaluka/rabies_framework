@@ -1,5 +1,5 @@
 # ea_framework
-Working repo for developing a framework to inform rabies intervention strategies in East Africa 
+Working repo for developing a framework to inform rabies intervention strategies.
 
 
-![](https://github.com/marthaluka/ea_framework/blob/main/output/framework.png)
+![](https://github.com/marthaluka/rabies_framework/blob/main/output/framework.png)
